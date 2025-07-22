@@ -1,0 +1,197 @@
+{% extends "core/base.html" %}
+{% block title %}Drop & Delivery — хранение и доставка багажа{% endblock %}
+{% block content %}
+
+<!-- Hero Section with Gradient and SVG Wave -->
+<section class="py-5 text-center position-relative" style="
+    background: linear-gradient(120deg, #d0ebff 0%, #e7faff 100%);
+    overflow: hidden;
+    min-height: 450px;">
+  <div class="container position-relative" style="z-index:1;">
+    <h1 class="display-3 fw-bold mb-3">Drop & Delivery</h1>
+    <p class="lead mb-4 fs-4">Премиальный сервис хранения и доставки багажа по Москве.<br>
+      Заберём, опечатаем, сохраним и привезём по вашему расписанию.</p>
+    <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4 py-2 fs-5 shadow">Оставить заявку</a>
+  </div>
+  <!-- SVG Wave -->
+  <svg viewBox="0 0 1440 180" width="100%" height="100" style="position:absolute; bottom:0; left:0;">
+    <path fill="#e7faff" fill-opacity="1"
+      d="M0,160L80,144C160,128,320,96,480,101.3C640,107,800,149,960,165.3C1120,181,1280,171,1360,165.3L1440,160L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z">
+    </path>
+  </svg>
+</section>
+
+<!-- Steps: How it works -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Как это работает?</h2>
+  <div class="row text-center g-4">
+    <div class="col-6 col-md-3">
+      <div class="mb-3 display-3 text-primary"><i class="bi bi-pencil-square"></i></div>
+      <h5>1. Заявка</h5>
+      <p class="small">Оставьте заявку на сайте или в мессенджере.</p>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="mb-3 display-3 text-success"><i class="bi bi-person-check"></i></div>
+      <h5>2. Встреча</h5>
+      <p class="small">Приезжает наш представитель с документами и упаковкой.</p>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="mb-3 display-3 text-info"><i class="bi bi-lock-fill"></i></div>
+      <h5>3. Опечатаем</h5>
+      <p class="small">Опечатываем, пломбируем, фотографируем, выдаём квитанцию.</p>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="mb-3 display-3 text-warning"><i class="bi bi-geo-alt-fill"></i></div>
+      <h5>4. Доставка</h5>
+      <p class="small">Доставляем по вашему адресу, в аэропорт или на вокзал.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Tariffs -->
+<section id="tariffs" class="container my-5">
+  <h2 class="text-center mb-4">Тарифы</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card shadow border-0">
+        <div class="card-body">
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Комплексная услуга (до 3&nbsp;единиц багажа)</span>
+              <span class="fw-bold text-primary">от 1200 ₽</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Экспресс-услуга (1–2 часа)</span>
+              <span>+500 ₽</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Дополнительная единица багажа</span>
+              <span>+200 ₽</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Продление хранения</span>
+              <span>+300 ₽/сутки</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Страхование багажа</span>
+              <span>Включено до 30 000 ₽</span>
+            </li>
+          </ul>
+          <small class="text-muted">Цена зависит от адреса, количества багажа и срочности.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Advantages -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Почему нас выбирают?</h2>
+  <div class="row text-center g-4">
+    <div class="col-md-4">
+      <div class="p-4 rounded-4 shadow-sm h-100 bg-white">
+        <div class="display-4 text-success mb-3"><i class="bi bi-shield-lock"></i></div>
+        <h5>Безопасность</h5>
+        <p>Опечатывание, фотоотчёт, страховка до 30 000 ₽.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 rounded-4 shadow-sm h-100 bg-white">
+        <div class="display-4 text-primary mb-3"><i class="bi bi-clock-history"></i></div>
+        <h5>Удобство</h5>
+        <p>Встречаем и доставляем в любое время, экономим ваше время и силы.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 rounded-4 shadow-sm h-100 bg-white">
+        <div class="display-4 text-warning mb-3"><i class="bi bi-cash-coin"></i></div>
+        <h5>Всё включено</h5>
+        <p>Честные тарифы без скрытых платежей.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="container my-5">
+  <h2 class="text-center mb-4">FAQ</h2>
+  <div class="accordion" id="faqAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Безопасность</button></h2>
+      <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Ваш багаж опечатывается и пломбируется, фиксируется на фото, выдается квитанция, страхуется.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Как происходит передача?</button></h2>
+      <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Приезжает представитель с упаковкой и документами, оформляет всё на месте.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Что нельзя сдавать в багаж и почему?</button></h2>
+      <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Мы не принимаем наличные, ценные бумаги, драгоценности и документы — по закону и условиям страхования. Всё остальное принимаем с полной ответственностью.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">Оплата</button></h2>
+      <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Оплата на сайте, по ссылке или наличными при передаче.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">Сколько храните?</button></h2>
+      <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          1 ночь включена, далее +300 ₽/сутки. До 7 суток, дольше по договорённости.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">Срочно?</button></h2>
+      <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Есть экспресс-опция (1–2 часа, +500 ₽).
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">Страхование</button></h2>
+      <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Включено до 30 000 ₽. Если нужно больше — скажите при оформлении.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">Связь</button></h2>
+      <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Телефон, Telegram, WhatsApp, email.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Контакты -->
+<section class="container my-5 text-center">
+  <h5 class="mb-3">Контакты</h5>
+  <div class="d-flex flex-wrap justify-content-center gap-3">
+    <a href="tel:+79999999999" class="btn btn-outline-secondary"><i class="bi bi-telephone"></i> +7 999 999-99-99</a>
+    <a href="https://t.me/your_telegram" class="btn btn-outline-primary"><i class="bi bi-telegram"></i> Telegram</a>
+    <a href="https://wa.me/79999999999" class="btn btn-outline-success"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+    <a href="mailto:info@dropdelivery.ru" class="btn btn-outline-dark"><i class="bi bi-envelope"></i> Email</a>
+  </div>
+</section>
+
+{% endblock %}
