@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Заявка принята</title>
-</head>
-<body>
-    <h1>Спасибо! Ваша заявка успешно отправлена.</h1>
-    <p>Мы свяжемся с вами в ближайшее время.</p>
-</body>
-</html>
+{% extends "core/base.html" %}
+{% block title %}Спасибо за заявку!{% endblock %}
+{% block content %}
+<div class="d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 65vh;">
+    <div class="mb-4">
+        <svg width="110" height="110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="55" cy="55" r="55" fill="#eafbf0"/>
+            <path d="M32 58l20 17 32-36" stroke="#3BB77E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <h1 class="fw-bold mb-3" style="font-size:2.8rem;">Спасибо за заявку!</h1>
+    <div class="mb-4" style="max-width:650px; font-size:1.35rem; line-height:1.6; text-align: center;">
+        Мы получили вашу заявку и<br> обязательно свяжемся с вами в ближайшее время.<br><br>
+        Если вопрос срочный — напишите нам в
+        <a href="https://t.me/your_telegram" target="_blank" class="fw-semibold text-decoration-underline" style="color:#229ED9;">Telegram</a>
+        или WhatsApp.<br><br>
+        Спасибо, что выбрали <span class="fw-bold">Drop & Delivery!</span>
+    </div>
+    <a href="/" class="btn btn-success px-5 py-2 fs-5 shadow-sm" style="border-radius: 12px;">Вернуться на главную</a>
+</div>
+{% endblock %}
