@@ -1,6 +1,6 @@
 import requests
 
-TELEGRAM_TOKEN = "7607165074:AAEjKZ-zhmWmIPf2ejVJdxCR-7CZHlfOMAQ"  # (твой токен)
+TELEGRAM_TOKEN = "7607165074:AAEjkZ-zhmWmIPfZejVdxdCR-7CZHIfOMAQ"  # (твой токен)
 TELEGRAM_CHAT_ID = "191742166"
 
 def notify_telegram_new_order(order):
