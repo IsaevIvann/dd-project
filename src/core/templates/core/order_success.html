@@ -1,21 +1,24 @@
 {% extends "core/base.html" %}
-{% block title %}Спасибо за заявку!{% endblock %}
+{% block title %}Спасибо за заказ — D&D{% endblock %}
 {% block content %}
-<div class="d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 65vh;">
-    <div class="mb-4">
-        <svg width="110" height="110" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="55" cy="55" r="55" fill="#eafbf0"/>
-            <path d="M32 58l20 17 32-36" stroke="#3BB77E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 text-center">
+        <div class="display-6 mb-2">Спасибо! 🎉</div>
+        <p class="text-muted mb-4">Ваша заявка принята. Мы свяжемся с вами для подтверждения деталей.</p>
+
+        {% if tg_link %}
+          <a class="btn btn-primary btn-lg pill px-4 mb-3" href="{{ tg_link }}" target="_blank" rel="noopener">
+            <i class="bi bi-telegram"></i> Получать уведомления в Telegram
+          </a>
+        {% endif %}
+
+        <div>
+          <a href="/" class="btn btn-outline-secondary pill">На главную</a>
+        </div>
+      </div>
     </div>
-    <h1 class="fw-bold mb-3" style="font-size:2.8rem;">Спасибо за заявку!</h1>
-    <div class="mb-4" style="max-width:650px; font-size:1.35rem; line-height:1.6; text-align: center;">
-        Мы получили вашу заявку и<br> обязательно свяжемся с вами в ближайшее время.<br><br>
-        Если вопрос срочный — напишите нам в
-        <a href="https://t.me/your_telegram" target="_blank" class="fw-semibold text-decoration-underline" style="color:#229ED9;">Telegram</a>
-        или WhatsApp.<br><br>
-        Спасибо, что выбрали <span class="fw-bold">Drop & Delivery!</span>
-    </div>
-    <a href="/" class="btn btn-success px-5 py-2 fs-5 shadow-sm" style="border-radius: 12px;">Вернуться на главную</a>
+  </div>
 </div>
 {% endblock %}

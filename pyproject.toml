@@ -12,6 +12,8 @@ psycopg2-binary = "^2.9.10"
 django-widget-tweaks = "^1.5.0"
 utils = "^1.0.2"
 requests = "^2.32.4"
+djangorestframework = "^3.16.1"
+python-telegram-bot = "^22.3"
 
 
 [build-system]

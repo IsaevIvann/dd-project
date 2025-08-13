@@ -1,197 +1,333 @@
 {% extends "core/base.html" %}
-{% block title %}Drop & Delivery — хранение и доставка багажа{% endblock %}
+{% block title %}D&D — Путешествуйте налегке{% endblock %}
 {% block content %}
+<style>
+  /* Шрифт Poppins */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-<!-- Hero Section with Gradient and SVG Wave -->
-<section class="py-5 text-center position-relative" style="
-    background: linear-gradient(120deg, #d0ebff 0%, #e7faff 100%);
-    overflow: hidden;
-    min-height: 450px;">
-  <div class="container position-relative" style="z-index:1;">
-    <h1 class="display-3 fw-bold mb-3">Drop & Delivery</h1>
-    <p class="lead mb-4 fs-4">Премиальный сервис хранения и доставки багажа по Москве.<br>
-      Заберём, опечатаем, сохраним и привезём по вашему расписанию.</p>
-    <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4 py-2 fs-5 shadow">Оставить заявку</a>
+  :root{
+    --ink:#0f172a;
+    --muted:#64748b;
+    --r:24px;
+  }
+  body { font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; }
+  h1,h2,h3,h4 { letter-spacing:-0.01em; }
+  .pill{ border-radius:999px }
+  .card-dd{
+    border:0; border-radius:var(--r);
+    box-shadow:0 12px 30px rgba(16,24,40,.08);
+    background:#fff;
+  }
+  .hero-clean{
+    border-radius:32px; padding:3.5rem 2rem;
+    background:#fff; box-shadow:0 20px 50px rgba(16,24,40,.06)
+  }
+  .hero-ill{
+    border-radius:24px; background:#fff;
+    box-shadow:0 10px 26px rgba(16,24,40,.08)
+  }
+  .icon-wrap{
+    width:68px; height:68px; border-radius:18px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 20px rgba(16,24,40,.06)
+  }
+  .icon-blue{  background:#e6f0ff;  color:#2563eb; }
+  .icon-green{ background:#e9fff4;  color:#0e9f6e; }
+  .icon-cyan{  background:#e6fcff;  color:#0891b2; }
+  .icon-amber{ background:#fff5e6; color:#f59e0b; }
+
+  /* Тарифы — «прежний» размер цены */
+  .tariff-title { color: var(--muted); }
+  .tariff-price {
+    font-size: 1.6rem;   /* спокойный, не огромный */
+    font-weight: 400;    /* базовый вес */
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: normal; /* базовое межбуквенное */
+}
+
+.tariff-price .rub {
+    font-weight: 300; /* ₽ чуть выделен */
+}
+.tariff-price .period {
+    font-weight: 400; /* обычный вес для /сутки */
+}
+  .tariff-note { color: var(--muted); }
+</style>
+
+<!-- HERO -->
+<section class="hero-clean mb-5">
+  <div class="row align-items-center gy-4">
+    <div class="col-lg-7">
+      <h1 class="fw-bold display-5 mb-3" style="color:var(--ink)">
+        Путешествуйте <span class="text-primary">налегке</span> — мы заберём, сохраним и доставим багаж
+      </h1>
+      <p class="fs-5 text-muted mb-4">
+        Представитель приедет, упакует и опечатает чемоданы. Мы сохраним их на складе и привезём
+        <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
+      </p>
+      <div class="d-flex flex-wrap gap-3">
+        <!-- синяя кнопка -->
+        <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4">
+          <i class="bi bi-bag-check"></i> Оставить заявку
+        </a>
+        <a href="#tariffs" class="btn btn-lg btn-outline-primary pill px-4">
+          <i class="bi bi-tags"></i> Тарифы
+        </a>
+      </div>
+      {# строка про страхование убрана по твоей просьбе #}
+    </div>
+
+    <div class="col-lg-5">
+      <div class="hero-ill p-4">
+        <!-- SVG‑иллюстрация: чемоданы -->
+        <svg viewBox="0 0 520 300" width="100%" height="100%" aria-hidden="true">
+          <rect x="0" y="250" width="520" height="28" fill="#eef5ff"/>
+          <!-- тележка -->
+          <rect x="70" y="220" width="340" height="12" rx="6" fill="#c7d8f9"/>
+          <rect x="85" y="140" width="10" height="85" rx="5" fill="#c7d8f9"/>
+          <rect x="380" y="140" width="10" height="85" rx="5" fill="#c7d8f9"/>
+          <!-- большой чемодан -->
+          <rect x="150" y="130" rx="18" ry="18" width="150" height="110" fill="#2a74e6"/>
+          <rect x="200" y="90" width="24" height="50" rx="6" fill="#2a74e6"/>
+          <circle cx="175" cy="248" r="10" fill="#123a6d"/>
+          <circle cx="275" cy="248" r="10" fill="#123a6d"/>
+          <!-- средний -->
+          <rect x="320" y="150" rx="14" ry="14" width="110" height="90" fill="#ff8c65" opacity=".95"/>
+          <rect x="355" y="132" rx="6" ry="6" width="44" height="22" fill="#ff8c65"/>
+          <circle cx="335" cy="248" r="9" fill="#9a3e1f"/>
+          <circle cx="415" cy="248" r="9" fill="#9a3e1f"/>
+          <!-- маленький -->
+          <rect x="120" y="170" rx="12" ry="12" width="70" height="70" fill="#25a56a"/>
+          <rect x="140" y="150" rx="5" ry="5" width="30" height="20" fill="#25a56a"/>
+          <circle cx="135" cy="248" r="8" fill="#0c5a3d"/>
+          <circle cx="175" cy="248" r="8" fill="#0c5a3d"/>
+        </svg>
+        <div class="small text-muted mt-2">Ваш багаж — под защитой и уже в пути ✈️</div>
+      </div>
+    </div>
   </div>
-  <!-- SVG Wave -->
-  <svg viewBox="0 0 1440 180" width="100%" height="100" style="position:absolute; bottom:0; left:0;">
-    <path fill="#e7faff" fill-opacity="1"
-      d="M0,160L80,144C160,128,320,96,480,101.3C640,107,800,149,960,165.3C1120,181,1280,171,1360,165.3L1440,160L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z">
-    </path>
-  </svg>
 </section>
 
-<!-- Steps: How it works -->
-<section class="container my-5">
-  <h2 class="text-center mb-4">Как это работает?</h2>
-  <div class="row text-center g-4">
-    <div class="col-6 col-md-3">
-      <div class="mb-3 display-3 text-primary"><i class="bi bi-pencil-square"></i></div>
-      <h5>1. Заявка</h5>
-      <p class="small">Оставьте заявку на сайте или в мессенджере.</p>
+<!-- ШАГИ -->
+<section class="p-4 p-md-5 mb-5" style="border-radius:28px;background:#f7fbff">
+  <h3 class="fw-bold text-center mb-4">Как это работает?</h3>
+  <div class="row g-4">
+    <div class="col-md-3 text-center">
+      <div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-pencil-square fs-3"></i></div>
+      <h6 class="mb-1">1. Заявка</h6>
+      <div class="text-muted small">Оставляете на сайте или в мессенджере.</div>
     </div>
-    <div class="col-6 col-md-3">
-      <div class="mb-3 display-3 text-success"><i class="bi bi-person-check"></i></div>
-      <h5>2. Встреча</h5>
-      <p class="small">Приезжает наш представитель с документами и упаковкой.</p>
+    <div class="col-md-3 text-center">
+      <div class="icon-wrap icon-green mx-auto mb-3"><i class="bi bi-person-check fs-3"></i></div>
+      <h6 class="mb-1">2. Встреча</h6>
+      <div class="text-muted small">Приезжает представитель с документами и упаковкой.</div>
     </div>
-    <div class="col-6 col-md-3">
-      <div class="mb-3 display-3 text-info"><i class="bi bi-lock-fill"></i></div>
-      <h5>3. Опечатаем</h5>
-      <p class="small">Опечатываем, пломбируем, фотографируем, выдаём квитанцию.</p>
+    <div class="col-md-3 text-center">
+      <div class="icon-wrap icon-cyan mx-auto mb-3"><i class="bi bi-lock fs-3"></i></div>
+      <h6 class="mb-1">3. Опечатываем</h6>
+      <div class="text-muted small">Пломбируем, фотографируем, выдаём квитанцию.</div>
     </div>
-    <div class="col-6 col-md-3">
-      <div class="mb-3 display-3 text-warning"><i class="bi bi-geo-alt-fill"></i></div>
-      <h5>4. Доставка</h5>
-      <p class="small">Доставляем по вашему адресу, в аэропорт или на вокзал.</p>
+    <div class="col-md-3 text-center">
+      <div class="icon-wrap icon-amber mx-auto mb-3"><i class="bi bi-geo-alt fs-3"></i></div>
+      <h6 class="mb-1">4. Доставка</h6>
+      <div class="text-muted small">Привозим по адресу, в аэропорт или на вокзал.</div>
     </div>
   </div>
 </section>
 
-<!-- Tariffs -->
-<section id="tariffs" class="container my-5">
-  <h2 class="text-center mb-4">Тарифы</h2>
-  <div class="row justify-content-center">
-    <div class="col-md-7">
-      <div class="card shadow border-0">
-        <div class="card-body">
-          <ul class="list-group list-group-flush mb-3">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Комплексная услуга (до 3&nbsp;единиц багажа)</span>
-              <span class="fw-bold text-primary">от 1200 ₽</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Экспресс-услуга (1–2 часа)</span>
-              <span>+500 ₽</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Дополнительная единица багажа</span>
-              <span>+200 ₽</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Продление хранения</span>
-              <span>+300 ₽/сутки</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Страхование багажа</span>
-              <span>Включено до 30 000 ₽</span>
-            </li>
-          </ul>
-          <small class="text-muted">Цена зависит от адреса, количества багажа и срочности.</small>
+<!-- ТАРИФЫ (с зонами и калькулятором) -->
+<section id="tariffs" class="mb-5">
+  <style>
+    .dd-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #d6e4ff;background:#ecf3ff;color:#1e3a8a;font-size:12px}
+    .dd-divider{height:1px;background:#eef2ff;margin:8px 0 10px}
+    .dd-calc .form-control,.dd-calc .form-select{border-radius:12px;padding:.8rem .9rem;border-color:#e5e7eb}
+    .dd-calc .form-control:focus,.dd-calc .form-select:focus{border-color:#2563eb;box-shadow:0 0 0 .35rem rgba(37,99,235,.15)}
+    .dd-total{font-weight:800;font-size:1.6rem;color:var(--ink)}
+    .dd-muted{color:var(--muted)}
+  </style>
+
+  <h3 class="fw-bold text-center mb-4">Тарифы</h3>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100 text-center">
+        <div class="small tariff-title mb-1">1–3 единицы</div>
+        <div class="tariff-price mb-2">от 2 500 <span class="rub">₽</span></div>
+        <div class="dd-divider"></div>
+        <div class="text-muted small">Забор → хранение → доставка</div>
+        <div class="mt-2"><span class="dd-chip">1-е сутки хранения бесплатно</span></div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100 text-center">
+        <div class="small tariff-title mb-1">4–6 единиц</div>
+        <div class="tariff-price mb-2">от 3 000 <span class="rub">₽</span></div>
+        <div class="dd-divider"></div>
+        <div class="text-muted small">Все опции включены</div>
+        <div class="mt-2"><span class="dd-chip">1-е сутки хранения бесплатно</span></div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100 text-center">
+        <div class="small tariff-title mb-1">7+ единиц</div>
+        <div class="tariff-price mb-2">3 000 <span class="rub">₽</span> + 500 ₽/за каждую доп. ед.</div>
+        <div class="dd-divider"></div>
+        <div class="text-muted small">Гибко и выгодно для групп</div>
+        <div class="mt-2"><span class="dd-chip">1-е сутки хранения бесплатно</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Калькулятор -->
+  <div class="card-dd p-4 p-md-4 mt-4 dd-calc">
+    <h5 class="fw-bold mb-3">Калькулятор стоимости</h5>
+    <form class="row g-3 align-items-end" onsubmit="event.preventDefault(); ddCalc();">
+      <div class="col-6 col-md-3">
+        <label class="form-label dd-muted">Количество единиц</label>
+        <input id="dd-items" type="number" min="1" max="99" value="2" class="form-control" required>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label dd-muted">Дней хранения (включая 1‑е)</label>
+        <input id="dd-days" type="number" min="1" max="30" value="1" class="form-control" required>
+      </div>
+      <div class="col-12 col-md-4">
+        <label class="form-label dd-muted">Зона</label>
+        <select id="dd-zone" class="form-select">
+          <option value="1.0" selected>Зона 1 — Москва, все аэропорты (×1.0)</option>
+          <option value="1.5">Зона 1.5 — Московская область (×1.5)</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-2">
+        <button class="btn btn-primary w-100 pill" type="submit"><i class="bi bi-calculator"></i> Рассчитать</button>
+      </div>
+    </form>
+
+    <div id="dd-result" class="mt-3" hidden>
+      <div class="dd-total" id="dd-total">0 ₽</div>
+      <div class="dd-muted small" id="dd-lines"></div>
+    </div>
+    <div class="dd-muted small mt-2">
+      База умножается на коэффициент зоны. Хранение — единый тариф: 1‑е сутки бесплатно, далее 500 ₽/сутки за всю партию.
+    </div>
+  </div>
+
+  <!-- Блок «Зоны обслуживания» -->
+  <div id="zones" class="mt-4">
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-6">
+        <div class="card-dd p-4 h-100">
+          <div class="small text-muted">Зона 1</div>
+          <div class="h5 fw-bold mb-1">Москва, аэропорты и вокзалы</div>
+          <div class="text-muted mb-3">Коэффициент: <span class="fw-semibold">×1.0</span></div>
+          <div class="dd-divider"></div>
+          <div class="small text-muted">Зона 1.5</div>
+          <div class="h5 fw-bold mb-1">Московская область </div>
+          <div class="text-muted">Коэффициент: <span class="fw-semibold">×1.5</span></div>
+          <div class="small text-muted mt-3">Коэффициент применяется только к базовой услуге (забор + доставка). Хранение — по единому тарифу.</div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card-dd p-2 h-100 d-flex align-items-center justify-content-center" style="overflow:hidden">
+          <!-- Замени на свою карту -->
+          <img src="/static/img/zones-map.png" alt="Карта зон обслуживания D&D" style="width:100%;height:auto;border-radius:16px">
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    const rub = n => new Intl.NumberFormat('ru-RU').format(n) + ' ₽';
+
+    function basePrice(items){
+      if (items <= 3) return 2500;
+      if (items <= 6) return 3000;
+      return 3000 + (items - 6) * 500;
+    }
+    function storagePrice(days){
+      const paid = Math.max(0, days - 1); // первые сутки бесплатно
+      return paid * 500;
+    }
+    function ddCalc(){
+      const items = Math.max(1, parseInt(document.getElementById('dd-items').value || '1', 10));
+      const days  = Math.max(1, parseInt(document.getElementById('dd-days').value  || '1', 10));
+      const zoneK = parseFloat(document.getElementById('dd-zone').value || '1.0');
+
+      const base  = basePrice(items);
+      const baseZ = Math.round(base * zoneK);
+      const store = storagePrice(days);
+      const total = baseZ + store;
+
+      document.getElementById('dd-total').textContent = rub(total);
+      document.getElementById('dd-lines').innerHTML =
+        `База за ${items} ед.: ${rub(base)} × ${zoneK.toFixed(1)} = <b>${rub(baseZ)}</b><br>` +
+        `Хранение: 1-е сутки бесплатно + ${Math.max(0, days-1)} × 500 ₽ = <b>${rub(store)}</b>`;
+      document.getElementById('dd-result').hidden = false;
+    }
+    ddCalc(); // автоподсчёт
+  </script>
 </section>
 
-<!-- Advantages -->
-<section class="container my-5">
-  <h2 class="text-center mb-4">Почему нас выбирают?</h2>
-  <div class="row text-center g-4">
-    <div class="col-md-4">
-      <div class="p-4 rounded-4 shadow-sm h-100 bg-white">
-        <div class="display-4 text-success mb-3"><i class="bi bi-shield-lock"></i></div>
-        <h5>Безопасность</h5>
-        <p>Опечатывание, фотоотчёт, страховка до 30 000 ₽.</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="p-4 rounded-4 shadow-sm h-100 bg-white">
-        <div class="display-4 text-primary mb-3"><i class="bi bi-clock-history"></i></div>
-        <h5>Удобство</h5>
-        <p>Встречаем и доставляем в любое время, экономим ваше время и силы.</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="p-4 rounded-4 shadow-sm h-100 bg-white">
-        <div class="display-4 text-warning mb-3"><i class="bi bi-cash-coin"></i></div>
-        <h5>Всё включено</h5>
-        <p>Честные тарифы без скрытых платежей.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
+
 
 <!-- FAQ -->
-<section id="faq" class="container my-5">
-  <h2 class="text-center mb-4">FAQ</h2>
-  <div class="accordion" id="faqAccordion">
+<section id="faq" class="mb-5">
+  <h3 class="fw-bold text-center mb-3">FAQ</h3>
+  <div class="accordion" id="faqAcc">
     <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Безопасность</button></h2>
-      <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          Ваш багаж опечатывается и пломбируется, фиксируется на фото, выдается квитанция, страхуется.
+      <h2 class="accordion-header" id="q1">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1">Как обеспечивается безопасность?</button>
+      </h2>
+      <div id="a1" class="accordion-collapse collapse show" data-bs-parent="#faqAcc">
+        <div class="accordion-body text-muted">
+          Представитель опечатывает каждую единицу багажа пломбой, делает фото‑фиксацию и оформляет квитанцию.
+          Хранение — на закрытом складе. Базовая страховка — до 30 000 ₽ на единицу.
         </div>
       </div>
     </div>
     <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Как происходит передача?</button></h2>
-      <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          Приезжает представитель с упаковкой и документами, оформляет всё на месте.
+      <h2 class="accordion-header" id="q2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2">Как происходит передача багажа?</button>
+      </h2>
+      <div id="a2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+        <div class="accordion-body text-muted">
+          Приезжает наш представитель, предъявляет документы, упаковывает и опечатывает багаж, оформляет квитанцию.
+          Вы получаете фото‑отчёт и время доставки.
         </div>
       </div>
     </div>
     <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Что нельзя сдавать в багаж и почему?</button></h2>
-      <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          Мы не принимаем наличные, ценные бумаги, драгоценности и документы — по закону и условиям страхования. Всё остальное принимаем с полной ответственностью.
+      <h2 class="accordion-header" id="q3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3">Что нельзя передавать?</button>
+      </h2>
+      <div id="a3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+        <div class="accordion-body text-muted">
+          Наличные деньги, ценные бумаги, драгоценности, документы, оружие, ЛВЖ и взрывчатые вещества, наркотические и психотропные средства,
+          скоропортящиеся продукты и иные предметы, запрещённые законодательством РФ.
         </div>
       </div>
     </div>
     <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">Оплата</button></h2>
-      <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          Оплата на сайте, по ссылке или наличными при передаче.
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">Сколько храните?</button></h2>
-      <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          1 ночь включена, далее +300 ₽/сутки. До 7 суток, дольше по договорённости.
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">Срочно?</button></h2>
-      <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          Есть экспресс-опция (1–2 часа, +500 ₽).
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">Страхование</button></h2>
-      <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          Включено до 30 000 ₽. Если нужно больше — скажите при оформлении.
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">Связь</button></h2>
-      <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">
-          Телефон, Telegram, WhatsApp, email.
+      <h2 class="accordion-header" id="q4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4">Как рассчитывается стоимость?</button>
+      </h2>
+      <div id="a4" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+        <div class="accordion-body text-muted">
+          Стоимость зависит от маршрута (город/аэропорт), количества единиц багажа и времени хранения.
+          Точную цену подтверждаем при приёме заказа.
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Контакты -->
-<section class="container my-5 text-center">
-  <h5 class="mb-3">Контакты</h5>
-  <div class="d-flex flex-wrap justify-content-center gap-3">
-    <a href="tel:+79999999999" class="btn btn-outline-secondary"><i class="bi bi-telephone"></i> +7 999 999-99-99</a>
-    <a href="https://t.me/your_telegram" class="btn btn-outline-primary"><i class="bi bi-telegram"></i> Telegram</a>
-    <a href="https://wa.me/79999999999" class="btn btn-outline-success"><i class="bi bi-whatsapp"></i> WhatsApp</a>
-    <a href="mailto:info@dropdelivery.ru" class="btn btn-outline-dark"><i class="bi bi-envelope"></i> Email</a>
-  </div>
+<!-- Мини‑CTA -->
+<section class="card-dd p-4 p-md-5 mb-4 text-center">
+  <h4 class="fw-bold mb-2">Гуляйте по Москве налегке</h4>
+  <div class="text-muted mb-3">Багаж — на нас. Доставим точно ко времени рейса или заезда.</div>
+  <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4"><i class="bi bi-bag"></i> Оставить заявку</a>
 </section>
-
 {% endblock %}

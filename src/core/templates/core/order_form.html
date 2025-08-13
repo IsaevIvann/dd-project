@@ -7,60 +7,107 @@
     <div class="card shadow-lg border-0 rounded-4">
       <div class="card-body p-4">
         <h2 class="mb-4 text-center fw-bold">Оставить заявку</h2>
+
         <form method="post" novalidate autocomplete="off">
           {% csrf_token %}
           {{ form.non_field_errors }}
+
           <div class="row g-3">
             <!-- Контактные данные -->
             <div class="col-12">
               <label for="id_name" class="form-label"><i class="bi bi-person-circle"></i> Имя</label>
-              {{ form.name|add_class:"form-control" }}
+              {{ form.name|add_class:"form-control"|attr:"placeholder:Иван Иванов" }}
+              {{ form.name.errors }}
             </div>
+
             <div class="col-12 col-md-6">
               <label for="id_phone" class="form-label"><i class="bi bi-telephone"></i> Телефон</label>
-              {{ form.phone|add_class:"form-control" }}
+              {{ form.phone|add_class:"form-control"|attr:"placeholder:+7 900 000-00-00" }}
+              {{ form.phone.errors }}
             </div>
+
             <div class="col-12 col-md-6">
               <label for="id_email" class="form-label"><i class="bi bi-envelope"></i> Email</label>
-              {{ form.email|add_class:"form-control" }}
+              {{ form.email|add_class:"form-control"|attr:"placeholder:you@example.com" }}
+              {{ form.email.errors }}
             </div>
+
             <div class="col-12 col-md-6">
               <label for="id_telegram" class="form-label"><i class="bi bi-telegram"></i> Telegram</label>
-              {{ form.telegram|add_class:"form-control" }}
+              {{ form.telegram|add_class:"form-control"|attr:"placeholder:@username" }}
+              {{ form.telegram.errors }}
             </div>
+
             <div class="col-12 col-md-6">
               <label for="id_whatsapp" class="form-label"><i class="bi bi-whatsapp"></i> WhatsApp</label>
-              {{ form.whatsapp|add_class:"form-control" }}
+              {{ form.whatsapp|add_class:"form-control"|attr:"placeholder:+7 900 000-00-00" }}
+              {{ form.whatsapp.errors }}
             </div>
+
             <!-- Логистика -->
             <div class="col-12 mt-2">
               <label for="id_pickup_address" class="form-label"><i class="bi bi-geo-alt"></i> Адрес забора</label>
-              {{ form.pickup_address|add_class:"form-control" }}
+              {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Отель, улица и дом" }}
+              {{ form.pickup_address.errors }}
             </div>
+
             <div class="col-12 col-md-6">
               <label for="id_pickup_time" class="form-label"><i class="bi bi-calendar-event"></i> Время забора</label>
-              {{ form.pickup_time|add_class:"form-control" }}
+              {{ form.pickup_time|add_class:"form-control"|attr:"placeholder:2025-08-11 10:00" }}
+              {{ form.pickup_time.errors }}
             </div>
+
             <div class="col-12 col-md-6">
               <label for="id_delivery_time" class="form-label"><i class="bi bi-calendar-event"></i> Время доставки</label>
-              {{ form.delivery_time|add_class:"form-control" }}
+              {{ form.delivery_time|add_class:"form-control"|attr:"placeholder:2025-08-11 18:00" }}
+              {{ form.delivery_time.errors }}
             </div>
+
             <div class="col-12">
               <label for="id_delivery_address" class="form-label"><i class="bi bi-geo"></i> Адрес доставки</label>
-              {{ form.delivery_address|add_class:"form-control" }}
+              {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Аэропорт/вокзал или адрес" }}
+              {{ form.delivery_address.errors }}
             </div>
+
+            {% if form.items_count %}
+            <div class="col-12 col-md-6">
+              <label for="id_items_count" class="form-label"><i class="bi bi-suitcase"></i> Единиц багажа</label>
+              {{ form.items_count|add_class:"form-control"|attr:"min:1" }}
+              {{ form.items_count.errors }}
+            </div>
+            {% endif %}
+
             <div class="col-12">
               <label for="id_comment" class="form-label"><i class="bi bi-chat-dots"></i> Комментарий</label>
-              {{ form.comment|add_class:"form-control" }}
+              {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания по времени, приметы места и т.п." }}
+              {{ form.comment.errors }}
             </div>
           </div>
+
+          <!-- Согласие на ПДн -->
+          <div class="mt-3">
+            <div class="form-check mt-3">
+              {{ form.consent_pdn.errors }}
+              <label class="form-check-label" for="{{ form.consent_pdn.id_for_label }}">
+                {{ form.consent_pdn }}
+                Я согласен(а) с <a href="{% url 'privacy' %}" target="_blank" rel="noopener">
+                  обработкой персональных данных
+                </a>
+              </label>
+            </div>
+            {% if form.consent_pdn and form.consent_pdn.errors %}
+              <div class="text-danger small mt-1">{{ form.consent_pdn.errors }}</div>
+            {% endif %}
+          </div>
+
           <div class="text-center mt-4">
-            <button type="submit" class="btn btn-success btn-lg w-100 py-2 shadow-sm">
+            <button type="submit" class="btn btn-primary btn-lg w-100 py-2 shadow-sm">
               <i class="bi bi-check-circle"></i> Отправить заявку
             </button>
           </div>
+
           <div class="mt-3 text-muted small text-center">
-            <i class="bi bi-shield-lock"></i> Ваши данные не передаются третьим лицам.
+            <i class="bi bi-shield-lock"></i> Мы используем данные только для обработки заявки и оказания услуги.
           </div>
         </form>
       </div>

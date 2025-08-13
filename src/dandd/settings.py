@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-(br-_xcpypt2h-8_h+68gjrvos0*_y!-%4-ea$qyi7&=q-bc8x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".ngrok-free.app"]
+
 
 
 # Application definition
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    "core.apps.CoreConfig",
     'widget_tweaks',
 ]
 
@@ -126,3 +127,39 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
+TELEGRAM_BOT_NAME = "DropDelivery_Admin_Bot"
+ADMIN_TG_CHAT_ID   = "191742166"
+TELEGRAM_CHAT_IDS = ["191742166"]
+TELEGRAM_BOT_TOKEN = "7607165074:AAEjkZ-zhmWmIPfZejVdxdCR-7CZHIfOMAQ"
+TELEGRAM_WEBHOOK_SECRET = "some-long-random"
+TELEGRAM_SHARED_TOKEN = "secret-123"
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_HOST_USER = "dropdeliv@ya.ru"
+EMAIL_HOST_PASSWORD = "jmhzuszmdkgygdli"  # пароль приложения Яндекса
+
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# страховка: выключаем несовместимые режимы
+if EMAIL_PORT == 465:
+    EMAIL_USE_SSL, EMAIL_USE_TLS = True, False
+elif EMAIL_PORT == 587:
+    EMAIL_USE_SSL, EMAIL_USE_TLS = False, True
+
+
+
+
+
+# curl -X POST "https://api.telegram.org/7607165074:AAEjkZ-zhmWmIPfZejVdxdCR-7CZHIfOMAQ/setWebhook" \
+#   -d "url= https://638ad09a58b1.ngrok-free.app/telegram/webhook/some-long-random/" \
+#   -d "drop_pending_updates=true"
+#
+# curl "https://api.telegram.org/7607165074:AAEjkZ-zhmWmIPfZejVdxdCR-7CZHIfOMAQ/getWebhookInfo"
+
+
