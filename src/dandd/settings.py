@@ -4,19 +4,26 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# --- Base ---
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv(
     "DJANGO_ALLOWED_HOSTS",
-    "drop-delivery.ru,.railway.app,127.0.0.1,localhost"
+    "drop-delivery.ru,www.drop-delivery.ru,.railway.app,127.0.0.1,localhost"
 ).split(",")
 
 CSRF_TRUSTED_ORIGINS = os.getenv(
     "DJANGO_CSRF_TRUSTED",
-    "https://drop-delivery.ru,https://*.railway.app"
+    "https://drop-delivery.ru,https://www.drop-delivery.ru,https://*.railway.app"
 ).split(",")
 
+# За обратным прокси (Railway/Cloudflare)
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = os.getenv("DJANGO_SSL_REDIRECT", "True") == "True"
+
+# --- Apps ---
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -58,14 +65,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "dandd.wsgi.application"
 
+# --- Database ---
+DB_SSL_REQUIRE = os.getenv("DB_SSL_REQUIRE", "True") == "True"
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL", "postgres://dd_user:dd_password@localhost:5432/dd_db"),
+    "default": dj_database_url.parse(
+        os.getenv("DATABASE_URL", "postgres://dd_user:dd_password@localhost:5432/dd_db"),
         conn_max_age=600,
-        ssl_require=os.getenv("DB_SSL_REQUIRE", "False") == "True",
+        ssl_require=DB_SSL_REQUIRE,
     )
 }
 
+# --- Auth ---
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -73,14 +83,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# --- I18N/Time ---
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# --- Static ---
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -89,6 +100,7 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# --- Telegram / Email ---
 TELEGRAM_BOT_NAME = os.getenv("TELEGRAM_BOT_NAME", "")
 ADMIN_TG_CHAT_ID = os.getenv("ADMIN_TG_CHAT_ID", "")
 TELEGRAM_CHAT_IDS = os.getenv("TELEGRAM_CHAT_IDS", "").split(",") if os.getenv("TELEGRAM_CHAT_IDS") else []
@@ -96,10 +108,25 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_WEBHOOK_SECRET = os.getenv("TELEGRAM_WEBHOOK_SECRET", "")
 TELEGRAM_SHARED_TOKEN = os.getenv("TELEGRAM_SHARED_TOKEN", "")
 
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.yandex.ru")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "465"))
 EMAIL_USE_SSL = EMAIL_PORT == 465
 EMAIL_USE_TLS = EMAIL_PORT == 587
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no-reply@drop-delivery.ru")
+
+# --- Logging (полезно на Railway) ---
+LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO")
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": LOG_LEVEL,
+    },
+}
