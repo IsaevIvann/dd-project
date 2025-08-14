@@ -1,1 +1,1 @@
-web: gunicorn dandd.wsgi:application --chdir src --bind 0.0.0.0:$PORT --timeout 60
+web: python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn dandd.wsgi:application --bind 0.0.0.0:${PORT}
