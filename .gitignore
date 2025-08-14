@@ -1,0 +1,15 @@
+# python/django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.*
+.venv/
+venv/
+media/
+staticfiles/
+# poetry
+poetry.lock
+# OS
+.DS_Store

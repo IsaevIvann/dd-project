@@ -14,6 +14,11 @@ utils = "^1.0.2"
 requests = "^2.32.4"
 djangorestframework = "^3.16.1"
 python-telegram-bot = "^22.3"
+gunicorn = "^23.0.0"
+whitenoise = "^6.9.0"
+dj-database-url = "^3.0.1"
+psycopg = {extras = ["binary"], version = "^3.2.9"}
+middleware = "^1.2.3"
 
 
 [build-system]
