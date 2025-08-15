@@ -1,3 +1,3 @@
 # Procfile
-release: python src/manage.py migrate --noinput && python src/manage.py collectstatic --noinput
-web: gunicorn --chdir src dandd.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+release: cd src && python manage.py migrate --noinput && python manage.py collectstatic --noinput
+web: cd src && gunicorn dandd.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
