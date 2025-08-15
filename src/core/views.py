@@ -22,7 +22,10 @@ from .utils import (
     send_client_email,
     build_telegram_deeplink,
 )
+from threading import Thread
 
+def fire_and_forget(func, *args, **kwargs):
+    Thread(target=lambda: func(*args, **kwargs), daemon=True).start()
 
 def _client_ip(request):
     xff = request.META.get("HTTP_X_FORWARDED_FOR")
@@ -61,6 +64,8 @@ def order_create(request):
                 order.consent_ua = request.META.get("HTTP_USER_AGENT", "")[:256]
 
             order.save()
+            fire_and_forget(send_client_email, order)
+            fire_and_forget(notify_telegram_new_order, order)
 
             # 1) Письмо клиенту (консольный backend сейчас выводит в консоль)
             send_client_email(order)

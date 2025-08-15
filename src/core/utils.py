@@ -1,6 +1,6 @@
 import requests
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, get_connection, EmailMessage
 
 
 def _get(setting_name: str, default=None):
@@ -51,35 +51,28 @@ def build_telegram_deeplink(order):
     return f"https://t.me/{bot_name}?start={order.public_token}"
 
 
+
 def send_client_email(order):
-    """
-    Письмо клиенту (консольный backend — вывод в консоль).
-    """
     if not order.email:
         return
-
-    subject = "Drop & Delivery — ваша заявка принята"
-    text = (
+    subject = "D&D — ваша заявка принята"
+    body = (
         f"Здравствуйте, {order.name}!\n\n"
-        "Мы приняли вашу заявку. В ближайшее время с вами свяжется представитель.\n"
+        "Мы приняли вашу заявку. В ближайшее время свяжемся.\n\n"
         f"Забор: {order.pickup_address} ({order.pickup_time or '—'})\n"
         f"Доставка: {order.delivery_address} ({order.delivery_time or '—'})\n\n"
         "Получать статусы в Telegram: "
         f"{build_telegram_deeplink(order)}\n\n"
         "— Команда Drop & Delivery"
     )
-
     try:
-        send_mail(
-            subject,
-            text,
-            _get("DEFAULT_FROM_EMAIL", "no-reply@dropdelivery.local"),
-            [order.email],
-            fail_silently=False,
-        )
-        print("[MAIL] queued to console backend")
+        # timeout работает для SMTP‑backend’а
+        conn = get_connection(timeout=5)
+        EmailMessage(
+            subject, body, settings.DEFAULT_FROM_EMAIL, [order.email], connection=conn
+        ).send(fail_silently=True)
     except Exception as e:
-        print("[MAIL] failed:", e)
+        print("[MAIL] send failed:", e)
 
 
 def notify_client_telegram(order, text):
