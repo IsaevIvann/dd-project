@@ -25,20 +25,14 @@
 <section class="hero-clean mb-5">
   <div class="row align-items-center gy-4">
     <div class="col-lg-7">
-      <h1 class="fw-bold display-5 mb-3" style="color:var(--ink)">
-        Путешествуйте <span class="text-primary">налегке</span> — мы заберём, сохраним и доставим багаж
-      </h1>
+      <h1 class="fw-bold display-5 mb-3" style="color:var(--ink)">Путешествуйте <span class="text-primary">налегке</span> — мы заберём, сохраним и доставим багаж</h1>
       <p class="fs-5 text-muted mb-4">
         Представитель приедет, упакует и опечатает чемоданы. Мы сохраним их на складе и привезём
         <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
       </p>
       <div class="d-flex flex-wrap gap-3">
-        <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4">
-          <i class="bi bi-bag-check"></i> Оставить заявку
-        </a>
-        <a href="#tariffs" class="btn btn-lg btn-outline-primary pill px-4">
-          <i class="bi bi-tags"></i> Тарифы
-        </a>
+        <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
+        <a href="#tariffs" class="btn btn-lg btn-outline-primary pill px-4"><i class="bi bi-tags"></i> Тарифы</a>
       </div>
     </div>
     <div class="col-lg-5">
@@ -66,44 +60,36 @@
     </div>
   </div>
 </section>
+
 <!-- ШАГИ -->
 <section class="p-4 p-md-5 mb-5" style="border-radius:28px;background:#f7fbff">
   <h3 class="fw-bold text-center mb-4">Как это работает?</h3>
-
-  <!-- 2 колонки на мобиле, 3 на md, 5 на xl -->
   <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
-
     <div class="col text-center">
       <div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-pencil-square fs-3"></i></div>
       <h6 class="mb-1">1. Заявка</h6>
       <div class="text-muted small">Оставляете на сайте или в мессенджере.</div>
     </div>
-
     <div class="col text-center">
       <div class="icon-wrap icon-green mx-auto mb-3"><i class="bi bi-person-check fs-3"></i></div>
       <h6 class="mb-1">2. Встреча</h6>
       <div class="text-muted small">Приезжает представитель с документами и упаковкой.</div>
     </div>
-
     <div class="col text-center">
       <div class="icon-wrap icon-cyan mx-auto mb-3"><i class="bi bi-lock fs-3"></i></div>
       <h6 class="mb-1">3. Опечатываем</h6>
       <div class="text-muted small">Пломбируем, фотографируем, выдаём квитанцию.</div>
     </div>
-
     <div class="col text-center">
       <div class="icon-wrap icon-amber mx-auto mb-3"><i class="bi bi-geo-alt fs-3"></i></div>
       <h6 class="mb-1">4. Доставка</h6>
       <div class="text-muted small">Привозим по адресу, в аэропорт или на вокзал.</div>
     </div>
-
-    <!-- Новый шаг -->
     <div class="col text-center">
       <div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-credit-card fs-3"></i></div>
       <h6 class="mb-1">5. Оплата</h6>
       <div class="text-muted small">Проверяете целостность и сохранность — и только после этого оплачиваете.</div>
     </div>
-
   </div>
 </section>
 
@@ -123,7 +109,7 @@
     <div class="col-md-4">
       <div class="card-dd p-4 h-100 text-center">
         <div class="small tariff-title mb-1">1–3 единицы</div>
-        <div class="tariff-price mb-2">от 2 500 <span class="rub">₽</span></div>
+        <div class="tariff-price mb-2">от 3 000 <span class="rub">₽</span></div>
         <div class="dd-divider"></div>
         <div class="text-muted small">Забор → хранение → доставка</div>
         <div class="mt-2"><span class="dd-chip">1-е сутки хранения бесплатно</span></div>
@@ -133,7 +119,7 @@
     <div class="col-md-4">
       <div class="card-dd p-4 h-100 text-center">
         <div class="small tariff-title mb-1">4–6 единиц</div>
-        <div class="tariff-price mb-2">от 3 000 <span class="rub">₽</span></div>
+        <div class="tariff-price mb-2">от 3 500 <span class="rub">₽</span></div>
         <div class="dd-divider"></div>
         <div class="text-muted small">Все опции включены</div>
         <div class="mt-2"><span class="dd-chip">1-е сутки хранения бесплатно</span></div>
@@ -143,7 +129,7 @@
     <div class="col-md-4">
       <div class="card-dd p-4 h-100 text-center">
         <div class="small tariff-title mb-1">7+ единиц</div>
-        <div class="tariff-price mb-2">3 000 <span class="rub">₽</span> + 500 ₽/за каждую доп. ед.</div>
+        <div class="tariff-price mb-2">4 000 <span class="rub">₽</span> + 500 ₽/за каждую доп. ед.</div>
         <div class="dd-divider"></div>
         <div class="text-muted small">Гибко и выгодно для групп</div>
         <div class="mt-2"><span class="dd-chip">1-е сутки хранения бесплатно</span></div>
@@ -252,9 +238,12 @@
     const days  = Math.max(1, parseInt(document.getElementById('dd-days').value  || '1', 10));
     const zoneK = parseFloat(document.getElementById('dd-zone').value || '1.0');
 
-    let base = 2500;
-    if (items >= 4 && items <= 6) base = 3000;
-    else if (items >= 7) base = 3000 + (items - 6) * 500;
+    let base = 3000;                 // 1–3 ед.
+    if (items >= 4 && items <= 6) {
+      base = 3500;                   // 4–6 ед.
+    } else if (items >= 7) {
+      base = 4000 + (items - 7) * 500; // 7+ ед. +500 за каждую сверх 7-й
+    }
 
     const baseWithZone = Math.round(base * zoneK);
     const storageDays = Math.max(0, days - 1);
