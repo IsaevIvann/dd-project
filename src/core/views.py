@@ -1,18 +1,15 @@
 import json
 from uuid import UUID
-
 import requests
 from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
-from django.utils.timezone import now
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from .forms import OrderForm
 from .models import Order
 from .notify import send_welcome
@@ -64,16 +61,6 @@ def order_create(request):
                 order.consent_ua = request.META.get("HTTP_USER_AGENT", "")[:256]
 
             order.save()
-            fire_and_forget(send_client_email, order)
-            fire_and_forget(notify_telegram_new_order, order)
-
-            # 1) Письмо клиенту (консольный backend сейчас выводит в консоль)
-            send_client_email(order)
-
-            # 2) Уведомление админу в TG
-            notify_telegram_new_order(order)
-
-            # 3) Покажем deep‑link на бота
             tg_link = build_telegram_deeplink(order)
             return render(request, "core/order_success.html", {"tg_link": tg_link})
         else:

@@ -6,6 +6,8 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from .models import Order
 from django.core.mail import send_mail
+from .notify import format_status_message, format_admin_new_order
+
 
 log = logging.getLogger(__name__)
 log.warning("core.signals imported (enhanced)")
