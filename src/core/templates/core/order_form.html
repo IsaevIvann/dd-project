@@ -8,7 +8,7 @@
       <div class="card-body p-4">
         <h2 class="mb-4 text-center fw-bold">Оставить заявку</h2>
 
-        <form method="post" novalidate autocomplete="off">
+        <form method="post" novalidate autocomplete="off" id="orderForm">
           {% csrf_token %}
           {{ form.non_field_errors }}
 
@@ -47,36 +47,86 @@
             <!-- Логистика -->
             <div class="col-12 mt-2">
               <label for="id_pickup_address" class="form-label"><i class="bi bi-geo-alt"></i> Адрес забора</label>
-              {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Отель, улица и дом" }}
+              {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Отель, улица и дом"|attr:"id:id_pickup_address" }}
               {{ form.pickup_address.errors }}
             </div>
 
             <div class="col-12 col-md-6">
               <label for="id_pickup_time" class="form-label"><i class="bi bi-calendar-event"></i> Время забора</label>
-              {{ form.pickup_time|add_class:"form-control"|attr:"placeholder:2025-08-11 10:00" }}
+              {{ form.pickup_time|add_class:"form-control"|attr:"placeholder:2025-08-11 10:00"|attr:"id:id_pickup_time" }}
               {{ form.pickup_time.errors }}
             </div>
 
             <div class="col-12 col-md-6">
               <label for="id_delivery_time" class="form-label"><i class="bi bi-calendar-event"></i> Время доставки</label>
-              {{ form.delivery_time|add_class:"form-control"|attr:"placeholder:2025-08-11 18:00" }}
+              {{ form.delivery_time|add_class:"form-control"|attr:"placeholder:2025-08-11 18:00"|attr:"id:id_delivery_time" }}
               {{ form.delivery_time.errors }}
             </div>
 
             <div class="col-12">
               <label for="id_delivery_address" class="form-label"><i class="bi bi-geo"></i> Адрес доставки</label>
-              {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Аэропорт/вокзал или адрес" }}
+              {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Аэропорт/вокзал или адрес"|attr:"id:id_delivery_address" }}
               {{ form.delivery_address.errors }}
             </div>
 
             {% if form.items_count %}
             <div class="col-12 col-md-6">
               <label for="id_items_count" class="form-label"><i class="bi bi-suitcase"></i> Единиц багажа</label>
-              {{ form.items_count|add_class:"form-control"|attr:"min:1" }}
+              {{ form.items_count|add_class:"form-control"|attr:"min:1"|attr:"id:id_items_count" }}
               {{ form.items_count.errors }}
             </div>
             {% endif %}
 
+            <!-- Мини-калькулятор заказа -->
+            <div class="col-12">
+              <div class="rounded-3 p-3" style="background:#f8fafc;border:1px solid #e5e7eb">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-calculator me-2"></i>
+                  <strong>Калькулятор заказа</strong>
+                </div>
+                <div class="row g-2">
+                  <!-- Количество единиц (со степпером) -->
+                  <div class="col-12 col-md-6">
+                    <label class="form-label text-muted small mb-1">Единиц багажа</label>
+                    <div class="input-group">
+                      <button class="btn btn-outline-secondary" type="button" id="itemsMinus">−</button>
+                      <input id="order-items" type="number" class="form-control" value="2" min="1" max="99" inputmode="numeric">
+                      <button class="btn btn-outline-secondary" type="button" id="itemsPlus">+</button>
+                    </div>
+                    <div class="form-text">Синхронизируется с полем формы (если оно есть).</div>
+                  </div>
+
+                  <!-- Авто-зона (без внешних API) -->
+                  <div class="col-12 col-md-6">
+                    <label class="form-label text-muted small mb-1">Зона (определяется автоматически по адресам)</label>
+                    <div class="d-flex align-items-center gap-2">
+                      <span id="zonePill" class="badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2">Зона 1 (×1.0)</span>
+                      <span class="text-muted small" id="zoneNote">по умолчанию</span>
+                    </div>
+                    <input type="hidden" name="zone_coef" id="zone_coef" value="1.0">
+                  </div>
+
+                  <!-- Итого -->
+                  <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 bg-white">
+                      <div class="text-muted">Итого по калькулятору</div>
+                      <div id="order-total" class="fw-bold">0 ₽</div>
+                    </div>
+                    <input type="hidden" name="estimated_cost" id="estimated_cost" value="0">
+                  </div>
+
+                  <div class="col-12">
+                    <div class="small text-muted">
+                      Расчёт: 1‑е сутки хранения бесплатно, далее 500 ₽/сутки за всю партию.
+                      Тарифы: 1–3 ед. — 3 500 ₽; 4–6 — 4 000 ₽; 7+ — 4 500 ₽ + 500 ₽ за каждую сверх 7‑й.
+                      Коэффициент зоны применяется к базовой услуге (забор + доставка).
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Комментарий -->
             <div class="col-12">
               <label for="id_comment" class="form-label"><i class="bi bi-chat-dots"></i> Комментарий</label>
               {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания по времени, приметы места и т.п." }}
@@ -90,9 +140,7 @@
               {{ form.consent_pdn.errors }}
               <label class="form-check-label" for="{{ form.consent_pdn.id_for_label }}">
                 {{ form.consent_pdn }}
-                Я согласен(а) с <a href="{% url 'privacy' %}" target="_blank" rel="noopener">
-                  обработкой персональных данных
-                </a>
+                Я согласен(а) с <a href="{% url 'privacy' %}" target="_blank" rel="noopener">обработкой персональных данных</a>
               </label>
             </div>
             {% if form.consent_pdn and form.consent_pdn.errors %}
@@ -114,4 +162,172 @@
     </div>
   </div>
 </div>
+
+<script>
+  /* ======== Тарифы и калькулятор ======== */
+  // Бизнес-правила:
+  // 1–3 ед.: 3500; 4–6 ед.: 4000; 7+ ед.: 4500 + 500 за каждую сверх 7‑й
+  // Хранение: 1-е сутки бесплатно, далее 500 ₽/сутки за всю партию.
+  function calcOrderTotal(items, storageDays, zoneK){
+    items = Math.max(1, parseInt(items || 1, 10));
+    storageDays = Math.max(0, parseInt(storageDays || 0, 10)); // платные сутки
+    zoneK = parseFloat(zoneK || '1.0');
+
+    let base = 3500;
+    if (items >= 4 && items <= 6) base = 4000;
+    else if (items >= 7) base = 4500 + (items - 7) * 500;
+
+    const baseWithZone = Math.round(base * zoneK);
+    const storageCost  = storageDays * 500;
+    return baseWithZone + storageCost;
+  }
+
+  function parseDT(v){
+    // Пытаемся парсить дату/время как есть (datetime-local/строка)
+    const d = new Date(v);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // Платные сутки хранения считаем по разнице между delivery и pickup:
+  // календарные_сутки = floor(diffMs/день) + 1; платные = max(0, календарные - 1)
+  function getChargeableStorageDays(){
+    const p = parseDT(document.getElementById('id_pickup_time')?.value);
+    const d = parseDT(document.getElementById('id_delivery_time')?.value);
+    if (!p || !d) return 0;
+    const ms = d - p;
+    if (ms <= 0) return 0;
+    const daysTotal = Math.floor(ms / (1000*60*60*24)) + 1;
+    return Math.max(0, daysTotal - 1);
+  }
+
+  function updateOrderTotal(){
+    const itemsInp = document.getElementById('order-items');
+    const zoneCoef = parseFloat(document.getElementById('zone_coef').value || '1.0');
+    const storageDays = getChargeableStorageDays();
+    const total = calcOrderTotal(itemsInp.value, storageDays, zoneCoef);
+    document.getElementById('order-total').textContent = total.toLocaleString('ru-RU') + ' ₽';
+    document.getElementById('estimated_cost').value = total;
+
+    // если есть реальное поле формы items_count — синхронизируем
+    const formItems = document.getElementById('id_items_count');
+    if (formItems) formItems.value = itemsInp.value;
+  }
+
+  // Степперы и ввод количества
+  (function(){
+    const itemsInput = document.getElementById('order-items');
+    const minus = document.getElementById('itemsMinus');
+    const plus  = document.getElementById('itemsPlus');
+
+    minus.addEventListener('click', ()=>{
+      itemsInput.value = Math.max(1, (parseInt(itemsInput.value||'1',10)-1));
+      updateOrderTotal();
+    });
+    plus.addEventListener('click', ()=>{
+      itemsInput.value = Math.min(99, (parseInt(itemsInput.value||'1',10)+1));
+      updateOrderTotal();
+    });
+    itemsInput.addEventListener('input', updateOrderTotal);
+
+    // если на форме есть «официальное» поле items_count — двусторонняя синхронизация
+    const formItems = document.getElementById('id_items_count');
+    if (formItems){
+      // При загрузке подставим его значение в калькулятор (если есть)
+      if (formItems.value) itemsInput.value = formItems.value;
+      formItems.addEventListener('input', ()=>{
+        itemsInput.value = formItems.value || 1;
+        updateOrderTotal();
+      });
+    }
+  })();
+
+  // Пересчёт по изменениям дат
+  ['id_pickup_time','id_delivery_time'].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el){
+      el.addEventListener('change', updateOrderTotal);
+      el.addEventListener('input', updateOrderTotal);
+    }
+  });
+
+  /* ======== Автоопределение зоны БЕЗ внешних API ======== */
+  (function(){
+    const airports = ["шереметьево","домодедово","внуково","жуковский","svo","dme","vko","zia"];
+    const rails = [
+      "белорусск","курск","ленинградск","киевск","казанск","павелецк","рижск","савёлов","савелов","ярославск","вокзал","ржд"
+    ];
+    const moscowHints = [
+      "москва","г. москва","москве","мск","мкад",
+      "цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","троицкий","новомоск"
+    ];
+    // Топ города МО (можно расширять)
+    const moCities = [
+      "балашиха","химки","одинцово","красногорск","мытищи","люберцы","подольск","королёв","королев",
+      "видное","долгопрудный","реутов","электросталь","домодедово","лобня","серпухов",
+      "орехово-зуево","ногинск","щёлково","щелково","клин","пушкино","ивантеевка",
+      "коломна","наро-фоминск","жуковский","раменское","егорьевск","воскресенск","фрязино","дедовск",
+      "бронницы","лыткарино","зеленоград","дубна","томилино","нахабино","сергиев посад","лесной городок"
+    ];
+
+    function hasAny(q, arr){ return arr.some(s => q.includes(s)); }
+
+    function detectZoneHeuristic(a1, a2){
+      const q = ((a1||'') + ' ' + (a2||'')).toLowerCase();
+
+      // 1) Транспортные хабы → Зона 1
+      if (hasAny(q, airports) || hasAny(q, rails)) return { val:"1.0", note:"аэропорт/вокзал" };
+
+      // 2) Москва и округа → Зона 1
+      if (hasAny(q, moscowHints)) return { val:"1.0", note:"по строке адреса (Москва)" };
+
+      // 3) Города МО → Зона 1.5
+      if (hasAny(q, moCities) || /\bобл(асть)?\b/.test(q)) return { val:"1.5", note:"по строке адреса (МО)" };
+
+      // 4) Простейшие эвристики
+      if (/московск(ая|ой) область|за мкад|обл\./.test(q)) return { val:"1.5", note:"эвристика (МО)" };
+      if (/москва|центр|кольц/.test(q)) return { val:"1.0", note:"эвристика (Москва)" };
+
+      // По умолчанию считаем Москвой (чтобы не завышать цену)
+      return { val:"1.0", note:"по умолчанию" };
+    }
+
+    function renderZone(val, sourceText){
+      const pill = document.getElementById('zonePill');
+      const coefInput = document.getElementById('zone_coef');
+      const note = document.getElementById('zoneNote');
+      if (val==='1.0'){
+        pill.textContent = 'Зона 1 (×1.0)';
+        pill.className = 'badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2';
+      } else {
+        pill.textContent = 'Зона 1.5 (×1.5)';
+        pill.className = 'badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2';
+      }
+      coefInput.value = val;
+      note.textContent = sourceText || 'по адресам';
+      if (typeof updateOrderTotal === 'function') updateOrderTotal();
+    }
+
+    function detectZoneNow(){
+      const a1 = document.getElementById('id_pickup_address')?.value || '';
+      const a2 = document.getElementById('id_delivery_address')?.value || '';
+      const r = detectZoneHeuristic(a1, a2);
+      renderZone(r.val, r.note);
+    }
+
+    // дебаунс ввода
+    let t=null;
+    function debounced(){ clearTimeout(t); t=setTimeout(detectZoneNow, 350); }
+
+    ['id_pickup_address','id_delivery_address'].forEach(id=>{
+      const el=document.getElementById(id);
+      if (el){ el.addEventListener('input', debounced); el.addEventListener('change', detectZoneNow); }
+    });
+
+    // первичный запуск
+    detectZoneNow();
+  })();
+
+  // Стартовый расчёт
+  updateOrderTotal();
+</script>
 {% endblock %}
