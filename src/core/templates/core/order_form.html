@@ -84,20 +84,20 @@
                   <i class="bi bi-calculator me-2"></i>
                   <strong>Калькулятор заказа</strong>
                 </div>
-                <div class="row g-2">
-                  <!-- Количество единиц (со степпером) -->
-                  <div class="col-12 col-md-6">
+                <div class="row g-2 align-items-end">
+                  <!-- Единицы багажа: уже колонка -->
+                  <div class="col-12 col-md-4">
                     <label class="form-label text-muted small mb-1">Единиц багажа</label>
-                    <div class="input-group">
+                    <div class="input-group" style="max-width:280px">
                       <button class="btn btn-outline-secondary" type="button" id="itemsMinus">−</button>
-                      <input id="order-items" type="number" class="form-control" value="2" min="1" max="99" inputmode="numeric">
+                      <input id="order-items" type="number" class="form-control" value="1" min="1" max="99" inputmode="numeric">
                       <button class="btn btn-outline-secondary" type="button" id="itemsPlus">+</button>
                     </div>
                     <div class="form-text">Синхронизируется с полем формы (если оно есть).</div>
                   </div>
 
-                  <!-- Авто-зона (без внешних API) -->
-                  <div class="col-12 col-md-6">
+                  <!-- Авто-зона: шире колонка -->
+                  <div class="col-12 col-md-8">
                     <label class="form-label text-muted small mb-1">Зона (определяется автоматически по адресам)</label>
                     <div class="d-flex align-items-center gap-2">
                       <span id="zonePill" class="badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2">Зона 1 (×1.0)</span>
@@ -106,22 +106,16 @@
                     <input type="hidden" name="zone_coef" id="zone_coef" value="1.0">
                   </div>
 
-                  <!-- Итого -->
+                  <!-- Итог -->
                   <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 bg-white">
-                      <div class="text-muted">Итого по калькулятору</div>
+                      <div class="text-muted">Итоговая стоимость</div>
                       <div id="order-total" class="fw-bold">0 ₽</div>
                     </div>
                     <input type="hidden" name="estimated_cost" id="estimated_cost" value="0">
                   </div>
 
-                  <div class="col-12">
-                    <div class="small text-muted">
-                      Расчёт: 1‑е сутки хранения бесплатно, далее 500 ₽/сутки за всю партию.
-                      Тарифы: 1–3 ед. — 3 500 ₽; 4–6 — 4 000 ₽; 7+ — 4 500 ₽ + 500 ₽ за каждую сверх 7‑й.
-                      Коэффициент зоны применяется к базовой услуге (забор + доставка).
-                    </div>
-                  </div>
+                  <!-- Поясняющий абзац УДАЛЁН по задаче -->
                 </div>
               </div>
             </div>
@@ -165,14 +159,12 @@
 
 <script>
   /* ======== Тарифы и калькулятор ======== */
-  // Бизнес-правила:
-  // 1–3 ед.: 3500; 4–6 ед.: 4000; 7+ ед.: 4500 + 500 за каждую сверх 7‑й
-  // Хранение: 1-е сутки бесплатно, далее 500 ₽/сутки за всю партию.
   function calcOrderTotal(items, storageDays, zoneK){
     items = Math.max(1, parseInt(items || 1, 10));
-    storageDays = Math.max(0, parseInt(storageDays || 0, 10)); // платные сутки
+    storageDays = Math.max(0, parseInt(storageDays || 0, 10));
     zoneK = parseFloat(zoneK || '1.0');
 
+    // 1–3: 3500; 4–6: 4000; 7+: 4500 + 500 за каждую сверх 7‑й
     let base = 3500;
     if (items >= 4 && items <= 6) base = 4000;
     else if (items >= 7) base = 4500 + (items - 7) * 500;
@@ -182,14 +174,8 @@
     return baseWithZone + storageCost;
   }
 
-  function parseDT(v){
-    // Пытаемся парсить дату/время как есть (datetime-local/строка)
-    const d = new Date(v);
-    return isNaN(d.getTime()) ? null : d;
-  }
+  function parseDT(v){ const d = new Date(v); return isNaN(d.getTime()) ? null : d; }
 
-  // Платные сутки хранения считаем по разнице между delivery и pickup:
-  // календарные_сутки = floor(diffMs/день) + 1; платные = max(0, календарные - 1)
   function getChargeableStorageDays(){
     const p = parseDT(document.getElementById('id_pickup_time')?.value);
     const d = parseDT(document.getElementById('id_delivery_time')?.value);
@@ -197,7 +183,7 @@
     const ms = d - p;
     if (ms <= 0) return 0;
     const daysTotal = Math.floor(ms / (1000*60*60*24)) + 1;
-    return Math.max(0, daysTotal - 1);
+    return Math.max(0, daysTotal - 1); // первые сутки бесплатны
   }
 
   function updateOrderTotal(){
@@ -208,123 +194,81 @@
     document.getElementById('order-total').textContent = total.toLocaleString('ru-RU') + ' ₽';
     document.getElementById('estimated_cost').value = total;
 
-    // если есть реальное поле формы items_count — синхронизируем
     const formItems = document.getElementById('id_items_count');
     if (formItems) formItems.value = itemsInp.value;
   }
 
-  // Степперы и ввод количества
+  // Степперы
   (function(){
     const itemsInput = document.getElementById('order-items');
-    const minus = document.getElementById('itemsMinus');
-    const plus  = document.getElementById('itemsPlus');
-
-    minus.addEventListener('click', ()=>{
+    document.getElementById('itemsMinus').addEventListener('click', ()=>{
       itemsInput.value = Math.max(1, (parseInt(itemsInput.value||'1',10)-1));
       updateOrderTotal();
     });
-    plus.addEventListener('click', ()=>{
+    document.getElementById('itemsPlus').addEventListener('click', ()=>{
       itemsInput.value = Math.min(99, (parseInt(itemsInput.value||'1',10)+1));
       updateOrderTotal();
     });
     itemsInput.addEventListener('input', updateOrderTotal);
 
-    // если на форме есть «официальное» поле items_count — двусторонняя синхронизация
     const formItems = document.getElementById('id_items_count');
     if (formItems){
-      // При загрузке подставим его значение в калькулятор (если есть)
       if (formItems.value) itemsInput.value = formItems.value;
-      formItems.addEventListener('input', ()=>{
-        itemsInput.value = formItems.value || 1;
-        updateOrderTotal();
-      });
+      formItems.addEventListener('input', ()=>{ itemsInput.value = formItems.value || 1; updateOrderTotal(); });
     }
   })();
 
-  // Пересчёт по изменениям дат
+  // Пересчёт по датам
   ['id_pickup_time','id_delivery_time'].forEach(id=>{
     const el = document.getElementById(id);
-    if (el){
-      el.addEventListener('change', updateOrderTotal);
-      el.addEventListener('input', updateOrderTotal);
-    }
+    if (el){ el.addEventListener('change', updateOrderTotal); el.addEventListener('input', updateOrderTotal); }
   });
 
-  /* ======== Автоопределение зоны БЕЗ внешних API ======== */
+  /* ======== Автоопределение зоны без внешних API ======== */
   (function(){
     const airports = ["шереметьево","домодедово","внуково","жуковский","svo","dme","vko","zia"];
-    const rails = [
-      "белорусск","курск","ленинградск","киевск","казанск","павелецк","рижск","савёлов","савелов","ярославск","вокзал","ржд"
-    ];
-    const moscowHints = [
-      "москва","г. москва","москве","мск","мкад",
-      "цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","троицкий","новомоск"
-    ];
-    // Топ города МО (можно расширять)
-    const moCities = [
-      "балашиха","химки","одинцово","красногорск","мытищи","люберцы","подольск","королёв","королев",
-      "видное","долгопрудный","реутов","электросталь","домодедово","лобня","серпухов",
-      "орехово-зуево","ногинск","щёлково","щелково","клин","пушкино","ивантеевка",
-      "коломна","наро-фоминск","жуковский","раменское","егорьевск","воскресенск","фрязино","дедовск",
-      "бронницы","лыткарино","зеленоград","дубна","томилино","нахабино","сергиев посад","лесной городок"
-    ];
+    const rails = ["белорусск","курск","ленинградск","киевск","казанск","павелецк","рижск","савёлов","савелов","ярославск","вокзал","ржд"];
+    const moscowHints = ["москва","г. москва","москве","мск","мкад","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","троицкий","новомоск"];
+    const moCities = ["балашиха","химки","одинцово","красногорск","мытищи","люберцы","подольск","королёв","королев","видное","долгопрудный","реутов","электросталь","домодедово","лобня","серпухов","орехово-зуево","ногинск","щёлково","щелково","клин","пушкино","ивантеевка","коломна","наро-фоминск","жуковский","раменское","егорьевск","воскресенск","фрязино","дедовск","бронницы","лыткарино","зеленоград","дубна","томилино","нахабино","сергиев посад","лесной городок"];
 
-    function hasAny(q, arr){ return arr.some(s => q.includes(s)); }
+    const hasAny = (q,arr)=>arr.some(s=>q.includes(s));
 
-    function detectZoneHeuristic(a1, a2){
-      const q = ((a1||'') + ' ' + (a2||'')).toLowerCase();
-
-      // 1) Транспортные хабы → Зона 1
+    function detectZoneHeuristic(a1,a2){
+      const q = ((a1||'')+' '+(a2||'')).toLowerCase();
       if (hasAny(q, airports) || hasAny(q, rails)) return { val:"1.0", note:"аэропорт/вокзал" };
-
-      // 2) Москва и округа → Зона 1
       if (hasAny(q, moscowHints)) return { val:"1.0", note:"по строке адреса (Москва)" };
-
-      // 3) Города МО → Зона 1.5
       if (hasAny(q, moCities) || /\bобл(асть)?\b/.test(q)) return { val:"1.5", note:"по строке адреса (МО)" };
-
-      // 4) Простейшие эвристики
       if (/московск(ая|ой) область|за мкад|обл\./.test(q)) return { val:"1.5", note:"эвристика (МО)" };
       if (/москва|центр|кольц/.test(q)) return { val:"1.0", note:"эвристика (Москва)" };
-
-      // По умолчанию считаем Москвой (чтобы не завышать цену)
       return { val:"1.0", note:"по умолчанию" };
     }
 
-    function renderZone(val, sourceText){
+    function renderZone(val, note){
       const pill = document.getElementById('zonePill');
       const coefInput = document.getElementById('zone_coef');
-      const note = document.getElementById('zoneNote');
-      if (val==='1.0'){
-        pill.textContent = 'Зона 1 (×1.0)';
-        pill.className = 'badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2';
-      } else {
-        pill.textContent = 'Зона 1.5 (×1.5)';
-        pill.className = 'badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2';
-      }
-      coefInput.value = val;
-      note.textContent = sourceText || 'по адресам';
-      if (typeof updateOrderTotal === 'function') updateOrderTotal();
+      const noteEl = document.getElementById('zoneNote');
+      if (val==='1.0'){ pill.textContent='Зона 1 (×1.0)'; pill.className='badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2'; }
+      else { pill.textContent='Зона 1.5 (×1.5)'; pill.className='badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2'; }
+      coefInput.value = val; noteEl.textContent = note || 'по адресам';
+      updateOrderTotal();
     }
 
-    function detectZoneNow(){
-      const a1 = document.getElementById('id_pickup_address')?.value || '';
-      const a2 = document.getElementById('id_delivery_address')?.value || '';
-      const r = detectZoneHeuristic(a1, a2);
-      renderZone(r.val, r.note);
+    function detectZone(){
+      const a1=document.getElementById('id_pickup_address')?.value||'';
+      const a2=document.getElementById('id_delivery_address')?.value||'';
+      const r=detectZoneHeuristic(a1,a2);
+      renderZone(r.val,r.note);
     }
 
-    // дебаунс ввода
     let t=null;
-    function debounced(){ clearTimeout(t); t=setTimeout(detectZoneNow, 350); }
+    function debounced(){ clearTimeout(t); t=setTimeout(detectZone,350); }
 
     ['id_pickup_address','id_delivery_address'].forEach(id=>{
       const el=document.getElementById(id);
-      if (el){ el.addEventListener('input', debounced); el.addEventListener('change', detectZoneNow); }
+      if (el){ el.addEventListener('input',debounced); el.addEventListener('change',detectZone); }
     });
 
-    // первичный запуск
-    detectZoneNow();
+    detectZone();
   })();
 
   // Стартовый расчёт
