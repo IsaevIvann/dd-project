@@ -77,26 +77,25 @@
             </div>
             {% endif %}
 
-            <!-- Мини-калькулятор заказа -->
+            <!-- Калькулятор заказа -->
             <div class="col-12">
-              <div class="rounded-3 p-3" style="background:#f8fafc;border:1px solid #e5e7eb">
+              <div class="dd-calc card border-0 rounded-3 p-3" style="background:#f8fafc;border:1px solid #e5e7eb!important">
                 <div class="d-flex align-items-center mb-2">
                   <i class="bi bi-calculator me-2"></i>
-                  <strong>Калькулятор заказа</strong>
+                  <strong class="h6 mb-0">Калькулятор заказа</strong>
                 </div>
-                <div class="row g-2 align-items-end">
-                  <!-- Единицы багажа: уже колонка -->
+                <div class="row g-3 align-items-end">
+                  <!-- узкая колонка с количеством -->
                   <div class="col-12 col-md-4">
                     <label class="form-label text-muted small mb-1">Единиц багажа</label>
-                    <div class="input-group" style="max-width:280px">
-                      <button class="btn btn-outline-secondary" type="button" id="itemsMinus">−</button>
-                      <input id="order-items" type="number" class="form-control" value="1" min="1" max="99" inputmode="numeric">
-                      <button class="btn btn-outline-secondary" type="button" id="itemsPlus">+</button>
+                    <div class="qty">
+                      <button class="qty-btn" type="button" id="itemsMinus" aria-label="Уменьшить">−</button>
+                      <input id="order-items" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Количество">
+                      <button class="qty-btn" type="button" id="itemsPlus" aria-label="Увеличить">+</button>
                     </div>
-                    <div class="form-text">Синхронизируется с полем формы (если оно есть).</div>
                   </div>
 
-                  <!-- Авто-зона: шире колонка -->
+                  <!-- шире колонка с зоной -->
                   <div class="col-12 col-md-8">
                     <label class="form-label text-muted small mb-1">Зона (определяется автоматически по адресам)</label>
                     <div class="d-flex align-items-center gap-2">
@@ -106,7 +105,7 @@
                     <input type="hidden" name="zone_coef" id="zone_coef" value="1.0">
                   </div>
 
-                  <!-- Итог -->
+                  <!-- итог -->
                   <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 bg-white">
                       <div class="text-muted">Итоговая стоимость</div>
@@ -114,8 +113,6 @@
                     </div>
                     <input type="hidden" name="estimated_cost" id="estimated_cost" value="0">
                   </div>
-
-                  <!-- Поясняющий абзац УДАЛЁН по задаче -->
                 </div>
               </div>
             </div>
@@ -157,14 +154,36 @@
   </div>
 </div>
 
+<style>
+  /* аккуратный степпер */
+  .dd-calc .qty{
+    display:flex; align-items:center; gap:8px;
+    width: 230px; background:#fff; border:1px solid #e5e7eb;
+    border-radius:14px; padding:6px; box-shadow:0 1px 2px rgba(0,0,0,.03);
+  }
+  .dd-calc .qty input{
+    border:0; text-align:center; flex:1 1 auto; font-weight:600; font-size:1.05rem;
+    padding:.35rem 0; background:transparent; outline:none;
+    /* убираем браузерные стрелки */
+  }
+  .dd-calc .qty input::-webkit-outer-spin-button,
+  .dd-calc .qty input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+  .dd-calc .qty input[type=number]{ -moz-appearance:textfield; }
+  .dd-calc .qty .qty-btn{
+    border:0; background:#f1f5f9; width:36px; height:36px; line-height:36px;
+    border-radius:10px; font-weight:700; font-size:1.1rem; cursor:pointer;
+  }
+  .dd-calc .qty .qty-btn:hover{ background:#e2e8f0; }
+</style>
+
 <script>
-  /* ======== Тарифы и калькулятор ======== */
+  /* ======== Тарифы/калькулятор (как раньше) ======== */
   function calcOrderTotal(items, storageDays, zoneK){
     items = Math.max(1, parseInt(items || 1, 10));
     storageDays = Math.max(0, parseInt(storageDays || 0, 10));
     zoneK = parseFloat(zoneK || '1.0');
 
-    // 1–3: 3500; 4–6: 4000; 7+: 4500 + 500 за каждую сверх 7‑й
+    // Тарифы: 1–3: 3500; 4–6: 4000; 7+: 4500 + 500 за каждую сверх 7‑й
     let base = 3500;
     if (items >= 4 && items <= 6) base = 4000;
     else if (items >= 7) base = 4500 + (items - 7) * 500;
@@ -182,8 +201,8 @@
     if (!p || !d) return 0;
     const ms = d - p;
     if (ms <= 0) return 0;
-    const daysTotal = Math.floor(ms / (1000*60*60*24)) + 1;
-    return Math.max(0, daysTotal - 1); // первые сутки бесплатны
+    const daysTotal = Math.floor(ms / (1000*60*60*24)) + 1; // включая первый день
+    return Math.max(0, daysTotal - 1); // 1-е сутки бесплатно
   }
 
   function updateOrderTotal(){
@@ -211,6 +230,7 @@
     });
     itemsInput.addEventListener('input', updateOrderTotal);
 
+    // синхронизация с полем формы, если есть
     const formItems = document.getElementById('id_items_count');
     if (formItems){
       if (formItems.value) itemsInput.value = formItems.value;
@@ -224,7 +244,7 @@
     if (el){ el.addEventListener('change', updateOrderTotal); el.addEventListener('input', updateOrderTotal); }
   });
 
-  /* ======== Автоопределение зоны без внешних API ======== */
+  /* ======== Автоопределение зоны без внешних API (эвристики) ======== */
   (function(){
     const airports = ["шереметьево","домодедово","внуково","жуковский","svo","dme","vko","zia"];
     const rails = ["белорусск","курск","ленинградск","киевск","казанск","павелецк","рижск","савёлов","савелов","ярославск","вокзал","ржд"];
@@ -237,41 +257,4 @@
       const q = ((a1||'')+' '+(a2||'')).toLowerCase();
       if (hasAny(q, airports) || hasAny(q, rails)) return { val:"1.0", note:"аэропорт/вокзал" };
       if (hasAny(q, moscowHints)) return { val:"1.0", note:"по строке адреса (Москва)" };
-      if (hasAny(q, moCities) || /\bобл(асть)?\b/.test(q)) return { val:"1.5", note:"по строке адреса (МО)" };
-      if (/московск(ая|ой) область|за мкад|обл\./.test(q)) return { val:"1.5", note:"эвристика (МО)" };
-      if (/москва|центр|кольц/.test(q)) return { val:"1.0", note:"эвристика (Москва)" };
-      return { val:"1.0", note:"по умолчанию" };
-    }
-
-    function renderZone(val, note){
-      const pill = document.getElementById('zonePill');
-      const coefInput = document.getElementById('zone_coef');
-      const noteEl = document.getElementById('zoneNote');
-      if (val==='1.0'){ pill.textContent='Зона 1 (×1.0)'; pill.className='badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2'; }
-      else { pill.textContent='Зона 1.5 (×1.5)'; pill.className='badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2'; }
-      coefInput.value = val; noteEl.textContent = note || 'по адресам';
-      updateOrderTotal();
-    }
-
-    function detectZone(){
-      const a1=document.getElementById('id_pickup_address')?.value||'';
-      const a2=document.getElementById('id_delivery_address')?.value||'';
-      const r=detectZoneHeuristic(a1,a2);
-      renderZone(r.val,r.note);
-    }
-
-    let t=null;
-    function debounced(){ clearTimeout(t); t=setTimeout(detectZone,350); }
-
-    ['id_pickup_address','id_delivery_address'].forEach(id=>{
-      const el=document.getElementById(id);
-      if (el){ el.addEventListener('input',debounced); el.addEventListener('change',detectZone); }
-    });
-
-    detectZone();
-  })();
-
-  // Стартовый расчёт
-  updateOrderTotal();
-</script>
-{% endblock %}
+      if (hasAny(q
