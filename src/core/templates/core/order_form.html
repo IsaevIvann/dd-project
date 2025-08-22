@@ -13,12 +13,10 @@
           {{ form.non_field_errors }}
 
           <style>
-            /* чуть бледнее плейсхолдеры, единый стиль как у остальных полей */
             .form-control::placeholder { color:#9aa6b2; opacity:1; }
           </style>
 
           <div class="row g-3">
-            <!-- Контакты -->
             <div class="col-12">
               <label for="id_name" class="form-label"><i class="bi bi-person-circle"></i> Имя</label>
               {{ form.name|add_class:"form-control"|attr:"placeholder:Иван Иванов" }}
@@ -49,7 +47,6 @@
               {{ form.whatsapp.errors }}
             </div>
 
-            <!-- Логистика -->
             <div class="col-12 mt-2">
               <label for="id_pickup_address" class="form-label"><i class="bi bi-geo-alt"></i> Адрес забора</label>
               {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Отель, улица и дом"|attr:"id:id_pickup_address" }}
@@ -62,7 +59,6 @@
               {{ form.pickup_time.errors }}
             </div>
 
-            <!-- ВАЖНО: Адрес доставки идёт РАНЬШЕ времени доставки -->
             <div class="col-12">
               <label for="id_delivery_address" class="form-label"><i class="bi bi-geo"></i> Адрес доставки</label>
               {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Аэропорт/вокзал или адрес"|attr:"id:id_delivery_address" }}
@@ -121,7 +117,6 @@
               </div>
             </div>
 
-            <!-- Комментарий -->
             <div class="col-12">
               <label for="id_comment" class="form-label"><i class="bi bi-chat-dots"></i> Комментарий</label>
               {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания по времени, приметы места и т.п." }}
@@ -129,13 +124,11 @@
             </div>
           </div>
 
-          <!-- ПДн -->
           <div class="mt-3">
             <div class="form-check mt-3">
               {{ form.consent_pdn.errors }}
               <label class="form-check-label" for="{{ form.consent_pdn.id_for_label }}">
-                {{ form.consent_pdn }}
-                Я согласен(а) с <a href="{% url 'privacy' %}" target="_blank" rel="noopener">обработкой персональных данных</a>
+                {{ form.consent_pdn }} Я согласен(а) с <a href="{% url 'privacy' %}" target="_blank" rel="noopener">обработкой персональных данных</a>
               </label>
             </div>
             {% if form.consent_pdn and form.consent_pdn.errors %}
@@ -180,9 +173,135 @@
 </style>
 
 <script>
-  /* ===== расчёт ===== */
+  /* ===== Основной расчёт стоимости ===== */
   function calcOrderTotal(items, storageDays, zoneK){
     items = Math.max(1, parseInt(items || 1, 10));
     storageDays = Math.max(0, parseInt(storageDays || 0, 10));
     zoneK = parseFloat(zoneK || '1.0');
-    // 1–3: 3500; 4–6: 4000; 7+:
+
+    // База: 1–3 = 3500; 4–6 = 4000; 7+ = 4500 + 500 за каждую сверх 7-й
+    let base;
+    if (items <= 3) base = 3500;
+    else if (items <= 6) base = 4000;
+    else base = 4500 + (items - 7) * 500;
+
+    const baseWithZone = Math.round(base * zoneK);
+    const storage = storageDays * 500;          // 1-е сутки бесплатны — это учтём при вычислении storageDays
+    const total = baseWithZone + storage;
+
+    return { base, baseWithZone, storage, total };
+  }
+
+  /* ===== Хелперы ===== */
+  function parseLocalDateTime(str){
+    // ожидание вводимого Django widget'ом "YYYY-MM-DD HH:MM" или "DD.MM.YYYY, HH:MM" — постараемся съесть оба формата
+    if(!str) return null;
+    let d = null;
+    // Вариант 1: 2025-08-29 16:45
+    const iso = str.trim().replace(' ', 'T');
+    if(!isNaN(Date.parse(iso))) d = new Date(iso);
+    // Вариант 2: 29.08.2025, 16:45
+    if(!d || isNaN(d)) {
+      const m = str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}).*?(\d{1,2}):(\d{2})/);
+      if (m){
+        const [_, dd, mm, yyyy, HH, MM] = m.map(Number);
+        d = new Date(yyyy, mm-1, dd, HH, MM);
+      }
+    }
+    return (d && !isNaN(d)) ? d : null;
+  }
+
+  function daysAfterFirstFree(pickup, delivery){
+    if(!pickup || !delivery) return 0;
+    const ms = delivery - pickup;
+    if (ms <= 0) return 0;
+    const days = Math.ceil(ms / (24*60*60*1000));     // округляем вверх
+    return Math.max(0, days - 1);                     // 1-е сутки бесплатно
+  }
+
+  // Простая эвристика зоны без API: по ключевым словам
+  const MOSCOW_MARKERS = [" москва","москва","МКАД","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский","вокзал"];
+  const MO_TOWNS = ["одинцово","химки","мытищи","люберцы","балашиха","красногорск","королёв","королев","подольск","реутов","видное","долгопрудный","долгопруднен","лобня","домодедово","одинцов","котельники","мытич","таможня","ленинский район","мысковская обл","московская область","обл."]; // намеренно с вариациями
+
+  function detectZoneByText(addrPickup, addrDelivery){
+    const t = ((addrPickup||"") + " " + (addrDelivery||"")).toLowerCase();
+    const inMoscow = MOSCOW_MARKERS.some(k => t.includes(k.toLowerCase()));
+    const inMO = MO_TOWNS.some(k => t.includes(k.toLowerCase())) || t.includes("область") || t.includes("обл.");
+    if (inMO && !inMoscow) return 1.5; // если явно область и нет явной Москвы
+    return 1.0; // по умолчанию Москва/аэропорты/вокзалы
+  }
+
+  function formatRub(n){
+    return n.toLocaleString('ru-RU') + " ₽";
+  }
+
+  /* ===== Привязка к форме ===== */
+  (function(){
+    const itemsInput = document.getElementById('order-items');
+    const itemsPlus = document.getElementById('itemsPlus');
+    const itemsMinus = document.getElementById('itemsMinus');
+    const hiddenItemsField = document.getElementById('id_items_count'); // может не быть в форме
+    const totalEl = document.getElementById('order-total');
+    const zonePill = document.getElementById('zonePill');
+    const zoneNote = document.getElementById('zoneNote');
+    const zoneCoefInput = document.getElementById('zone_coef');
+    const estCostInput = document.getElementById('estimated_cost');
+
+    const pickupAddr = document.getElementById('id_pickup_address');
+    const deliveryAddr = document.getElementById('id_delivery_address');
+    const pickupTime = document.getElementById('id_pickup_time');
+    const deliveryTime = document.getElementById('id_delivery_time');
+
+    function syncItemsToForm(){
+      if(hiddenItemsField) hiddenItemsField.value = itemsInput.value;
+    }
+
+    function currentZoneK(){
+      const k = detectZoneByText(pickupAddr?.value, deliveryAddr?.value);
+      return k;
+    }
+
+    function rerenderZoneBadge(k){
+      zoneCoefInput.value = String(k);
+      if (k === 1.0){
+        zonePill.className = "badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2";
+        zonePill.textContent = "Зона 1 (×1.0)";
+        zoneNote.textContent = "по умолчанию";
+      } else {
+        zonePill.className = "badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2";
+        zonePill.textContent = "Зона 1.5 (×1.5)";
+        zoneNote.textContent = "определено по адресам";
+      }
+    }
+
+    function recalc(){
+      const k = currentZoneK();
+      rerenderZoneBadge(k);
+
+      const pick = parseLocalDateTime(pickupTime?.value);
+      const drop = parseLocalDateTime(deliveryTime?.value);
+      const storage = daysAfterFirstFree(pick, drop);
+
+      const items = parseInt(itemsInput.value || "1", 10);
+      const { total } = calcOrderTotal(items, storage, k);
+
+      totalEl.textContent = formatRub(total);
+      estCostInput.value = total;
+      syncItemsToForm();
+    }
+
+    // события
+    itemsPlus?.addEventListener('click', ()=>{ itemsInput.value = Math.min(99, (parseInt(itemsInput.value||"1",10)+1)); recalc(); });
+    itemsMinus?.addEventListener('click', ()=>{ itemsInput.value = Math.max(1,  (parseInt(itemsInput.value||"1",10)-1)); recalc(); });
+    itemsInput?.addEventListener('input', recalc);
+
+    [pickupAddr, deliveryAddr, pickupTime, deliveryTime].forEach(el=>{
+      el && el.addEventListener('input', recalc);
+      el && el.addEventListener('change', recalc);
+    });
+
+    // первичный расчёт
+    recalc();
+  })();
+</script>
+{% endblock %}
