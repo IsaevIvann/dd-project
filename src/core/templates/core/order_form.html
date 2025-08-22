@@ -13,7 +13,7 @@
           {{ form.non_field_errors }}
 
           <div class="row g-3">
-            <!-- Контактные данные -->
+            <!-- Контакты -->
             <div class="col-12">
               <label for="id_name" class="form-label"><i class="bi bi-person-circle"></i> Имя</label>
               {{ form.name|add_class:"form-control"|attr:"placeholder:Иван Иванов" }}
@@ -53,13 +53,13 @@
 
             <div class="col-12 col-md-6">
               <label for="id_pickup_time" class="form-label"><i class="bi bi-calendar-event"></i> Время забора</label>
-              {{ form.pickup_time|add_class:"form-control"|attr:"placeholder:2025-08-11 10:00"|attr:"id:id_pickup_time" }}
+              {{ form.pickup_time|add_class:"form-control"|attr:"placeholder:дата/время"|attr:"id:id_pickup_time" }}
               {{ form.pickup_time.errors }}
             </div>
 
             <div class="col-12 col-md-6">
               <label for="id_delivery_time" class="form-label"><i class="bi bi-calendar-event"></i> Время доставки</label>
-              {{ form.delivery_time|add_class:"form-control"|attr:"placeholder:2025-08-11 18:00"|attr:"id:id_delivery_time" }}
+              {{ form.delivery_time|add_class:"form-control"|attr:"placeholder:дата/время"|attr:"id:id_delivery_time" }}
               {{ form.delivery_time.errors }}
             </div>
 
@@ -77,16 +77,18 @@
             </div>
             {% endif %}
 
-            <!-- Калькулятор заказа -->
+            <!-- Калькулятор -->
             <div class="col-12">
               <div class="dd-calc card border-0 rounded-3 p-3" style="background:#f8fafc;border:1px solid #e5e7eb!important">
                 <div class="d-flex align-items-center mb-2">
                   <i class="bi bi-calculator me-2"></i>
                   <strong class="h6 mb-0">Калькулятор заказа</strong>
                 </div>
-                <div class="row g-3 align-items-end">
-                  <!-- узкая колонка с количеством -->
-                  <div class="col-12 col-md-4">
+
+                <!-- на md+: 2 колонки, чтобы ничего не наезжало -->
+                <div class="row g-3 align-items-center">
+                  <!-- узкая колонка для степпера -->
+                  <div class="col-12 col-md-5">
                     <label class="form-label text-muted small mb-1">Единиц багажа</label>
                     <div class="qty">
                       <button class="qty-btn" type="button" id="itemsMinus" aria-label="Уменьшить">−</button>
@@ -95,17 +97,16 @@
                     </div>
                   </div>
 
-                  <!-- шире колонка с зоной -->
-                  <div class="col-12 col-md-8">
-                    <label class="form-label text-muted small mb-1">Зона (определяется автоматически по адресам)</label>
-                    <div class="d-flex align-items-center gap-2">
+                  <!-- широкая колонка для зоны -->
+                  <div class="col-12 col-md-7">
+                    <label class="form-label text-muted small mb-1 mb-md-2">Зона (определяется автоматически по адресам)</label>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
                       <span id="zonePill" class="badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2">Зона 1 (×1.0)</span>
                       <span class="text-muted small" id="zoneNote">по умолчанию</span>
                     </div>
                     <input type="hidden" name="zone_coef" id="zone_coef" value="1.0">
                   </div>
 
-                  <!-- итог -->
                   <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 bg-white">
                       <div class="text-muted">Итоговая стоимость</div>
@@ -125,7 +126,7 @@
             </div>
           </div>
 
-          <!-- Согласие на ПДн -->
+          <!-- ПДн -->
           <div class="mt-3">
             <div class="form-check mt-3">
               {{ form.consent_pdn.errors }}
@@ -155,19 +156,19 @@
 </div>
 
 <style>
-  /* аккуратный степпер */
+  /* аккуратный степпер, фикс-ширина, чтобы не ломал сетку */
   .dd-calc .qty{
     display:flex; align-items:center; gap:8px;
-    width: 230px; background:#fff; border:1px solid #e5e7eb;
+    width: 240px; max-width:100%;
+    background:#fff; border:1px solid #e5e7eb;
     border-radius:14px; padding:6px; box-shadow:0 1px 2px rgba(0,0,0,.03);
   }
   .dd-calc .qty input{
     border:0; text-align:center; flex:1 1 auto; font-weight:600; font-size:1.05rem;
     padding:.35rem 0; background:transparent; outline:none;
-    /* убираем браузерные стрелки */
   }
   .dd-calc .qty input::-webkit-outer-spin-button,
-  .dd-calc .qty input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+  .dd-calc .qty input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
   .dd-calc .qty input[type=number]{ -moz-appearance:textfield; }
   .dd-calc .qty .qty-btn{
     border:0; background:#f1f5f9; width:36px; height:36px; line-height:36px;
@@ -177,117 +178,100 @@
 </style>
 
 <script>
-  /* ======== Тарифы/калькулятор (как раньше) ======== */
+  /* ===== расчёт ===== */
   function calcOrderTotal(items, storageDays, zoneK){
     items = Math.max(1, parseInt(items || 1, 10));
     storageDays = Math.max(0, parseInt(storageDays || 0, 10));
     zoneK = parseFloat(zoneK || '1.0');
-
-    // Тарифы: 1–3: 3500; 4–6: 4000; 7+: 4500 + 500 за каждую сверх 7‑й
+    // 1–3: 3500; 4–6: 4000; 7+: 4500 + 500 за каждую сверх 7‑й
     let base = 3500;
     if (items >= 4 && items <= 6) base = 4000;
     else if (items >= 7) base = 4500 + (items - 7) * 500;
-
     const baseWithZone = Math.round(base * zoneK);
-    const storageCost  = storageDays * 500;
+    const storageCost  = storageDays * 500; // 1-е сутки бесплатно учитывается отдельно
     return baseWithZone + storageCost;
   }
 
-  function parseDT(v){ const d = new Date(v); return isNaN(d.getTime()) ? null : d; }
+  function parseDT(v){ const d=new Date(v); return isNaN(d.getTime())?null:d; }
 
   function getChargeableStorageDays(){
-    const p = parseDT(document.getElementById('id_pickup_time')?.value);
-    const d = parseDT(document.getElementById('id_delivery_time')?.value);
-    if (!p || !d) return 0;
-    const ms = d - p;
-    if (ms <= 0) return 0;
-    const daysTotal = Math.floor(ms / (1000*60*60*24)) + 1; // включая первый день
-    return Math.max(0, daysTotal - 1); // 1-е сутки бесплатно
+    const p=parseDT(document.getElementById('id_pickup_time')?.value);
+    const d=parseDT(document.getElementById('id_delivery_time')?.value);
+    if(!p||!d) return 0;
+    const ms=d-p; if(ms<=0) return 0;
+    const daysTotal=Math.floor(ms/(1000*60*60*24))+1; // включая 1-й день
+    return Math.max(0, daysTotal-1); // 1-е сутки бесплатно
   }
 
   function updateOrderTotal(){
-    const itemsInp = document.getElementById('order-items');
-    const zoneCoef = parseFloat(document.getElementById('zone_coef').value || '1.0');
-    const storageDays = getChargeableStorageDays();
-    const total = calcOrderTotal(itemsInp.value, storageDays, zoneCoef);
-    document.getElementById('order-total').textContent = total.toLocaleString('ru-RU') + ' ₽';
-    document.getElementById('estimated_cost').value = total;
-
-    const formItems = document.getElementById('id_items_count');
-    if (formItems) formItems.value = itemsInp.value;
+    const itemsInp=document.getElementById('order-items');
+    const zoneCoef=parseFloat(document.getElementById('zone_coef').value||'1.0');
+    const storageDays=getChargeableStorageDays();
+    const total=calcOrderTotal(itemsInp.value, storageDays, zoneCoef);
+    document.getElementById('order-total').textContent=total.toLocaleString('ru-RU')+' ₽';
+    document.getElementById('estimated_cost').value=total;
+    const formItems=document.getElementById('id_items_count');
+    if(formItems) formItems.value=itemsInp.value;
   }
 
-  // Степперы
+  // степпер
   (function(){
-    const itemsInput = document.getElementById('order-items');
-    document.getElementById('itemsMinus').addEventListener('click', ()=>{
-      itemsInput.value = Math.max(1, (parseInt(itemsInput.value||'1',10)-1));
-      updateOrderTotal();
+    const itemsInput=document.getElementById('order-items');
+    document.getElementById('itemsMinus').addEventListener('click',()=>{
+      itemsInput.value=Math.max(1,(parseInt(itemsInput.value||'1',10)-1)); updateOrderTotal();
     });
-    document.getElementById('itemsPlus').addEventListener('click', ()=>{
-      itemsInput.value = Math.min(99, (parseInt(itemsInput.value||'1',10)+1));
-      updateOrderTotal();
+    document.getElementById('itemsPlus').addEventListener('click',()=>{
+      itemsInput.value=Math.min(99,(parseInt(itemsInput.value||'1',10)+1)); updateOrderTotal();
     });
-    itemsInput.addEventListener('input', updateOrderTotal);
-
-    // синхронизация с полем формы, если есть
-    const formItems = document.getElementById('id_items_count');
-    if (formItems){
-      if (formItems.value) itemsInput.value = formItems.value;
-      formItems.addEventListener('input', ()=>{ itemsInput.value = formItems.value || 1; updateOrderTotal(); });
+    itemsInput.addEventListener('input',updateOrderTotal);
+    const formItems=document.getElementById('id_items_count');
+    if(formItems){
+      if(formItems.value) itemsInput.value=formItems.value;
+      formItems.addEventListener('input',()=>{ itemsInput.value=formItems.value||1; updateOrderTotal(); });
     }
   })();
 
-  // Пересчёт по датам
+  // пересчёт по датам
   ['id_pickup_time','id_delivery_time'].forEach(id=>{
-    const el = document.getElementById(id);
-    if (el){ el.addEventListener('change', updateOrderTotal); el.addEventListener('input', updateOrderTotal); }
+    const el=document.getElementById(id);
+    if(el){ el.addEventListener('change',updateOrderTotal); el.addEventListener('input',updateOrderTotal); }
   });
 
-  /* ======== Автоопределение зоны без внешних API (эвристики) ======== */
+  /* ===== авто‑зона без API (эвристика) ===== */
   (function(){
-    const airports = ["шереметьево","домодедово","внуково","жуковский","svo","dme","vko","zia"];
-    const rails = ["белорусск","курск","ленинградск","киевск","казанск","павелецк","рижск","савёлов","савелов","ярославск","вокзал","ржд"];
-    const moscowHints = ["москва","г. москва","москве","мск","мкад","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","троицкий","новомоск"];
-    const moCities = ["балашиха","химки","одинцово","красногорск","мытищи","люберцы","подольск","королёв","королев","видное","долгопрудный","реутов","электросталь","домодедово","лобня","серпухов","орехово-зуево","ногинск","щёлково","щелково","клин","пушкино","ивантеевка","коломна","наро-фоминск","жуковский","раменское","егорьевск","воскресенск","фрязино","дедовск","бронницы","лыткарино","зеленоград","дубна","томилино","нахабино","сергиев посад","лесной городок"];
-
-    const hasAny = (q,arr)=>arr.some(s=>q.includes(s));
-
+    const airports=["шереметьево","домодедово","внуково","жуковский","svo","dme","vko","zia"];
+    const rails=["белорусск","курск","ленинградск","киевск","казанск","павелецк","рижск","савёлов","савелов","ярославск","вокзал","ржд"];
+    const moscowHints=["москва","г. москва","москве","мск","мкад","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","троицкий","новомоск"];
+    const moCities=["балашиха","химки","одинцово","красногорск","мытищи","люберцы","подольск","королёв","королев","видное","долгопрудный","реутов","электросталь","домодедово","лобня","серпухов","орехово-зуево","ногинск","щёлково","щелково","клин","пушкино","ивантеевка","коломна","наро-фоминск","жуковский","раменское","егорьевск","воскресенск","фрязино","дедовск","бронницы","лыткарино","зеленоград","дубна","томилино","нахабино","сергиев посад","лесной городок"];
+    const hasAny=(q,arr)=>arr.some(s=>q.includes(s));
     function detectZoneHeuristic(a1,a2){
-      const q = ((a1||'')+' '+(a2||'')).toLowerCase();
-      if (hasAny(q, airports) || hasAny(q, rails)) return { val:"1.0", note:"аэропорт/вокзал" };
-      if (hasAny(q, moscowHints)) return { val:"1.0", note:"по строке адреса (Москва)" };
-      if (hasAny(q, moCities) || /\bобл(асть)?\b/.test(q)) return { val:"1.5", note:"по строке адреса (МО)" };
-      if (/московск(ая|ой) область|за мкад|обл\./.test(q)) return { val:"1.5", note:"эвристика (МО)" };
-      if (/москва|центр|кольц/.test(q)) return { val:"1.0", note:"эвристика (Москва)" };
-      return { val:"1.0", note:"по умолчанию" };
+      const q=((a1||'')+' '+(a2||'')).toLowerCase();
+      if(hasAny(q,airports)||hasAny(q,rails)) return {val:"1.0",note:"аэропорт/вокзал"};
+      if(hasAny(q,moscowHints)) return {val:"1.0",note:"по строке адреса (Москва)"};
+      if(hasAny(q,moCities)||/\bобл(асть)?\b/.test(q)) return {val:"1.5",note:"по строке адреса (МО)"};
+      if(/московск(ая|ой) область|за мкад|обл\./.test(q)) return {val:"1.5",note:"эвристика (МО)"};
+      if(/москва|центр|кольц/.test(q)) return {val:"1.0",note:"эвристика (Москва)"};
+      return {val:"1.0",note:"по умолчанию"};
     }
-
-    function renderZone(val, note){
-      const pill = document.getElementById('zonePill');
-      const coefInput = document.getElementById('zone_coef');
-      const noteEl = document.getElementById('zoneNote');
-      if (val==='1.0'){ pill.textContent='Зона 1 (×1.0)'; pill.className='badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2'; }
-      else { pill.textContent='Зона 1.5 (×1.5)'; pill.className='badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2'; }
-      coefInput.value = val; noteEl.textContent = note || 'по адресам';
-      updateOrderTotal();
+    function renderZone(val,note){
+      const pill=document.getElementById('zonePill');
+      const coef=document.getElementById('zone_coef');
+      const noteEl=document.getElementById('zoneNote');
+      if(val==='1.0'){ pill.textContent='Зона 1 (×1.0)'; pill.className='badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2'; }
+      else{ pill.textContent='Зона 1.5 (×1.5)'; pill.className='badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2'; }
+      coef.value=val; noteEl.textContent=note||'по адресам'; updateOrderTotal();
     }
-
     function detectZone(){
       const a1=document.getElementById('id_pickup_address')?.value||'';
       const a2=document.getElementById('id_delivery_address')?.value||'';
-      const r=detectZoneHeuristic(a1,a2);
-      renderZone(r.val,r.note);
+      const r=detectZoneHeuristic(a1,a2); renderZone(r.val,r.note);
     }
-
     let t=null;
     function debounced(){ clearTimeout(t); t=setTimeout(detectZone,350); }
-
     ['id_pickup_address','id_delivery_address'].forEach(id=>{
       const el=document.getElementById(id);
-      if (el){ el.addEventListener('input',debounced); el.addEventListener('change',detectZone); }
+      if(el){ el.addEventListener('input',debounced); el.addEventListener('change',detectZone); }
     });
-
     detectZone();
   })();
 
