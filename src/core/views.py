@@ -1,5 +1,6 @@
 import json
 from uuid import UUID
+
 import requests
 from django.conf import settings
 from django.db.models import Q
@@ -10,19 +11,13 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from .forms import OrderForm
 from .models import Order
 from .notify import send_welcome
 from .serializers import LinkChatSerializer
-from .utils import (
-    notify_telegram_new_order,
-    send_client_email,
-    build_telegram_deeplink,
-)
-from threading import Thread
+from .utils import build_telegram_deeplink
 
-def fire_and_forget(func, *args, **kwargs):
-    Thread(target=lambda: func(*args, **kwargs), daemon=True).start()
 
 def _client_ip(request):
     xff = request.META.get("HTTP_X_FORWARDED_FOR")
@@ -53,14 +48,13 @@ def order_create(request):
         if form.is_valid():
             order = form.save(commit=False)
 
-            # Отметим согласие, IP и User-Agent (если чекбокс был отмечен)
             if order.consent_pdn:
                 if not order.consent_ts:
                     order.consent_ts = timezone.now()
                 order.consent_ip = _client_ip(request)
                 order.consent_ua = request.META.get("HTTP_USER_AGENT", "")[:256]
 
-            order.save()
+            order.save()  # TG и письмо клиенту уйдут из сигналов post_save
             tg_link = build_telegram_deeplink(order)
             return render(request, "core/order_success.html", {"tg_link": tg_link})
         else:
@@ -73,10 +67,6 @@ def order_create(request):
 
 @csrf_exempt
 def telegram_webhook(request, secret: str):
-    """
-    Вебхук бота.
-    Подписываем клиента на уведомления, когда он открывает бота по deep‑link (/start <public_token>).
-    """
     if secret != getattr(settings, "TELEGRAM_WEBHOOK_SECRET", ""):
         return HttpResponseForbidden("forbidden")
 
@@ -95,23 +85,18 @@ def telegram_webhook(request, secret: str):
 
     chat_id = msg.get("chat", {}).get("id")
     text = msg.get("text", "") or ""
-
     reply = "Этот бот отправляет уведомления по заявкам. Используйте ссылку со страницы «Спасибо»."
 
-    # deep‑link формат: "/start <public_token>"
     if text.startswith("/start"):
         parts = text.split(maxsplit=1)
         if len(parts) == 2:
             raw_token = parts[1].strip()
-
-            # Безопасно парсим UUID
             try:
                 token = UUID(raw_token)
             except Exception:
                 reply = "Похоже, ссылка некорректна. Пожалуйста, вернитесь на сайт и нажмите кнопку заново."
                 return _tg_reply_and_ok(chat_id, reply)
 
-            # Ищем заявку
             order = Order.objects.filter(public_token=token).first()
             if order:
                 order.telegram_chat_id = str(chat_id)
@@ -132,12 +117,13 @@ def _tg_reply_and_ok(chat_id, text):
     token_bot = getattr(settings, "TELEGRAM_BOT_TOKEN", "")
     if token_bot and chat_id:
         url = f"https://api.telegram.org/bot{token_bot}/sendMessage"
-        data = {"chat_id": chat_id, "text": text}
+        data = {"chat_id": str(chat_id), "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}
         try:
-            requests.post(url, data=data, timeout=5)
+            requests.post(url, data=data, timeout=10)
         except Exception as e:
             print("[TG webhook] reply failed:", e)
     return HttpResponse("ok")
+
 
 @csrf_exempt
 def save_chat_id(request):
@@ -163,8 +149,6 @@ def save_chat_id(request):
         return JsonResponse({"error": "Order not found"}, status=404)
 
 
-
-
 class LinkChatView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -182,7 +166,6 @@ class LinkChatView(APIView):
         email = s.validated_data.get("email")
         chat_id = s.validated_data["chat_id"]
 
-        q = None
         if order_id:
             q = Order.objects.filter(id=order_id)
         else:
@@ -201,7 +184,7 @@ class LinkChatView(APIView):
         if not order:
             return Response({"error": "order not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        order.telegram_chat_id = chat_id
+        order.telegram_chat_id = str(chat_id)
         order.save(update_fields=["telegram_chat_id"])
         send_welcome(order)
         return Response({"success": True, "order_id": order.id})
