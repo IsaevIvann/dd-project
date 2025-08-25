@@ -1,11 +1,12 @@
 import logging
 import requests
-from typing import Tuple, Callable
+from typing import Tuple, Callable, Optional
 from django.conf import settings
-from django.utils.timezone import localtime
+from django.utils.timezone import localtime, now
+from django.core.cache import cache
 from django.db import IntegrityError, transaction
 
-from .models import NotifyLock
+from .models import NotifyLock  # <— используем БД-замок
 
 log = logging.getLogger(__name__)
 
@@ -66,19 +67,46 @@ def _delivery_block(order):
         f"Дата/время доставки: {_fmt_dt(getattr(order, 'delivery_time', None))}",
     )
 
-# ---------- Антидубли на БД ----------
+# ---------- Жёсткая идемпотентность ----------
 
-def send_once(key: str, do_send: Callable[[], None]) -> bool:
+def _db_try_lock(key: str) -> bool:
     """
-    Выполнит do_send() только один раз на весь проект.
-    Гарантия через UNIQUE в таблице NotifyLock.
+    Пытается создать запись-замок с уникальным ключом.
+    True — замок создан (можно отправлять).
+    False — замок уже существует (дубль).
     """
     try:
         with transaction.atomic():
             NotifyLock.objects.create(key=key)
+            return True
     except IntegrityError:
-        log.info("send_once: duplicate key=%s (skipped)", key)
         return False
+    except Exception as e:
+        # если с БД что-то не так — не валим процесс, просто логируем
+        log.warning("NotifyLock DB error for key=%s: %s", key, e)
+        return True  # лучше отправить один лишний, чем потерять нотификацию
+
+def send_once(key: str, do_send: Callable[[], None], ttl_seconds: int = 120) -> bool:
+    """
+    Идемпотентная отправка:
+      1) сначала пробуем кэш (быстрый короткий заслон от повтора),
+      2) затем БД-замок (гарантия 'один раз' между процессами/воркерами),
+      3) выполняем do_send().
+    Возвращает True, если отправили; False — если пропустили как дубль.
+    """
+    # кэш как "первый барьер"
+    try:
+        if not cache.add(f"once:{key}", "1", timeout=ttl_seconds):
+            log.info("send_once: duplicate key=%s (cache)", key)
+            return False
+    except Exception as e:
+        log.warning("send_once: cache unavailable (%s), fallback to DB only", e)
+
+    # решающее слово — БД
+    if not _db_try_lock(key):
+        log.info("send_once: duplicate key=%s (db)", key)
+        return False
+
     try:
         do_send()
         return True
@@ -117,6 +145,7 @@ def _normalize_chat_ids(ids):
         s = str(x).strip()
         if s:
             out.append(s)
+    # dedup сохраняя порядок
     return list(dict.fromkeys(out))
 
 def _get_admin_chat_ids():
@@ -129,7 +158,7 @@ def _get_admin_chat_ids():
 def tg_send_to_admins(text: str) -> bool:
     ids = _get_admin_chat_ids()
     if not ids:
-        log.warning("tg_send_to_admins: no admin chat ids configured")
+        log.warning("tg_send_to_admins: no admin chat ids configured (ADMIN_TG_CHAT_ID/TELEGRAM_CHAT_IDS empty)")
         return False
     ok = True
     for cid in ids:
