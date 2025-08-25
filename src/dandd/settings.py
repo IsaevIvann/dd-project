@@ -2,15 +2,21 @@ import os
 from pathlib import Path
 import dj_database_url
 
-# === Base paths / .env ===
-BASE_DIR = Path(__file__).resolve().parent.parent
-# Подтягиваем переменные окружения из .env, если python-dotenv установлен
-try:
-    from dotenv import load_dotenv
-    load_dotenv(dotenv_path=BASE_DIR / ".env")
-except Exception:
-    pass
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Гарантированная загрузка .env
+try:
+    from dotenv import load_dotenv, find_dotenv  # pip install python-dotenv
+    # 1) пробуем BASE_DIR/.env
+    env_path = BASE_DIR / ".env"
+    load_dotenv(dotenv_path=env_path, override=True)
+    # 2) если переменные не появились — ищем .env вверх по дереву (в т.ч. если запускаешь из другого cwd)
+    if not os.getenv("DJANGO_SECRET_KEY") and not os.getenv("ADMIN_TG_CHAT_ID"):
+        load_dotenv(find_dotenv(filename=".env", usecwd=True), override=True)
+except Exception:
+    # не падаем, просто работаем с системным окружением
+    pass
 # --- Base ---
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
@@ -92,7 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # --- I18N/Time ---
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"   # при желании поменяем на Europe/Moscow
+TIME_ZONE = "Europe/Moscow"   # при желании поменяем на Europe/Moscow
 USE_I18N = True
 USE_TZ = True
 
