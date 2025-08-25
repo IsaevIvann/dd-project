@@ -1,8 +1,9 @@
 import logging
 import requests
-from typing import Tuple
+from typing import Tuple, Callable
 from django.conf import settings
 from django.utils.timezone import localtime
+from django.core.cache import cache
 
 log = logging.getLogger(__name__)
 
@@ -17,15 +18,12 @@ def _join(*parts):
 def _fmt_dt(dt):
     if not dt:
         return ""
-    # локальное время проекта (TIME_ZONE / USE_TZ)
     return localtime(dt).strftime("%d.%m.%Y %H:%M")
 
 def format_dt(dt) -> str:
-    """Публичный помощник для форматирования дат в письмах/логах."""
     return _fmt_dt(dt)
 
 def status_ru(value: str) -> str:
-    """Маппинг машинных статусов -> русский текст без эмодзи (для e‑mail/логов)."""
     mapping = {
         "draft": "Черновик",
         "confirmed": "Подтверждён",
@@ -38,7 +36,6 @@ def status_ru(value: str) -> str:
     return mapping.get(value, value)
 
 def _status_title(order, status_value: str) -> str:
-    """Титулы со значками (для TG)."""
     S = order.__class__.Status
     titles = {
         S.DRAFT: "📝 Черновик",
@@ -66,6 +63,28 @@ def _delivery_block(order):
         f"Адрес доставки: {_val(order.delivery_address)}",
         f"Дата/время доставки: {_fmt_dt(getattr(order, 'delivery_time', None))}",
     )
+
+# ---------- Антидубли (идемпотентность) ----------
+
+def send_once(key: str, do_send: Callable[[], None], ttl_seconds: int = 90) -> bool:
+    """
+    Гарантирует, что действие выполнится один раз на TTL.
+    Возвращает True, если отправка выполнена, False — если пропущена как дубль.
+    """
+    try:
+        added = cache.add(key, "1", timeout=ttl_seconds)
+    except Exception as e:
+        log.warning("send_once: cache unavailable (%s), proceeding without dedup", e)
+        added = True
+    if not added:
+        log.info("send_once: skip duplicate key=%s", key)
+        return False
+    try:
+        do_send()
+        return True
+    except Exception as e:
+        log.error("send_once: send error for key=%s: %s", key, e)
+        return False
 
 # ---------- Отправка в Telegram ----------
 
@@ -98,18 +117,16 @@ def _normalize_chat_ids(ids):
         s = str(x).strip()
         if s:
             out.append(s)
-    return list(dict.fromkeys(out))  # dedup c сохранением порядка
+    return list(dict.fromkeys(out))  # dedup
 
 def _get_admin_chat_ids():
-    # приоритетный одиночный чат
     single = getattr(settings, "ADMIN_TG_CHAT_ID", "")
     if single:
         return _normalize_chat_ids(single)
-    # запасной список
     ids = getattr(settings, "TELEGRAM_CHAT_IDS", [])
     return _normalize_chat_ids(ids)
 
-def tg_send_to_admins(text: str):
+def tg_send_to_admins(text: str) -> bool:
     ids = _get_admin_chat_ids()
     if not ids:
         log.warning("tg_send_to_admins: no admin chat ids configured (ADMIN_TG_CHAT_ID/TELEGRAM_CHAT_IDS empty)")
@@ -147,12 +164,10 @@ def format_status_message(order, old_status=None):
     )
 
 def send_status_update(order, old_status=None):
-    """Клиентский TG при смене статуса (только если привязан чат)."""
     text = format_status_message(order, old_status)
     return tg_send_to_order(order, text)
 
 def send_welcome(order):
-    """Клиентское приветствие при привязке чата."""
     text = _join(
         "👋 Готово! Мы будем присылать обновления по вашему заказу.",
         f"Заказ #{order.pk}",
@@ -168,7 +183,6 @@ def build_deeplink_for_order(order_id: int) -> str:
     return f"https://t.me/{username}?start=order_{order_id}"
 
 def format_admin_new_order(order):
-    """Шаблон 'Новый заказ' для админов в TG."""
     return _join(
         "🆕 Новый заказ",
         f"Заказ #{order.pk}",

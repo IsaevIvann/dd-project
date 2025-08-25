@@ -153,3 +153,11 @@ LOGGING = {
         "level": LOG_LEVEL,
     },
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "dd_cache",   # имя таблицы в БД
+        "TIMEOUT": 300,           # по умолчанию 5 минут
+    }
+}

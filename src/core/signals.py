@@ -13,12 +13,13 @@ from .notify import (
     send_status_update,
     status_ru,
     format_dt,
+    send_once,
 )
 
 log = logging.getLogger(__name__)
 log.warning("core.signals imported (enhanced)")
 
-# ---------- E-mail отправка ----------
+# ---------- Email ----------
 
 def email_send(subject: str, message: str, to: str):
     try:
@@ -34,16 +35,20 @@ def email_send(subject: str, message: str, to: str):
 
 # ---------- Создание заказа ----------
 
-@receiver(post_save, sender=Order, weak=False, dispatch_uid="order_created_admin_email")
+@receiver(post_save, sender=Order, weak=False, dispatch_uid="order_created_admin_email_v2")
 def order_created_admin_email(sender, instance: Order, created: bool, **kwargs):
     if not created:
         return
 
-    # TG админам — после коммита
-    transaction.on_commit(lambda: tg_send_to_admins(format_admin_new_order(instance)))
+    # ключ для антидубля (на случай двойного импорта сигналов/нескольких воркеров)
+    dedup_key = f"notify:order:{instance.pk}:created"
 
-    # Письмо клиенту — русское, с красивыми датами
-    if instance.email:
+    def _send_admin():
+        tg_send_to_admins(format_admin_new_order(instance))
+
+    def _send_client_email():
+        if not instance.email:
+            return
         body = (
             f"Здравствуйте, {instance.name}!\n\n"
             f"Ваша заявка #{instance.pk} успешно принята. Мы свяжемся с вами для уточнения деталей.\n\n"
@@ -53,15 +58,14 @@ def order_created_admin_email(sender, instance: Order, created: bool, **kwargs):
             f"{('Дата/время доставки: ' + format_dt(getattr(instance, 'delivery_time', None)) + '\\n') if getattr(instance, 'delivery_time', None) else ''}"
             f"\nСпасибо, что выбрали Drop & Delivery!"
         )
-        transaction.on_commit(lambda: email_send(
-            f"Заявка №{instance.pk} принята",
-            body,
-            instance.email
-        ))
+        email_send(f"Заявка №{instance.pk} принята", body, instance.email)
+
+    transaction.on_commit(lambda: send_once(dedup_key + ":admins", _send_admin))
+    transaction.on_commit(lambda: send_once(dedup_key + ":client_email", _send_client_email))
 
 # ---------- Изменение статуса ----------
 
-@receiver(pre_save, sender=Order, weak=False, dispatch_uid="order_status_changed_both")
+@receiver(pre_save, sender=Order, weak=False, dispatch_uid="order_status_changed_both_v2")
 def order_status_changed_both(sender, instance: Order, **kwargs):
     # только для существующих заявок
     if not instance.pk:
@@ -78,13 +82,21 @@ def order_status_changed_both(sender, instance: Order, **kwargs):
 
     log.warning("pre_save fired: id=%s %s -> %s", instance.pk, old_status, new_status)
 
-    # TG админам — русский шаблон с датами
-    transaction.on_commit(lambda: tg_send_to_admins(format_status_message(instance, old_status)))
+    dedup_base = f"notify:order:{instance.pk}:status:{old_status}->{new_status}"
 
-    # TG клиенту — если привязан чат
-    transaction.on_commit(lambda: send_status_update(instance, old_status))
+    # TG админам
+    transaction.on_commit(lambda: send_once(
+        dedup_base + ":admins",
+        lambda: tg_send_to_admins(format_status_message(instance, old_status))
+    ))
 
-    # Письмо клиенту — русский текст + формат дат
+    # TG клиенту (если привязан чат)
+    transaction.on_commit(lambda: send_once(
+        dedup_base + ":client_tg",
+        lambda: send_status_update(instance, old_status)
+    ))
+
+    # Email клиенту — с русскими статусами
     if instance.email:
         old_ru = status_ru(old_status)
         new_ru = status_ru(new_status)
@@ -110,8 +122,7 @@ def order_status_changed_both(sender, instance: Order, **kwargs):
             f"Спасибо, что выбрали Drop & Delivery!"
         )
 
-        transaction.on_commit(lambda: email_send(
-            f"Заказ №{instance.pk}: статус изменён",
-            body,
-            instance.email
+        transaction.on_commit(lambda: send_once(
+            dedup_base + ":client_email",
+            lambda: email_send(f"Заказ №{instance.pk}: статус изменён", body, instance.email)
         ))
