@@ -16,37 +16,39 @@
             /* общий серый placeholder */
             .form-control::placeholder{color:#9aa6b2;opacity:1}
 
-            /* оболочка для «аккуратного» placeholder у datetime-local */
+            /* аккуратный placeholder для datetime-local */
             .dtl-wrap{position:relative}
             .dtl-wrap .fake-ph{
               position:absolute;left:12px;top:50%;transform:translateY(-50%);
               color:#9aa6b2;pointer-events:none;transition:opacity .18s ease;
               font-size:1rem;line-height:1
             }
-            /* подвинем иконку календаря ближе к тексту */
-            .dtl-wrap input.form-control{padding-right:1.9rem} /* было 2.4rem */
+
+            /* иконку календаря подвинем ближе к тексту */
+            .dtl-wrap input.form-control{padding-right:1.9rem}
             .dtl-wrap input[type="datetime-local"]::-webkit-calendar-picker-indicator{
-              transform:translateX(-8px); /* «на 8px ближе» к тексту */
-              cursor:pointer;
+              transform:translateX(-8px);cursor:pointer;
             }
 
+            /* скрыть наш фейковый плейсхолдер при фокусе/значении */
             .dtl-wrap.filled .fake-ph,
             .dtl-wrap.focused .fake-ph{opacity:0}
 
-            /* скрываем нативный «ДД.ММ.ГГГГ …» пока поле пустое (WebKit/Chromium) */
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-text,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-year-field,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-month-field,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-day-field,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-minute-field,
-            .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-ampm-field{
+            /* ВАЖНО: скрываем нативные сегменты ТОЛЬКО когда нет значения И НЕТ ФОКУСА.
+               При фокусе они сразу показываются и обновляются посимвольно. */
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-text,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-year-field,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-month-field,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-day-field,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-minute-field,
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-ampm-field{
               color:transparent;opacity:0
             }
-            /* фолбэк */
-            .dtl-wrap:not(.filled) input[type="datetime-local"]{color:transparent}
+            /* фолбэк для некоторых реализаций */
+            .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]{color:transparent}
             .dtl-wrap.filled input[type="datetime-local"]{color:inherit}
 
             /* калькулятор — счётчик */
@@ -181,7 +183,7 @@
             <!-- Комментарий -->
             <div class="col-12">
               <label for="id_comment" class="form-label"><i class="bi bi-chat-dots"></i> Комментарий</label>
-              {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания, дополнительные комментарии, особенности багажа и т.п." }}
+              {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания по времени, приметы места и т.п." }}
               {{ form.comment.errors }}
             </div>
           </div>
@@ -235,7 +237,7 @@
     hook('wrap_delivery','id_delivery_time');
   })();
 
-  /* — расчёт стоимости (как было) — */
+  /* — расчёт стоимости — */
   function calcOrderTotal(items,storageDays,zoneK){
     items=Math.max(1,parseInt(items||1,10));
     storageDays=Math.max(0,parseInt(storageDays||0,10));
