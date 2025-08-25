@@ -3,7 +3,9 @@ import requests
 from typing import Tuple, Callable
 from django.conf import settings
 from django.utils.timezone import localtime
-from django.core.cache import cache
+from django.db import IntegrityError, transaction
+
+from .models import NotifyLock
 
 log = logging.getLogger(__name__)
 
@@ -64,20 +66,18 @@ def _delivery_block(order):
         f"Дата/время доставки: {_fmt_dt(getattr(order, 'delivery_time', None))}",
     )
 
-# ---------- Антидубли (идемпотентность) ----------
+# ---------- Антидубли на БД ----------
 
-def send_once(key: str, do_send: Callable[[], None], ttl_seconds: int = 90) -> bool:
+def send_once(key: str, do_send: Callable[[], None]) -> bool:
     """
-    Гарантирует, что действие выполнится один раз на TTL.
-    Возвращает True, если отправка выполнена, False — если пропущена как дубль.
+    Выполнит do_send() только один раз на весь проект.
+    Гарантия через UNIQUE в таблице NotifyLock.
     """
     try:
-        added = cache.add(key, "1", timeout=ttl_seconds)
-    except Exception as e:
-        log.warning("send_once: cache unavailable (%s), proceeding without dedup", e)
-        added = True
-    if not added:
-        log.info("send_once: skip duplicate key=%s", key)
+        with transaction.atomic():
+            NotifyLock.objects.create(key=key)
+    except IntegrityError:
+        log.info("send_once: duplicate key=%s (skipped)", key)
         return False
     try:
         do_send()
@@ -117,7 +117,7 @@ def _normalize_chat_ids(ids):
         s = str(x).strip()
         if s:
             out.append(s)
-    return list(dict.fromkeys(out))  # dedup
+    return list(dict.fromkeys(out))
 
 def _get_admin_chat_ids():
     single = getattr(settings, "ADMIN_TG_CHAT_ID", "")
@@ -129,7 +129,7 @@ def _get_admin_chat_ids():
 def tg_send_to_admins(text: str) -> bool:
     ids = _get_admin_chat_ids()
     if not ids:
-        log.warning("tg_send_to_admins: no admin chat ids configured (ADMIN_TG_CHAT_ID/TELEGRAM_CHAT_IDS empty)")
+        log.warning("tg_send_to_admins: no admin chat ids configured")
         return False
     ok = True
     for cid in ids:

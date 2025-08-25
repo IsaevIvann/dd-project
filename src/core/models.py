@@ -1,5 +1,4 @@
 import uuid
-
 from django.db import models
 from django.utils import timezone
 
@@ -14,7 +13,6 @@ class Order(models.Model):
         DELIVERED = "delivered", "Доставлено"
         CANCELED = "canceled", "Отменён"
 
-
     # Клиент
     name = models.CharField("Имя", max_length=120)
     phone = models.CharField("Телефон", max_length=32)
@@ -24,12 +22,12 @@ class Order(models.Model):
 
     # Логистика
     pickup_address = models.CharField("Адрес забора", max_length=255)
-    pickup_time = models.DateTimeField("Время забора", null=True, blank=True)  # старое поле — не ломаем формы
+    pickup_time = models.DateTimeField("Время забора", null=True, blank=True)
     pickup_time_from = models.DateTimeField("Окно забора: с", null=True, blank=True)
     pickup_time_to = models.DateTimeField("Окно забора: до", null=True, blank=True)
 
     delivery_address = models.CharField("Адрес доставки", max_length=255)
-    delivery_time = models.DateTimeField("Время доставки", null=True, blank=True)  # старое поле — не ломаем формы
+    delivery_time = models.DateTimeField("Время доставки", null=True, blank=True)
     delivery_time_from = models.DateTimeField("Окно доставки: с", null=True, blank=True)
     delivery_time_to = models.DateTimeField("Окно доставки: до", null=True, blank=True)
 
@@ -49,21 +47,14 @@ class Order(models.Model):
     consent = models.BooleanField(default=False, help_text="Согласие на обработку ПДн")
     consent_at = models.DateTimeField(null=True, blank=True)
 
-
     # Состояние/служебное
     status = models.CharField(
-        "Статус",
-        max_length=20,
-        choices=Status.choices,
-        default=Status.DRAFT,
-        db_index=True,
+        "Статус", max_length=20, choices=Status.choices, default=Status.DRAFT, db_index=True
     )
     comment = models.TextField("Комментарий", blank=True)
 
     public_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     telegram_chat_id = models.CharField(max_length=32, blank=True, null=True)
-
-
 
     class Meta:
         verbose_name = "Заявка"
@@ -73,23 +64,32 @@ class Order(models.Model):
     def __str__(self):
         return f"#{self.id} {self.name} — {self.pickup_address} → {self.delivery_address}"
 
-    # Утилита: безопасная смена статуса (на будущее)
     def set_status(self, new_status: str, save: bool = True):
         self.status = new_status
         if save:
             self.save(update_fields=["status", "updated_at"])
 
     def save(self, *args, **kwargs):
-        # автопроставим время согласия, если чекбокс выставлен
         if self.consent_pdn and not self.consent_ts:
             self.consent_ts = timezone.now()
         super().save(*args, **kwargs)
-
 
     def set_consent(self, value: bool):
         self.consent = bool(value)
         self.consent_at = timezone.now() if self.consent else None
 
 
+class NotifyLock(models.Model):
+    """
+    Глобальная идемпотентность уведомлений.
+    Один и тот же key может быть создан только один раз (UNIQUE).
+    """
+    key = models.CharField(max_length=255, unique=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Замок уведомления"
+        verbose_name_plural = "Замки уведомлений"
 
+    def __str__(self):
+        return self.key
