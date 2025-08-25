@@ -13,10 +13,11 @@
           {{ form.non_field_errors }}
 
           <style>
-            .form-control::placeholder { color:#9aa6b2; opacity:1; }
+            .form-control::placeholder { color:#9aa6b2; opacity:1; } /* серые плейсхолдеры */
           </style>
 
           <div class="row g-3">
+            <!-- Контакты -->
             <div class="col-12">
               <label for="id_name" class="form-label"><i class="bi bi-person-circle"></i> Имя</label>
               {{ form.name|add_class:"form-control"|attr:"placeholder:Иван Иванов" }}
@@ -47,9 +48,10 @@
               {{ form.whatsapp.errors }}
             </div>
 
+            <!-- Логистика -->
             <div class="col-12 mt-2">
               <label for="id_pickup_address" class="form-label"><i class="bi bi-geo-alt"></i> Адрес забора</label>
-              {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Отель, улица и дом"|attr:"id:id_pickup_address" }}
+              {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Адрес / аэропорт / вокзал"|attr:"id:id_pickup_address" }}
               {{ form.pickup_address.errors }}
             </div>
 
@@ -61,7 +63,7 @@
 
             <div class="col-12">
               <label for="id_delivery_address" class="form-label"><i class="bi bi-geo"></i> Адрес доставки</label>
-              {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Аэропорт/вокзал или адрес"|attr:"id:id_delivery_address" }}
+              {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Адрес / аэропорт / вокзал"|attr:"id:id_delivery_address" }}
               {{ form.delivery_address.errors }}
             </div>
 
@@ -117,6 +119,7 @@
               </div>
             </div>
 
+            <!-- Комментарий -->
             <div class="col-12">
               <label for="id_comment" class="form-label"><i class="bi bi-chat-dots"></i> Комментарий</label>
               {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания по времени, приметы места и т.п." }}
@@ -124,6 +127,7 @@
             </div>
           </div>
 
+          <!-- Согласие -->
           <div class="mt-3">
             <div class="form-check mt-3">
               {{ form.consent_pdn.errors }}
@@ -186,7 +190,7 @@
     else base = 4500 + (items - 7) * 500;
 
     const baseWithZone = Math.round(base * zoneK);
-    const storage = storageDays * 500;          // 1-е сутки бесплатны — это учтём при вычислении storageDays
+    const storage = storageDays * 500;          // 1-е сутки бесплатны — учитываем отдельно (storageDays уже без 1-х суток)
     const total = baseWithZone + storage;
 
     return { base, baseWithZone, storage, total };
@@ -194,13 +198,10 @@
 
   /* ===== Хелперы ===== */
   function parseLocalDateTime(str){
-    // ожидание вводимого Django widget'ом "YYYY-MM-DD HH:MM" или "DD.MM.YYYY, HH:MM" — постараемся съесть оба формата
     if(!str) return null;
     let d = null;
-    // Вариант 1: 2025-08-29 16:45
     const iso = str.trim().replace(' ', 'T');
     if(!isNaN(Date.parse(iso))) d = new Date(iso);
-    // Вариант 2: 29.08.2025, 16:45
     if(!d || isNaN(d)) {
       const m = str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}).*?(\d{1,2}):(\d{2})/);
       if (m){
@@ -215,53 +216,48 @@
     if(!pickup || !delivery) return 0;
     const ms = delivery - pickup;
     if (ms <= 0) return 0;
-    const days = Math.ceil(ms / (24*60*60*1000));     // округляем вверх
-    return Math.max(0, days - 1);                     // 1-е сутки бесплатно
+    const days = Math.ceil(ms / (24*60*60*1000));
+    return Math.max(0, days - 1); // первые сутки бесплатно
   }
 
-  // Простая эвристика зоны без API: по ключевым словам
+  // Простая эвристика зоны без внешних API
   const MOSCOW_MARKERS = [" москва","москва","МКАД","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский","вокзал"];
-  const MO_TOWNS = ["одинцово","химки","мытищи","люберцы","балашиха","красногорск","королёв","королев","подольск","реутов","видное","долгопрудный","долгопруднен","лобня","домодедово","одинцов","котельники","мытич","таможня","ленинский район","мысковская обл","московская область","обл."]; // намеренно с вариациями
+  const MO_TOWNS = ["одинцово","химки","мытищи","люберцы","балашиха","красногорск","королёв","королев","подольск","реутов","видное","долгопрудный","лобня","домодедово","котельники","область","обл."];
 
   function detectZoneByText(addrPickup, addrDelivery){
     const t = ((addrPickup||"") + " " + (addrDelivery||"")).toLowerCase();
     const inMoscow = MOSCOW_MARKERS.some(k => t.includes(k.toLowerCase()));
-    const inMO = MO_TOWNS.some(k => t.includes(k.toLowerCase())) || t.includes("область") || t.includes("обл.");
-    if (inMO && !inMoscow) return 1.5; // если явно область и нет явной Москвы
-    return 1.0; // по умолчанию Москва/аэропорты/вокзалы
+    const inMO = MO_TOWNS.some(k => t.includes(k.toLowerCase())) || t.includes("московская область");
+    if (inMO && !inMoscow) return 1.5;
+    return 1.0;
   }
 
-  function formatRub(n){
-    return n.toLocaleString('ru-RU') + " ₽";
-  }
+  function formatRub(n){ return n.toLocaleString('ru-RU') + " ₽"; }
 
   /* ===== Привязка к форме ===== */
   (function(){
-    const itemsInput = document.getElementById('order-items');
-    const itemsPlus = document.getElementById('itemsPlus');
-    const itemsMinus = document.getElementById('itemsMinus');
-    const hiddenItemsField = document.getElementById('id_items_count'); // может не быть в форме
-    const totalEl = document.getElementById('order-total');
-    const zonePill = document.getElementById('zonePill');
-    const zoneNote = document.getElementById('zoneNote');
-    const zoneCoefInput = document.getElementById('zone_coef');
+    const itemsInput   = document.getElementById('order-items');
+    const itemsPlus    = document.getElementById('itemsPlus');
+    const itemsMinus   = document.getElementById('itemsMinus');
+    const hiddenItems  = document.getElementById('id_items_count'); // может не быть в форме
+    const totalEl      = document.getElementById('order-total');
+    const zonePill     = document.getElementById('zonePill');
+    const zoneNote     = document.getElementById('zoneNote');
+    const zoneCoefInput= document.getElementById('zone_coef');
     const estCostInput = document.getElementById('estimated_cost');
 
-    const pickupAddr = document.getElementById('id_pickup_address');
+    const pickupAddr   = document.getElementById('id_pickup_address');
     const deliveryAddr = document.getElementById('id_delivery_address');
-    const pickupTime = document.getElementById('id_pickup_time');
+    const pickupTime   = document.getElementById('id_pickup_time');
     const deliveryTime = document.getElementById('id_delivery_time');
 
-    function syncItemsToForm(){
-      if(hiddenItemsField) hiddenItemsField.value = itemsInput.value;
-    }
+    function syncItems(){ if(hiddenItems) hiddenItems.value = itemsInput.value; }
 
     function currentZoneK(){
-      const k = detectZoneByText(pickupAddr?.value, deliveryAddr?.value);
-      return k;
+      return detectZoneByText(pickupAddr?.value, deliveryAddr?.value);
     }
 
-    function rerenderZoneBadge(k){
+    function renderZone(k){
       zoneCoefInput.value = String(k);
       if (k === 1.0){
         zonePill.className = "badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2";
@@ -276,7 +272,7 @@
 
     function recalc(){
       const k = currentZoneK();
-      rerenderZoneBadge(k);
+      renderZone(k);
 
       const pick = parseLocalDateTime(pickupTime?.value);
       const drop = parseLocalDateTime(deliveryTime?.value);
@@ -287,10 +283,9 @@
 
       totalEl.textContent = formatRub(total);
       estCostInput.value = total;
-      syncItemsToForm();
+      syncItems();
     }
 
-    // события
     itemsPlus?.addEventListener('click', ()=>{ itemsInput.value = Math.min(99, (parseInt(itemsInput.value||"1",10)+1)); recalc(); });
     itemsMinus?.addEventListener('click', ()=>{ itemsInput.value = Math.max(1,  (parseInt(itemsInput.value||"1",10)-1)); recalc(); });
     itemsInput?.addEventListener('input', recalc);
@@ -300,8 +295,7 @@
       el && el.addEventListener('change', recalc);
     });
 
-    // первичный расчёт
-    recalc();
+    recalc(); // первичный расчёт
   })();
 </script>
 {% endblock %}
