@@ -13,22 +13,27 @@
           {{ form.non_field_errors }}
 
           <style>
-            /* общий серый placeholder у обычных инпутов */
+            /* общий серый placeholder */
             .form-control::placeholder{color:#9aa6b2;opacity:1}
 
-            /* оболочка для аккуратного плейсхолдера у datetime-local */
+            /* оболочка для «аккуратного» placeholder у datetime-local */
             .dtl-wrap{position:relative}
             .dtl-wrap .fake-ph{
               position:absolute;left:12px;top:50%;transform:translateY(-50%);
               color:#9aa6b2;pointer-events:none;transition:opacity .18s ease;
               font-size:1rem;line-height:1
             }
-            .dtl-wrap input.form-control{padding-right:2.4rem}
+            /* подвинем иконку календаря ближе к тексту */
+            .dtl-wrap input.form-control{padding-right:1.9rem} /* было 2.4rem */
+            .dtl-wrap input[type="datetime-local"]::-webkit-calendar-picker-indicator{
+              transform:translateX(-8px); /* «на 8px ближе» к тексту */
+              cursor:pointer;
+            }
+
             .dtl-wrap.filled .fake-ph,
             .dtl-wrap.focused .fake-ph{opacity:0}
 
-            /* Скрываем НАТИВНЫЙ текст формата у datetime-local,
-               пока поле пустое (.dtl-wrap:not(.filled)) — WebKit/Chromium */
+            /* скрываем нативный «ДД.ММ.ГГГГ …» пока поле пустое (WebKit/Chromium) */
             .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit,
             .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
             .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-text,
@@ -40,11 +45,11 @@
             .dtl-wrap:not(.filled) input[type="datetime-local"]::-webkit-datetime-edit-ampm-field{
               color:transparent;opacity:0
             }
-            /* На всякий случай — общий фолбэк (другие движки) */
+            /* фолбэк */
             .dtl-wrap:not(.filled) input[type="datetime-local"]{color:transparent}
             .dtl-wrap.filled input[type="datetime-local"]{color:inherit}
 
-            /* Калькулятор: счётчик */
+            /* калькулятор — счётчик */
             .dd-calc .qty{
               display:flex;align-items:center;gap:8px;width:240px;max-width:100%;
               background:#fff;border:1px solid #e5e7eb;border-radius:14px;
@@ -176,7 +181,7 @@
             <!-- Комментарий -->
             <div class="col-12">
               <label for="id_comment" class="form-label"><i class="bi bi-chat-dots"></i> Комментарий</label>
-              {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания по времени, приметы места и т.п." }}
+              {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания, дополнительные комментарии, особенности багажа и т.п." }}
               {{ form.comment.errors }}
             </div>
           </div>
@@ -210,14 +215,14 @@
 </div>
 
 <script>
-  /* === Активируем "фейковый" placeholder у datetime-local === */
+  /* — Активируем «фейковый» placeholder у datetime-local — */
   (function(){
-    function hook(idWrap,idInput){
-      const wrap=document.getElementById(idWrap);
-      const inp=document.getElementById(idInput);
+    function hook(wrapId,inputId){
+      const wrap=document.getElementById(wrapId);
+      const inp=document.getElementById(inputId);
       if(!wrap||!inp) return;
       function refresh(){
-        if (inp.value && inp.value.trim()!=="") wrap.classList.add('filled');
+        if(inp.value && inp.value.trim()!=="") wrap.classList.add('filled');
         else wrap.classList.remove('filled');
       }
       inp.addEventListener('focus',()=>wrap.classList.add('focused'));
@@ -230,8 +235,8 @@
     hook('wrap_delivery','id_delivery_time');
   })();
 
-  /* ===== Расчёт стоимости ===== */
-  function calcOrderTotal(items, storageDays, zoneK){
+  /* — расчёт стоимости (как было) — */
+  function calcOrderTotal(items,storageDays,zoneK){
     items=Math.max(1,parseInt(items||1,10));
     storageDays=Math.max(0,parseInt(storageDays||0,10));
     zoneK=parseFloat(zoneK||'1.0');
@@ -244,7 +249,6 @@
     const total=baseWithZone+storage;
     return {base,baseWithZone,storage,total};
   }
-
   function parseLocalDateTime(str){
     if(!str) return null;
     let d=null;
@@ -263,16 +267,13 @@
     const days=Math.ceil(ms/(24*60*60*1000));
     return Math.max(0,days-1);
   }
-
   const MOSCOW_MARKERS=[" москва","москва","МКАД","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский","вокзал"];
   const MO_TOWNS=["одинцово","химки","мытищи","люберцы","балашиха","красногорск","королёв","королев","подольск","реутов","видное","долгопрудный","лобня","домодедово","котельники","область","обл."];
-
   function detectZoneByText(a,b){
     const t=((a||"")+" "+(b||"")).toLowerCase();
-    const inMoscow=MOSCOW_MARKERS.some(k=>t.includes(k.toLowerCase()));
-    const inMO=MO_TOWNS.some(k=>t.includes(k.toLowerCase()))||t.includes("московская область");
-    if(inMO && !inMoscow) return 1.5;
-    return 1.0;
+    const inMoscow=MOSCOW_MARKERS.some(k=>t.includes(k));
+    const inMO=MO_TOWNS.some(k=>t.includes(k))||t.includes("московская область");
+    return (inMO && !inMoscow)?1.5:1.0;
   }
   function formatRub(n){return n.toLocaleString('ru-RU')+" ₽";}
 
@@ -312,7 +313,8 @@
       const items=parseInt(itemsInput.value||"1",10);
       const {total}=calcOrderTotal(items,storage,k);
       totalEl.textContent=formatRub(total);
-      estCostInput.value=total; syncItems();
+      estCostInput.value=total;
+      syncItems();
     }
 
     itemsPlus?.addEventListener('click',()=>{itemsInput.value=Math.min(99,(parseInt(itemsInput.value||"1",10)+1));recalc();});
