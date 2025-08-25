@@ -2,7 +2,14 @@ import os
 from pathlib import Path
 import dj_database_url
 
+# === Base paths / .env ===
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Подтягиваем переменные окружения из .env, если python-dotenv установлен
+try:
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path=BASE_DIR / ".env")
+except Exception:
+    pass
 
 # --- Base ---
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-change-me")
@@ -85,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # --- I18N/Time ---
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+TIME_ZONE = "UTC"   # при желании поменяем на Europe/Moscow
 USE_I18N = True
 USE_TZ = True
 
@@ -101,12 +108,22 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # --- Telegram / Email ---
+def _split_ids(s: str) -> list[str]:
+    return [x.strip() for x in s.split(",") if x.strip()]
+
 TELEGRAM_BOT_NAME = os.getenv("TELEGRAM_BOT_NAME", "")
-ADMIN_TG_CHAT_ID = os.getenv("ADMIN_TG_CHAT_ID", "")
-TELEGRAM_CHAT_IDS = os.getenv("TELEGRAM_CHAT_IDS", "").split(",") if os.getenv("TELEGRAM_CHAT_IDS") else []
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_WEBHOOK_SECRET = os.getenv("TELEGRAM_WEBHOOK_SECRET", "")
 TELEGRAM_SHARED_TOKEN = os.getenv("TELEGRAM_SHARED_TOKEN", "")
+
+# приоритетный одиночный admin chat id из .env
+ADMIN_TG_CHAT_ID = os.getenv("ADMIN_TG_CHAT_ID", "").strip()
+# запасной список (может быть пуст)
+TELEGRAM_CHAT_IDS = _split_ids(os.getenv("TELEGRAM_CHAT_IDS", ""))
+
+# гарантируем, что одиночный ADMIN_TG_CHAT_ID попадает в список первым
+if ADMIN_TG_CHAT_ID and ADMIN_TG_CHAT_ID not in TELEGRAM_CHAT_IDS:
+    TELEGRAM_CHAT_IDS.insert(0, ADMIN_TG_CHAT_ID)
 
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.yandex.ru")

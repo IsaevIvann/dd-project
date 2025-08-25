@@ -19,6 +19,7 @@ whitenoise = "^6.9.0"
 dj-database-url = "^3.0.1"
 psycopg = {extras = ["binary"], version = "^3.2.9"}
 middleware = "^1.2.3"
+dotenv = "^0.9.9"
 
 
 [build-system]
