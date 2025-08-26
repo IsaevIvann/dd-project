@@ -1,24 +1,9 @@
+import logging
 from django.contrib import admin
 from django.db import transaction
-from django.core.mail import send_mail
-from django.conf import settings
 from .models import Order
-from .notify import send_status_update
 
-
-def email_send(subject: str, message: str, to: str):
-    if not to:
-        return
-    try:
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [to],
-            fail_silently=False,
-        )
-    except Exception as e:
-        admin.logger.error(f"Email send error: {e}")
+logger = logging.getLogger(__name__)
 
 
 @admin.register(Order)
@@ -50,9 +35,7 @@ class OrderAdmin(admin.ModelAdmin):
                 ("delivery_time", "delivery_time_from", "delivery_time_to"),
             )
         }),
-        ("Фиксация", {
-            "fields": ("seal_numbers", "photos")
-        }),
+        ("Фиксация", {"fields": ("seal_numbers", "photos")}),
         ("Статус и служебные", {
             "fields": (("status", "promo_code"), "comment", ("consent_pdn", "consent_ts"),
                        ("created_at", "updated_at"))
@@ -64,36 +47,19 @@ class OrderAdmin(admin.ModelAdmin):
         "mark_out_for_delivery", "mark_delivered", "mark_canceled",
     ]
 
+    # ВАЖНО: не рассылаем уведомления из админки — это делает сигнал.
     def save_model(self, request, obj, form, change):
-        old_status = None
-        if change:
-            try:
-                old_status = type(obj).objects.only("status").get(pk=obj.pk).status
-            except type(obj).DoesNotExist:
-                pass
         super().save_model(request, obj, form, change)
-        if change and old_status is not None and old_status != obj.status:
-            transaction.on_commit(lambda: self._notify_all(obj, old_status))
 
     # ==== Массовые действия ====
     def _bulk_status_change(self, request, qs, new_status):
+        # Без своих уведомлений; сигнал сам отправит после фиксации транзакции.
         for obj in qs:
             old = obj.status
+            if old == new_status:
+                continue
             obj.status = new_status
             obj.save(update_fields=["status"])
-            if old != obj.status:
-                transaction.on_commit(lambda o=obj, s_old=old: self._notify_all(o, s_old))
-
-    def _notify_all(self, order, old_status):
-        send_status_update(order, old_status)  # Telegram
-        if order.email:
-            email_send(
-                f"Заказ №{order.pk}: статус изменён",
-                f"Здравствуйте, {order.name}!\n\n"
-                f"Статус вашего заказа изменился:\n{old_status} → {order.status}\n\n"
-                f"Спасибо, что выбрали Drop & Delivery!",
-                order.email
-            )
 
     @admin.action(description="Статус → Подтверждён")
     def mark_confirmed(self, request, qs):
