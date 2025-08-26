@@ -82,6 +82,22 @@ def order_status_changed_once(sender, instance: Order, **kwargs):
     new_status = instance.status
     if old_status == new_status:
         return
+    if instance.telegram_chat_id and instance.last_client_status_notified == new_status:
+        return
+
+    def _notify_client():
+        from .notify import send_status_update
+        ok = send_status_update(instance, old_status)
+        # отметим, чтобы второй раз не посылать
+        if ok[0]:
+            type(instance).objects.filter(pk=instance.pk).update(
+                last_client_status_notified=new_status
+            )
+
+    transaction.on_commit(lambda: send_once(
+        key_base + ":client_tg",
+        _notify_client
+    ))
 
     log.warning("pre_save fired: id=%s %s -> %s", instance.pk, old_status, new_status)
     key_base = f"notify:order:{instance.pk}:status:{old_status}->{new_status}"

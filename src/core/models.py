@@ -55,6 +55,8 @@ class Order(models.Model):
 
     public_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     telegram_chat_id = models.CharField(max_length=32, blank=True, null=True)
+    last_client_status_notified = models.CharField(max_length=32, blank=True, default="")
+
 
     class Meta:
         verbose_name = "Заявка"
