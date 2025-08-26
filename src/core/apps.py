@@ -8,5 +8,5 @@ class CoreConfig(AppConfig):
     name = "core"
 
     def ready(self):
-        log.warning("CoreConfig.ready() called")   # <— увидите в консоли
+        log.warning("CoreConfig.ready() called")
         from . import signals  # noqa
