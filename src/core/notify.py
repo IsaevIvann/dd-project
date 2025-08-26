@@ -149,9 +149,6 @@ def _normalize_chat_ids(ids):
     return list(dict.fromkeys(out))
 
 def _get_admin_chat_ids():
-    single = getattr(settings, "ADMIN_TG_CHAT_ID", "")
-    if single:
-        return _normalize_chat_ids(single)
     ids = getattr(settings, "TELEGRAM_CHAT_IDS", [])
     return _normalize_chat_ids(ids)
 
@@ -169,9 +166,16 @@ def tg_send_to_admins(text: str) -> bool:
     return ok
 
 def tg_send_to_order(order, text: str) -> Tuple[bool, int, str]:
-    chat_id = getattr(order, "telegram_chat_id", None)
+    chat_id = str(getattr(order, "telegram_chat_id", "") or "").strip()
     if not chat_id:
         return (False, 0, "Order has no telegram_chat_id")
+
+    # NEW: если чат клиента — это админский чат, не дублируем
+    admin_ids = set(_get_admin_chat_ids())
+    if chat_id and chat_id in admin_ids:
+        log.info("tg_send_to_order: skip (client chat is admin chat) chat_id=%s", chat_id)
+        return (False, 0, "client chat equals admin chat")
+
     return tg_send(text, chat_id)
 
 # ---------- Шаблоны сообщений для TG ----------
@@ -220,3 +224,5 @@ def format_admin_new_order(order):
         _pickup_block(order),
         _delivery_block(order),
     )
+
+
