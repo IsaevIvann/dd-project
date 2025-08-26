@@ -164,3 +164,10 @@ CACHES = {
         "TIMEOUT": 300,           # по умолчанию 5 минут
     }
 }
+
+LOGGING["loggers"] = {
+    **LOGGING.get("loggers", {}),
+    "core.signals": {"handlers": ["console"], "level": "INFO"},
+    "core.notify": {"handlers": ["console"], "level": "INFO"},
+    "django.core.mail": {"handlers": ["console"], "level": "INFO"},
+}

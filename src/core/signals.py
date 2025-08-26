@@ -1,5 +1,4 @@
 import logging
-import threading
 from django.conf import settings
 from django.db import transaction
 from django.db.models.signals import pre_save, post_save
@@ -20,25 +19,23 @@ from .notify import (
 log = logging.getLogger(__name__)
 log.warning("core.signals imported (stable)")
 
-# ---------- async mail ----------
-def _spawn(fn, *a, **kw):
-    t = threading.Thread(target=fn, args=a, kwargs=kw, daemon=True)
-    t.start()
-
-def _send_mail(subject: str, message: str, to_email: str):
+# ---------- почта (синхронно + логи) ----------
+def email_send(subject: str, message: str, to_email: str):
+    if not to_email:
+        log.info("email_send: skip (empty to)")
+        return
     try:
-        send_mail(
+        sent = send_mail(
             subject,
             message,
             settings.DEFAULT_FROM_EMAIL,
             [to_email],
             fail_silently=False,
         )
+        log.info("email_send: to=%s subject=%s sent=%s", to_email, subject, sent)
     except Exception as e:
-        log.error("Email send error: %s", e)
-
-def email_send_async(subject: str, message: str, to_email: str):
-    _spawn(_send_mail, subject, message, to_email)
+        # не роняем обработчик, но фиксируем причину
+        log.error("email_send error: %s", e)
 
 # ---------- создание заказа ----------
 @receiver(post_save, sender=Order, weak=False, dispatch_uid="order_created_once")
@@ -63,7 +60,7 @@ def order_created_once(sender, instance: Order, created: bool, **kwargs):
             f"{('Дата/время доставки: ' + format_dt(getattr(instance, 'delivery_time', None)) + '\\n') if getattr(instance, 'delivery_time', None) else ''}"
             f"\nСпасибо, что выбрали Drop & Delivery!"
         )
-        email_send_async(f"Заявка №{instance.pk} принята", body, instance.email)
+        email_send(f"Заявка №{instance.pk} принята", body, instance.email)
 
     transaction.on_commit(lambda: send_once(key_base + ":admins", _admins))
     transaction.on_commit(lambda: send_once(key_base + ":client_email", _client_email))
@@ -73,6 +70,7 @@ def order_created_once(sender, instance: Order, created: bool, **kwargs):
 def order_status_changed_once(sender, instance: Order, **kwargs):
     if not instance.pk:
         return
+
     try:
         old_status = sender.objects.only("status").get(pk=instance.pk).status
     except sender.DoesNotExist:
@@ -83,24 +81,26 @@ def order_status_changed_once(sender, instance: Order, **kwargs):
         return
 
     key_base = f"notify:order:{instance.pk}:status:{old_status}->{new_status}"
+    log.warning("pre_save fired: id=%s %s -> %s", instance.pk, old_status, new_status)
 
     def _after_commit():
-        # Админам
-        send_once(key_base + ":admins",
-                  lambda: tg_send_to_admins(format_status_message(instance, old_status)))
+        # TG админам (идемпотентно)
+        send_once(
+            key_base + ":admins",
+            lambda: tg_send_to_admins(format_status_message(instance, old_status)),
+        )
 
-        # Клиенту в TG — один раз (по ключу и с отметкой в модели)
-        def _client_tg():
-            ok, *_ = send_status_update(instance, old_status)
-            # отметим, чтобы второй раз не отправлять при «дёргании»
-            if ok:
-                type(instance).objects.filter(pk=instance.pk)\
-                    .update(last_client_status_notified=new_status)
-        # если уже отправляли этот статус клиенту — не шлём
+        # TG клиенту (идемпотентно + отметка в модели, чтобы не «дёргать» повторно)
         if getattr(instance, "last_client_status_notified", None) != new_status:
+            def _client_tg():
+                ok, *_ = send_status_update(instance, old_status)
+                if ok:
+                    type(instance).objects.filter(pk=instance.pk).update(
+                        last_client_status_notified=new_status
+                    )
             send_once(key_base + ":client_tg", _client_tg)
 
-        # Клиенту на почту (RU)
+        # Email клиенту (RU)
         if instance.email:
             old_ru, new_ru = status_ru(old_status), status_ru(new_status)
             pickup = (
@@ -117,8 +117,9 @@ def order_status_changed_once(sender, instance: Order, **kwargs):
                 f"{pickup}{delivery}"
                 f"Спасибо, что выбрали Drop & Delivery!"
             )
-            send_once(key_base + ":client_email",
-                      lambda: email_send_async(f"Заказ №{instance.pk}: статус изменён", body, instance.email))
+            send_once(
+                key_base + ":client_email",
+                lambda: email_send(f"Заказ №{instance.pk}: статус изменён", body, instance.email),
+            )
 
     transaction.on_commit(_after_commit)
-    log.warning("pre_save fired: id=%s %s -> %s", instance.pk, old_status, new_status)
