@@ -131,14 +131,17 @@ TELEGRAM_CHAT_IDS = _split_ids(os.getenv("TELEGRAM_CHAT_IDS", ""))
 if ADMIN_TG_CHAT_ID and ADMIN_TG_CHAT_ID not in TELEGRAM_CHAT_IDS:
     TELEGRAM_CHAT_IDS.insert(0, ADMIN_TG_CHAT_ID)
 
-EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+# Email
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.yandex.ru")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", "465"))
-EMAIL_USE_SSL = EMAIL_PORT == 465
-EMAIL_USE_TLS = EMAIL_PORT == 587
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "465"))         # 587 (TLS) стабильнее 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "8"))     # короткий таймаут
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no-reply@drop-delivery.ru")
+
 
 # --- Logging (полезно на Railway) ---
 LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO")
