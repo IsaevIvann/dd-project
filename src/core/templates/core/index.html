@@ -403,11 +403,6 @@
     <p><strong>Только безналично и после возврата багажа.</strong> Доступны: QR-код, СБП, платёжная ссылка. Наличную оплату не принимаем.</p>
   </div>
 
-  <button class="acc-trigger" aria-expanded="false" aria-controls="faq3" id="faq3-trigger">Если я не смогу получить багаж лично?</button>
-  <div class="acc-panel" id="faq3" role="region" aria-labelledby="faq3-trigger">
-    <p>Мы <strong>организуем отправку</strong> удобным для вас способом и в удобное место (курьерская служба по РФ, ПВЗ, адресная доставка). Способ и возможные расходы согласуем заранее.</p>
-  </div>
-
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">Как проходит услуга по шагам?</button>
   <div class="acc-panel" id="faq4" role="region" aria-labelledby="faq4-trigger">
     <p>Заявка → подтверждение заказа → приезд представителя → упаковка и пломбирование → оформление акта → хранение и доставка → встреча и проверка → оплата </p>
@@ -438,19 +433,19 @@
     <p>Мы уведомим вас и предложим альтернативу: перенос, выдачу в другой точке или отправку багажной/курьерской службой. Решение согласуем с вами.</p>
   </div>
 
-  <button class="acc-trigger" aria-expanded="false" aria-controls="faq12" id="faq12-trigger">Что такое Акт приёма-передачи?</button>
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq12" id="faq12-trigger">Что происходит в случае задержки/отмены рейса?</button>
   <div class="acc-panel" id="faq12" role="region" aria-labelledby="faq12-trigger">
-    <p>Основной документ услуги: подтверждает передачу и возврат, содержит перечень мест, номера пломб и отметки о состоянии.</p>
-  </div>
-
-  <button class="acc-trigger" aria-expanded="false" aria-controls="faq13" id="faq13-trigger">Пломба или упаковка повреждены?</button>
-  <div class="acc-panel" id="faq13" role="region" aria-labelledby="faq13-trigger">
-    <p>При возврате вместе сверяем целостность пломб и упаковки, все отметки фиксируются в Акте.</p>
+    <p>Мы самостоятельно отслеживаем рейсы и согласуем с вами корректировки времени доставки/забора багажа</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq14" id="faq14-trigger">Как связаться с вами?</button>
   <div class="acc-panel" id="faq14" role="region" aria-labelledby="faq14-trigger">
     <p>Телефон, WhatsApp, Telegram, email — в разделе «Контакты».</p>
+  </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq3" id="faq3-trigger">Если я не смогу получить багаж лично?</button>
+  <div class="acc-panel" id="faq3" role="region" aria-labelledby="faq3-trigger">
+    <p>Мы <strong>организуем отправку</strong> удобным для вас способом и в удобное место (курьерская служба по РФ, ПВЗ, адресная доставка). Способ и возможные расходы согласуем заранее.</p>
   </div>
 </section>
 
@@ -484,7 +479,7 @@
 <!-- Мини-CTA -->
 <section class="card-dd p-4 p-md-5 mb-4 text-center">
   <h4 class="fw-bold mb-2">Путешествуйте по Москве налегке</h4>
-  <div class="text-muted mb-3">Багаж — на нас. Доставим точно ко времени рейса или заезда.</div>
+  <div class="text-muted mb-3">Багаж — на нас. Доставим точно ко времени!</div>
   <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4"><i class="bi bi-bag"></i> Оставить заявку</a>
 </section>
 {% endblock %}
