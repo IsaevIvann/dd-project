@@ -26,3 +26,5 @@ dotenv = "^0.9.9"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+django-anymail=10.3
+requests=2.31

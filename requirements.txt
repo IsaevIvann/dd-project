@@ -24,3 +24,5 @@ tzdata==2025.2 ; python_version >= "3.12" and python_version < "4.0" and sys_pla
 urllib3==2.5.0 ; python_version >= "3.12" and python_version < "4.0"
 utils==1.0.2 ; python_version >= "3.12" and python_version < "4.0"
 whitenoise==6.9.0 ; python_version >= "3.12" and python_version < "4.0"
+django-anymail==10.3
+requests>=2.31
