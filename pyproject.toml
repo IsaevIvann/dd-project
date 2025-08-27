@@ -20,6 +20,7 @@ dj-database-url = "^3.0.1"
 psycopg = {extras = ["binary"], version = "^3.2.9"}
 middleware = "^1.2.3"
 dotenv = "^0.9.9"
+django-anymail = "^13.0.1"
 
 
 [build-system]
