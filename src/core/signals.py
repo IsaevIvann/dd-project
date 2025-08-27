@@ -2,6 +2,7 @@ import logging
 import threading
 import time
 from typing import Callable
+
 from django.conf import settings
 from django.db import transaction
 from django.db.models.signals import pre_save, post_save
@@ -74,15 +75,25 @@ def order_created_once(sender, instance: Order, created: bool, **kwargs):
     def _client_email():
         if not instance.email:
             return
-        body = (
-            f"Здравствуйте, {instance.name}!\n\n"
-            f"Ваша заявка #{instance.pk} успешно принята. Мы свяжемся с вами для уточнения деталей.\n\n"
-            f"{('Адрес забора: ' + instance.pickup_address + '\\n') if instance.pickup_address else ''}"
-            f"{('Дата/время забора: ' + format_dt(getattr(instance, 'pickup_time', None)) + '\\n') if getattr(instance, 'pickup_time', None) else ''}"
-            f"{('Адрес доставки: ' + instance.delivery_address + '\\n') if instance.delivery_address else ''}"
-            f"{('Дата/время доставки: ' + format_dt(getattr(instance, 'delivery_time', None)) + '\\n') if getattr(instance, 'delivery_time', None) else ''}"
-            f"\nСпасибо, что выбрали Drop & Delivery!"
-        )
+        lines = [
+            f"Здравствуйте, {instance.name}!",
+            "",
+            f"Ваша заявка #{instance.pk} успешно принята. Мы свяжемся с вами для уточнения деталей.",
+            "",
+            f"Адрес забора: {instance.pickup_address}" if instance.pickup_address else "",
+            (
+                f"Дата/время забора: {format_dt(getattr(instance, 'pickup_time', None))}"
+                if getattr(instance, "pickup_time", None) else ""
+            ),
+            f"Адрес доставки: {instance.delivery_address}" if instance.delivery_address else "",
+            (
+                f"Дата/время доставки: {format_dt(getattr(instance, 'delivery_time', None))}"
+                if getattr(instance, "delivery_time", None) else ""
+            ),
+            "",
+            "Спасибо, что выбрали Drop & Delivery!",
+        ]
+        body = "\n".join([l for l in lines if l != ""])
         email_send_async(f"Заявка №{instance.pk} принята", body, instance.email)
 
     transaction.on_commit(lambda: send_once(key_base + ":admins", _admins))
@@ -127,23 +138,38 @@ def order_status_changed_once(sender, instance: Order, **kwargs):
         # Email клиенту (RU)
         if instance.email:
             old_ru, new_ru = status_ru(old_status), status_ru(new_status)
-            pickup = (
-                f"Адрес забора: {instance.pickup_address}\n"
-                f"Дата/время забора: {format_dt(getattr(instance, 'pickup_time', None))}\n"
-            ) if getattr(instance, "pickup_address", "") else ""
-            delivery = (
-                f"Адрес доставки: {instance.delivery_address}\n"
-                f"Дата/время доставки: {format_dt(getattr(instance, 'delivery_time', None))}\n"
-            ) if getattr(instance, "delivery_address", "") else ""
-            body = (
-                f"Здравствуйте, {instance.name}!\n\n"
-                f"Статус вашего заказа изменился:\n{old_ru} → {new_ru}\n\n"
-                f"{pickup}{delivery}"
-                f"Спасибо, что выбрали Drop & Delivery!"
-            )
+            lines = [
+                f"Здравствуйте, {instance.name}!",
+                "",
+                "Статус вашего заказа изменился:",
+                f"{old_ru} → {new_ru}",
+                "",
+                (
+                    f"Адрес забора: {instance.pickup_address}"
+                    if getattr(instance, "pickup_address", "") else ""
+                ),
+                (
+                    f"Дата/время забора: {format_dt(getattr(instance, 'pickup_time', None))}"
+                    if getattr(instance, "pickup_time", None) else ""
+                ),
+                (
+                    f"Адрес доставки: {instance.delivery_address}"
+                    if getattr(instance, "delivery_address", "") else ""
+                ),
+                (
+                    f"Дата/время доставки: {format_dt(getattr(instance, 'delivery_time', None))}"
+                    if getattr(instance, "delivery_time", None) else ""
+                ),
+                "Спасибо, что выбрали Drop & Delivery!",
+            ]
+            body = "\n".join([l for l in lines if l != ""])
             send_once(
                 key_base + ":client_email",
-                lambda: email_send_async(f"Заказ №{instance.pk}: статус изменён", body, instance.email),
+                lambda: email_send_async(
+                    f"Заказ №{instance.pk}: статус изменён",
+                    body,
+                    instance.email,
+                ),
             )
 
     transaction.on_commit(_after_commit)
