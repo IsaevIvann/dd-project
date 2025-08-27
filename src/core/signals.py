@@ -7,7 +7,7 @@ from django.conf import settings
 from django.db import transaction
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, get_connection
 
 from .models import Order
 from .notify import (
@@ -29,23 +29,36 @@ def _spawn(fn: Callable, *a, **kw):
     t = threading.Thread(target=fn, args=a, kwargs=kw, daemon=True)
     t.start()
 
-def email_send(subject: str, message: str, to_email: str):
-    """Синхронная отправка (используем только из async-обёртки/retry)."""
+def email_send(subject: str, message: str, to_email: str, ADMIN_BCC: str | None = None):
+    """Синхронная отправка text+html (используем из async-обёртки/retry)."""
     if not to_email:
         log.info("email_send: skip (empty to)")
         return
-    sent = send_mail(
-        subject,
-        message,
-        settings.DEFAULT_FROM_EMAIL,
-        [to_email],
-        fail_silently=False,
-    )
-    log.info("email_send: to=%s subject=%s sent=%s", to_email, subject, sent)
+    try:
+        bcc = [ADMIN_BCC] if ADMIN_BCC else []
+        email = EmailMultiAlternatives(
+            subject=subject,
+            body=message,  # plain text
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[to_email],
+            bcc=bcc,
+            reply_to=[settings.DEFAULT_FROM_EMAIL],
+            headers={"X-DD-App": "drop-delivery"},
+        )
+        # простая html-версия
+        html = message.replace("\n", "<br>")
+        email.attach_alternative(html, "text/html")
+
+        conn = get_connection(timeout=getattr(settings, "EMAIL_TIMEOUT", 8))
+        sent = conn.send_messages([email])
+        log.info("email_send: to=%s subject=%s sent=%s", to_email, subject, sent)
+    except Exception as e:
+        log.error("email_send error: %s", e)
+        raise
 
 def email_send_async(subject: str, message: str, to_email: str,
                      attempts: int = 3, base_delay: float = 1.0):
-    """Фоновая отправка с 3 попытками и backoff (1s, 2s, 4s)."""
+    """Фоновая отправка с ретраями и экспоненциальной паузой (1s, 2s, 4s)."""
     def _job():
         delay = base_delay
         for i in range(1, attempts + 1):
@@ -93,7 +106,7 @@ def order_created_once(sender, instance: Order, created: bool, **kwargs):
             "",
             "Спасибо, что выбрали Drop & Delivery!",
         ]
-        body = "\n".join([l for l in lines if l != ""])
+        body = "\n".join([l for l in lines if l])
         email_send_async(f"Заявка №{instance.pk} принята", body, instance.email)
 
     transaction.on_commit(lambda: send_once(key_base + ":admins", _admins))
@@ -160,9 +173,10 @@ def order_status_changed_once(sender, instance: Order, **kwargs):
                     f"Дата/время доставки: {format_dt(getattr(instance, 'delivery_time', None))}"
                     if getattr(instance, "delivery_time", None) else ""
                 ),
+                "",
                 "Спасибо, что выбрали Drop & Delivery!",
             ]
-            body = "\n".join([l for l in lines if l != ""])
+            body = "\n".join([l for l in lines if l])
             send_once(
                 key_base + ":client_email",
                 lambda: email_send_async(
