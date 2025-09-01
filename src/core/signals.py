@@ -88,9 +88,10 @@ def order_created_once(sender, instance: Order, created: bool, **kwargs):
     def _client_email():
         if not instance.email:
             return
+        # Без разрыва после приветствия; двойной перенос после фразы про уточнение;
+        # двойной перенос перед «Спасибо…»
         lines = [
             f"Здравствуйте, {instance.name}!",
-            "",
             f"Ваша заявка #{instance.pk} успешно принята. Мы свяжемся с вами для уточнения деталей.",
             "",
             f"Адрес забора: {instance.pickup_address}" if instance.pickup_address else "",
@@ -104,9 +105,10 @@ def order_created_once(sender, instance: Order, created: bool, **kwargs):
                 if getattr(instance, "delivery_time", None) else ""
             ),
             "",
+            "",
             "Спасибо, что выбрали Drop & Delivery!",
         ]
-        body = "\n".join([l for l in lines if l])
+        body = "\n".join([l for l in lines if l is not None])
         email_send_async(f"Заявка №{instance.pk} принята", body, instance.email)
 
     transaction.on_commit(lambda: send_once(key_base + ":admins", _admins))
@@ -148,7 +150,7 @@ def order_status_changed_once(sender, instance: Order, **kwargs):
                     )
             send_once(key_base + ":client_tg", _client_tg)
 
-        # Email клиенту (RU)
+        # Email клиенту (RU) — двойной перенос перед «Спасибо…»
         if instance.email:
             old_ru, new_ru = status_ru(old_status), status_ru(new_status)
             lines = [
@@ -174,9 +176,10 @@ def order_status_changed_once(sender, instance: Order, **kwargs):
                     if getattr(instance, "delivery_time", None) else ""
                 ),
                 "",
+                "",
                 "Спасибо, что выбрали Drop & Delivery!",
             ]
-            body = "\n".join([l for l in lines if l])
+            body = "\n".join([l for l in lines if l is not None])
             send_once(
                 key_base + ":client_email",
                 lambda: email_send_async(
