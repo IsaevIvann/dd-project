@@ -41,12 +41,12 @@ def status_ru(value: str) -> str:
 def _status_title(order, status_value: str) -> str:
     S = order.__class__.Status
     titles = {
-        S.DRAFT: "📝 Черновик",
+        S.DRAFT: "📝 Заявка",
         S.CONFIRMED: "✅ Подтверждён",
         S.PICKED_UP: "📦 Забрали багаж",
         S.IN_STORAGE: "🏬 Багаж на складе",
         S.OUT_FOR_DELIVERY: "🚚 В пути на доставку",
-        S.DELIVERED: "🎉 Доставлено",
+        S.DELIVERED: "✅ Доставлено",
         S.CANCELED: "❌ Отменён",
     }
     return titles.get(status_value, f"Статус: {status_value}")
