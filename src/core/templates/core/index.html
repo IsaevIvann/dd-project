@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load static %}
 {% block title %}D&D — Путешествуйте налегке{% endblock %}
 {% block content %}
 <style>
@@ -12,7 +13,7 @@
   .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08)}
   .icon-wrap{width:68px;height:68px;border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(16,24,40,.06)}
   .icon-blue{background:#e6f0ff;color:#2563eb;}
-  .icon-green{background:#e9fff4;color:#0e9f6e;} /* фикс опечатки */
+  .icon-green{background:#e9fff4;color:#0e9f6e;} /* фикс */
   .icon-cyan{background:#e6fcff;color:#0891b2;}
   .icon-amber{background:#fff5e6;color:#f59e0b;}
   .tariff-title{color:var(--muted);}
@@ -37,26 +38,12 @@
       </div>
     </div>
     <div class="col-lg-5">
-      <div class="hero-ill p-4">
-        <!-- иллюстрация -->
-        <svg viewBox="0 0 520 300" width="100%" height="100%" aria-hidden="true">
-          <rect x="0" y="250" width="520" height="28" fill="#eef5ff"/>
-          <rect x="70" y="220" width="340" height="12" rx="6" fill="#c7d8f9"/>
-          <rect x="85" y="140" width="10" height="85" rx="5" fill="#c7d8f9"/>
-          <rect x="380" y="140" width="10" height="85" rx="5" fill="#c7d8f9"/>
-          <rect x="150" y="130" rx="18" ry="18" width="150" height="110" fill="#2a74e6"/>
-          <rect x="200" y="90" width="24" height="50" rx="6" fill="#2a74e6"/>
-          <circle cx="175" cy="248" r="10" fill="#123a6d"/>
-          <circle cx="275" cy="248" r="10" fill="#123a6d"/>
-          <rect x="320" y="150" rx="14" ry="14" width="110" height="90" fill="#ff8c65" opacity=".95"/>
-          <rect x="355" y="132" rx="6" ry="6" width="44" height="22" fill="#ff8c65"/>
-          <circle cx="335" cy="248" r="9" fill="#9a3e1f"/>
-          <circle cx="415" cy="248" r="9" fill="#9a3e1f"/>
-          <rect x="120" y="170" rx="12" ry="12" width="70" height="70" fill="#25a56a"/>
-          <rect x="140" y="150" rx="5" ry="5" width="30" height="20" fill="#25a56a"/>
-          <circle cx="135" cy="248" r="8" fill="#0c5a3d"/>
-          <circle cx="175" cy="248" r="8" fill="#0c5a3d"/>
-        </svg>
+      <div class="hero-ill p-4 text-center">
+        <img src="{% static 'core/img/dnd-hero.png' %}"
+             alt="D&D: чемодан и самолёт"
+             class="img-fluid rounded-4"
+             loading="lazy"
+             decoding="async">
         <div class="small text-muted mt-2">Ваш багаж — под защитой и уже в пути ✈️</div>
       </div>
     </div>
@@ -149,7 +136,7 @@
         <input id="dd-items" type="number" min="1" max="99" value="2" class="form-control" required>
       </div>
       <div class="col-6 col-md-3">
-        <label class="form-label dd-muted">Дней хранения (включая 1‑е)</label>
+        <label class="form-label dd-muted">Дней хранения (включая 1-е)</label>
         <input id="dd-days" type="number" min="1" max="30" value="1" class="form-control" required>
       </div>
       <div class="col-12 col-md-4">
@@ -169,7 +156,7 @@
       <div class="dd-muted small" id="dd-lines"></div>
     </div>
     <div class="dd-muted small mt-2">
-      База умножается на коэффициент зоны. Хранение — единый тариф: 1‑е сутки бесплатно, далее 500 ₽/сутки за всю партию.
+      База умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за всю партию.
     </div>
   </div>
 
@@ -265,8 +252,6 @@
 
   /* ====== ОПРЕДЕЛЕНИЕ ЗОНЫ (Яндекс + полигон МКАД) ====== */
   (function(){
-    // Полигон МКАД (массив [lat, lon]) — усечён до ключевых вершин для компактности,
-    // но достаточно точен для определения "в пределах МКАД".
     const MKAD_POLY = [
       [55.774558,37.842762],[55.76522,37.842789],[55.755723,37.843323],[55.747399,37.843575],[55.739103,37.843513],
       [55.730482,37.843208],[55.721939,37.842819],[55.712203,37.841709],[55.703048,37.840271],[55.694287,37.839005],
@@ -311,7 +296,6 @@
       if (zoneSelect) zoneSelect.value = res.val;
     }
 
-    // point-in-polygon (lat, lon)
     function pointInPolygon(lat, lon, poly){
       let inside = false;
       for (let i=0, j=poly.length-1; i<poly.length; j=i++){
@@ -323,7 +307,6 @@
       return inside;
     }
 
-    // Фолбэк-эвристика
     function fallbackDecide(q){
       const lower = q.toLowerCase();
       const isAirport = airports.some(a => lower.includes(a));
@@ -364,16 +347,14 @@
       out.innerHTML = '<span class="text-muted">Определяем зону…</span>';
 
       try{
-        const { coords, text } = await geocode(q); // coords: [lat, lon]
+        const { coords, text } = await geocode(q);
         const lower = text.toLowerCase();
 
-        // Форс‑зона 1: аэропорты и вокзалы
         if (airports.some(a=>lower.includes(a)) || rails.some(r=>lower.includes(r))){
           render({zone:"Зона 1", coef:"×1.0", val:"1.0", addr:text}, 'по картам');
           return;
         }
 
-        // Проверка по полигону МКАД
         const inside = pointInPolygon(coords[0], coords[1], MKAD_POLY);
         render(
           inside
@@ -393,18 +374,17 @@
 <section class="faq max-w-3xl mx-auto px-4 py-8">
   <h2 class="text-3xl font-semibold mb-4">FAQ</h2>
 
-    <button class="acc-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">Как проходит услуга по шагам?</button>
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">Как проходит услуга по шагам?</button>
   <div class="acc-panel" id="faq4" role="region" aria-labelledby="faq4-trigger">
     <p>Заявка → подтверждение заказа → приезд представителя → упаковка и пломбирование → оформление акта → хранение и доставка → встреча и проверка → оплата </p>
   </div>
 
-
-    <button class="acc-trigger" aria-expanded="false" aria-controls="faq1" id="faq1-trigger">Что я получу при передаче багажа?</button>
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq1" id="faq1-trigger">Что я получу при передаче багажа?</button>
   <div class="acc-panel" id="faq1" role="region" aria-labelledby="faq1-trigger">
     <p>Мы оформляем и выдаём <strong>Акт приёма-передачи</strong>: фиксируем кол-во, состояние, номера пломб, время и адреса. Возврат багажа осуществляется строго по этому акту.</p>
   </div>
 
-    <button class="acc-trigger" aria-expanded="false" aria-controls="faq2" id="faq2-trigger">Как происходит оплата?</button>
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq2" id="faq2-trigger">Как происходит оплата?</button>
   <div class="acc-panel" id="faq2" role="region" aria-labelledby="faq2-trigger">
     <p><strong>Только безналично и после возврата багажа.</strong> Доступны: QR-код, СБП, платёжная ссылка. Наличную оплату не принимаем.</p>
   </div>
@@ -439,7 +419,7 @@
     <p>Телефон, WhatsApp, Telegram, email — в разделе «Контакты».</p>
   </div>
 
-    <button class="acc-trigger" aria-expanded="false" aria-controls="faq3" id="faq3-trigger">Если я не смогу получить багаж лично?</button>
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq3" id="faq3-trigger">Если я не смогу получить багаж лично?</button>
   <div class="acc-panel" id="faq3" role="region" aria-labelledby="faq3-trigger">
     <p>Мы <strong>организуем отправку</strong> удобным для вас способом и в удобное место (курьерская служба по РФ, ПВЗ, адресная доставка). Способ и возможные расходы согласуем заранее.</p>
   </div>
