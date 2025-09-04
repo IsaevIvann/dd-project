@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from core import views
-from core.views import index, order_create, offer, contacts, privacy, telegram_webhook, LinkChatView
+from core.views import index, order_create, offer, contacts, privacy, telegram_webhook, LinkChatView, yandex_verify
 
 urlpatterns = [
     path('', index, name='index'),
@@ -13,5 +13,6 @@ urlpatterns = [
     path("privacy/", privacy, name="privacy"),
     path("telegram/webhook/<str:secret>/", telegram_webhook, name="telegram_webhook"),
     path("api/link_chat/", LinkChatView.as_view(), name="link_chat"),
+    path("yandex_d9211e0eacffb670.html", yandex_verify),
 
 ]

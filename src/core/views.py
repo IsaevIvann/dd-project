@@ -11,7 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from .forms import OrderForm
 from .models import Order
 from .notify import send_welcome
@@ -188,3 +187,6 @@ class LinkChatView(APIView):
         order.save(update_fields=["telegram_chat_id"])
         send_welcome(order)
         return Response({"success": True, "order_id": order.id})
+
+def yandex_verify(request):
+    return render(request, "core/yandex_d9211e0eacffb670.html")
