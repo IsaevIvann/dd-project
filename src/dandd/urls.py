@@ -16,6 +16,6 @@ urlpatterns = [
     path("api/link_chat/", LinkChatView.as_view(), name="link_chat"),
     path("yandex_d9211e0eacffb670.html", yandex_verify),
     re_path(r'^sitemap\.xml$', serve, {'document_root': settings.BASE_DIR / 'staticfiles', 'path': 'sitemap.xml'}),
-    path("robots.txt",TemplateView.as_view(template_name="core/robots.txt",content_type="text/plain"),name="robots",),
-    path("sitemap.xml",TemplateView.as_view(template_name="core/sitemap.xml",content_type="application/xml"),name="sitemap",),
+    path("robots.txt",TemplateView.as_view(template_name="core/robots.txt",content_type="text/plain"),name="robots"),
+    path("sitemap.xml",TemplateView.as_view(template_name="core/sitemap.xml",content_type="application/xml"),name="sitemap"),
 ]
