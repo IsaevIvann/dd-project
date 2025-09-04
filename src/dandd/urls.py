@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
+from django.views.generic import TemplateView
 from django.views.static import serve
 from core.views import index, order_create, offer, contacts, privacy, telegram_webhook, LinkChatView, yandex_verify
 
@@ -15,5 +16,6 @@ urlpatterns = [
     path("api/link_chat/", LinkChatView.as_view(), name="link_chat"),
     path("yandex_d9211e0eacffb670.html", yandex_verify),
     re_path(r'^sitemap\.xml$', serve, {'document_root': settings.BASE_DIR / 'staticfiles', 'path': 'sitemap.xml'}),
-
+    path("robots.txt",TemplateView.as_view(template_name="core/robots.txt",content_type="text/plain"),name="robots",),
+    path("sitemap.xml",TemplateView.as_view(template_name="core/sitemap.xml",content_type="application/xml"),name="sitemap",),
 ]
