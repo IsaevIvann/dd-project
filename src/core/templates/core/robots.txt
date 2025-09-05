@@ -1,4 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /
+Allow: /
 
 Sitemap: https://drop-delivery.ru/sitemap.xml
