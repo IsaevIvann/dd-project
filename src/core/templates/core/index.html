@@ -13,7 +13,7 @@
   .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08)}
   .icon-wrap{width:68px;height:68px;border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(16,24,40,.06)}
   .icon-blue{background:#e6f0ff;color:#2563eb;}
-  .icon-green{background:#e9fff4;color:#0e9f6e;} /* фикс */
+  .icon-green{background:#e9fff4;color:#0e9f6e;}
   .icon-cyan{background:#e6fcff;color:#0891b2;}
   .icon-amber{background:#fff5e6;color:#f59e0b;}
   .tariff-title{color:var(--muted);}
@@ -163,7 +163,6 @@
   <!-- ЗОНЫ -->
   <div id="zones" class="mt-4">
     <div class="row g-4 align-items-stretch">
-      <!-- Левая карточка -->
       <div class="col-lg-6">
         <div class="card-dd p-4 h-100">
           <div class="small text-muted">Зона 1</div>
@@ -177,7 +176,6 @@
         </div>
       </div>
 
-      <!-- Правая карточка: единый стиль + автодетект -->
       <div class="col-lg-6">
         <div class="card-dd p-4 h-100 d-flex flex-column">
           <div class="d-flex align-items-start gap-3 mb-2">
@@ -230,7 +228,6 @@
     const days  = Math.max(1, parseInt(document.getElementById('dd-days').value  || '1', 10));
     const zoneK = parseFloat(document.getElementById('dd-zone').value || '1.0');
 
-    // Тарифы: 1–3=3500; 4–6=4000; 7+=4500 + 500/шт сверх 7-й
     let base = 3500;
     if (items >= 4 && items <= 6) base = 4000;
     else if (items >= 7) base = 4500 + (items - 7) * 500;
@@ -250,7 +247,7 @@
     document.getElementById('dd-result').hidden = false;
   }
 
-  /* ====== ОПРЕДЕЛЕНИЕ ЗОНЫ (Яндекс + полигон МКАД) ====== */
+  /* ====== ОПРЕДЕЛЕНИЕ ЗОНЫ ====== */
   (function(){
     const MKAD_POLY = [
       [55.774558,37.842762],[55.76522,37.842789],[55.755723,37.843323],[55.747399,37.843575],[55.739103,37.843513],
@@ -334,7 +331,7 @@
       const result = await ymaps.geocode(q, { results: 1 });
       if (!result || result.geoObjects.getLength()===0) throw new Error('not_found');
       const obj   = result.geoObjects.get(0);
-      const coords= obj.geometry.getCoordinates(); // [lat, lon]
+      const coords= obj.geometry.getCoordinates();
       const meta  = obj.properties.get('metaDataProperty') || {};
       const text  = (meta.GeocoderMetaData && meta.GeocoderMetaData.text) || obj.getAddressLine() || q;
       return { coords, text };
@@ -376,52 +373,52 @@
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">Как проходит услуга по шагам?</button>
   <div class="acc-panel" id="faq4" role="region" aria-labelledby="faq4-trigger">
-    <p>Заявка → подтверждение заказа → приезд представителя → упаковка и пломбирование → оформление акта → хранение и доставка → встреча и проверка → оплата </p>
+    <p>Заявка → подтверждение заказа → приезд представителя → упаковка и пломбирование → оформление акта → хранение и доставка → встреча и проверка → оплата</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq1" id="faq1-trigger">Что я получу при передаче багажа?</button>
   <div class="acc-panel" id="faq1" role="region" aria-labelledby="faq1-trigger">
-    <p>Мы оформляем и выдаём <strong>Акт приёма-передачи</strong>: фиксируем кол-во, состояние, номера пломб, время и адреса. Возврат багажа осуществляется строго по этому акту.</p>
+    <p>Мы выдаём Акт приёма-передачи: количество мест, состояние, номера пломб, время и адреса. Возврат багажа — строго по акту.</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq2" id="faq2-trigger">Как происходит оплата?</button>
   <div class="acc-panel" id="faq2" role="region" aria-labelledby="faq2-trigger">
-    <p><strong>Только безналично и после возврата багажа.</strong> Доступны: QR-код, СБП, платёжная ссылка. Наличную оплату не принимаем.</p>
+    <p>Только безналично и после возврата багажа. Доступны: QR-код, СБП, платёжная ссылка.</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq12" id="faq12-trigger">Что происходит в случае задержки/отмены рейса?</button>
   <div class="acc-panel" id="faq12" role="region" aria-labelledby="faq12-trigger">
-    <p>Мы самостоятельно отслеживаем рейсы и согласуем с вами корректировки времени доставки/забора багажа</p>
+    <p>Мы отслеживаем рейсы и оперативно согласуем с вами корректировки времени доставки или забора.</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq5" id="faq5-trigger">Где вы работаете?</button>
   <div class="acc-panel" id="faq5" role="region" aria-labelledby="faq5-trigger">
-    <p>Москва и Московская область, все аэропорты и вокзалы Москвы. По РФ — отправка через партнёрские службы по согласованию.</p>
+    <p>Москва и область, все аэропорты и вокзалы столицы. По РФ — отправка через партнёрские службы по согласованию.</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq7" id="faq7-trigger">Что нельзя передавать?</button>
   <div class="acc-panel" id="faq7" role="region" aria-labelledby="faq7-trigger">
-    <p>Опасные вещества, оружие/боеприпасы, наркотические/ядовитые вещества, скоропорт, наличные деньги, драгоценности, документы и иные предметы, запрещённые законом РФ или правилами перевозчиков.</p>
+    <p>Опасные вещества, оружие, наркотические и ядовитые вещества, скоропорт, наличные, драгоценности, документы и любые запрещённые предметы.</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq8" id="faq8-trigger">Как обеспечивается сохранность?</button>
   <div class="acc-panel" id="faq8" role="region" aria-labelledby="faq8-trigger">
-    <p>Профессиональная упаковка, <strong>пломбирование</strong> с уникальным номером, фотофиксация. Номер пломбы указан в Акте.</p>
+    <p>Профессиональная упаковка, пломбирование с уникальным номером и фотофиксация. Номер пломбы указан в акте.</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq9" id="faq9-trigger">Можно ли изменить время или адрес?</button>
   <div class="acc-panel" id="faq9" role="region" aria-labelledby="faq9-trigger">
-    <p>Да, при возможности расписания. Сообщите нам не позднее чем за 1 час до выбранного слота.</p>
+    <p>Да, по возможности расписания. Сообщите минимум за 1 час до выбранного слота.</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq14" id="faq14-trigger">Как связаться с вами?</button>
   <div class="acc-panel" id="faq14" role="region" aria-labelledby="faq14-trigger">
-    <p>Телефон, WhatsApp, Telegram, email — в разделе «Контакты».</p>
+    <p>Телефон, WhatsApp, Telegram и email — смотрите раздел «Контакты».</p>
   </div>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq3" id="faq3-trigger">Если я не смогу получить багаж лично?</button>
   <div class="acc-panel" id="faq3" role="region" aria-labelledby="faq3-trigger">
-    <p>Мы <strong>организуем отправку</strong> удобным для вас способом и в удобное место (курьерская служба по РФ, ПВЗ, адресная доставка). Способ и возможные расходы согласуем заранее.</p>
+    <p>Организуем отправку удобным способом: курьер по РФ, ПВЗ или адресная доставка. Согласуем условия заранее.</p>
   </div>
 </section>
 
@@ -450,6 +447,96 @@
       });
     });
   })();
+</script>
+
+<!-- Микроразметка FAQPage (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Как проходит услуга по шагам?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Заявка, подтверждение заказа, приезд представителя, упаковка и пломбирование, оформление акта, хранение и доставка, встреча и проверка, оплата."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Что я получу при передаче багажа?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Вы получаете акт приёма-передачи с количеством мест, состоянием, номерами пломб, временем и адресами. Возврат выполняется строго по акту."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как происходит оплата?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Оплата безналично и после возврата багажа. Доступны QR-код, СБП и платёжная ссылка."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Что происходит в случае задержки или отмены рейса?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Мы отслеживаем рейсы и согласуем с вами изменения времени доставки или забора."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Где вы работаете?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "В Москве и Московской области, во всех аэропортах и на вокзалах. По России возможна отправка через партнёрские службы по согласованию."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Что нельзя передавать?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Запрещены опасные вещества, оружие, наркотические и ядовитые вещества, скоропорт, наличные деньги, драгоценности, документы и иные запрещённые предметы."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как обеспечивается сохранность?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Мы используем профессиональную упаковку, пломбирование с уникальным номером и фотофиксацию. Номер пломбы указан в акте."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Можно ли изменить время или адрес?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, при возможности расписания. Просим предупредить минимум за один час до выбранного слота."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как связаться с вами?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Через телефон, WhatsApp, Telegram или email. Контакты указаны на странице «Контакты»."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Если я не смогу получить багаж лично?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Мы организуем отправку удобным способом: курьер по РФ, пункт выдачи или адресная доставка. Условия согласуются заранее."
+      }
+    }
+  ]
+}
 </script>
 
 <!-- Мини-CTA -->
