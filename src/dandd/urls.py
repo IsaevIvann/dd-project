@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path
 from django.views.generic import TemplateView
 from core.views import index, order_create, offer, contacts, privacy, telegram_webhook, LinkChatView, yandex_verify
 
