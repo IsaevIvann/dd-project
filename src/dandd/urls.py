@@ -14,6 +14,7 @@ urlpatterns = [
     path("telegram/webhook/<str:secret>/", telegram_webhook, name="telegram_webhook"),
     path("api/link_chat/", LinkChatView.as_view(), name="link_chat"),
     path("yandex_d9211e0eacffb670.html", yandex_verify),
+    path("googleedb31e5f1d3d89c2.html",TemplateView.as_view(template_name="core/googleedb31e5f1d3d89c2.html", content_type="text/plain"),),
     path("robots.txt", TemplateView.as_view(template_name="core/robots.txt", content_type="text/plain"), name="robots"),
     path("sitemap.xml", TemplateView.as_view(template_name="core/sitemap.xml", content_type="application/xml"), name="sitemap"),
 ]
