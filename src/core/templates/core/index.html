@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% block title %}D&D — Путешествуйте налегке{% endblock %}
+{% block title %}D&D — доставка багажа в Москве и области{% endblock %}
 {% block content %}
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
@@ -27,7 +27,10 @@
 <section class="hero-clean mb-5">
   <div class="row align-items-center gy-4">
     <div class="col-lg-7">
-      <h1 class="fw-bold display-5 mb-3" style="color:var(--ink)">Путешествуйте <span class="text-primary">налегке</span> — мы заберём, сохраним и доставим багаж</h1>
+      <!-- H1 с ключом -->
+      <h1 class="fw-bold display-5 mb-3" style="color:var(--ink)">
+        Доставка багажа в Москве и области — путешествуйте <span class="text-primary">налегке</span>
+      </h1>
       <p class="fs-5 text-muted mb-4">
         Представитель приедет, упакует и опечатает чемоданы. Мы сохраним их на складе и привезём
         <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
@@ -40,7 +43,7 @@
     <div class="col-lg-5">
       <div class="hero-ill p-4 text-center">
         <img src="{% static 'core/img/dnd-hero.png' %}"
-             alt="D&D: чемодан и самолёт"
+             alt="Drop & Delivery — доставка багажа: забор, хранение и привоз в аэропорт или на вокзал"
              class="img-fluid rounded-4"
              loading="lazy"
              decoding="async">
@@ -52,7 +55,7 @@
 
 <!-- ШАГИ -->
 <section class="p-4 p-md-5 mb-5" style="border-radius:28px;background:#f7fbff">
-  <h3 class="fw-bold text-center mb-4">Как это работает?</h3>
+  <h3 class="fw-bold text-center mb-4">Как работает услуга доставки багажа</h3>
   <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
     <div class="col text-center">
       <div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-pencil-square fs-3"></i></div>
@@ -93,7 +96,7 @@
     .dd-muted{color:var(--muted)}
   </style>
 
-  <h3 class="fw-bold text-center mb-4">Тарифы</h3>
+  <h3 class="fw-bold text-center mb-4">Тарифы на доставку багажа</h3>
 
   <div class="row g-4">
     <div class="col-md-4">
@@ -129,7 +132,7 @@
 
   <!-- Калькулятор -->
   <div class="card-dd p-4 p-md-4 mt-4 dd-calc">
-    <h5 class="fw-bold mb-3">Калькулятор стоимости</h5>
+    <h5 class="fw-bold mb-3">Калькулятор стоимости доставки багажа</h5>
     <form class="row g-3 align-items-end" onsubmit="event.preventDefault(); ddCalc();">
       <div class="col-6 col-md-3">
         <label class="form-label dd-muted">Количество единиц</label>
@@ -163,6 +166,7 @@
   <!-- ЗОНЫ -->
   <div id="zones" class="mt-4">
     <div class="row g-4 align-items-stretch">
+      <!-- Левая карточка -->
       <div class="col-lg-6">
         <div class="card-dd p-4 h-100">
           <div class="small text-muted">Зона 1</div>
@@ -176,6 +180,7 @@
         </div>
       </div>
 
+      <!-- Правая карточка -->
       <div class="col-lg-6">
         <div class="card-dd p-4 h-100 d-flex flex-column">
           <div class="d-flex align-items-start gap-3 mb-2">
@@ -228,6 +233,7 @@
     const days  = Math.max(1, parseInt(document.getElementById('dd-days').value  || '1', 10));
     const zoneK = parseFloat(document.getElementById('dd-zone').value || '1.0');
 
+    // Тарифы
     let base = 3500;
     if (items >= 4 && items <= 6) base = 4000;
     else if (items >= 7) base = 4500 + (items - 7) * 500;
@@ -247,7 +253,7 @@
     document.getElementById('dd-result').hidden = false;
   }
 
-  /* ====== ОПРЕДЕЛЕНИЕ ЗОНЫ ====== */
+  /* ====== ОПРЕДЕЛЕНИЕ ЗОНЫ (МКАД) ====== */
   (function(){
     const MKAD_POLY = [
       [55.774558,37.842762],[55.76522,37.842789],[55.755723,37.843323],[55.747399,37.843575],[55.739103,37.843513],
@@ -367,8 +373,8 @@
   })();
 </script>
 
-<!-- FAQ -->
-<section class="faq max-w-3xl mx-auto px-4 py-8">
+<!-- FAQ (контент оставлен без изменений) -->
+<section id="faq" class="faq max-w-3xl mx-auto px-4 py-8">
   <h2 class="text-3xl font-semibold mb-4">FAQ</h2>
 
   <button class="acc-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">Как проходит услуга по шагам?</button>
