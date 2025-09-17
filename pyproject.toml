@@ -21,6 +21,8 @@ psycopg = {extras = ["binary"], version = "^3.2.9"}
 middleware = "^1.2.3"
 dotenv = "^0.9.9"
 django-anymail = "^13.0.1"
+beautifulsoup4 = "^4.13.5"
+lxml = "^6.0.1"
 
 
 [build-system]
