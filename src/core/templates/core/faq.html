@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+{% block title %}FAQ — D&D (Drop & Delivery){% endblock %}
+{% block content %}
+<section class="hero-clean mb-4">
+  <h1 class="fw-bold display-6" style="color:var(--ink)">Часто задаваемые вопросы</h1>
+  <p class="text-muted mb-0">Все ответы про забор, хранение и доставку багажа.</p>
+</section>
+
+{% include "core/partials/_faq_block.html" %}
+{% include "core/partials/_faq_jsonld.html" %}
+{% endblock %}

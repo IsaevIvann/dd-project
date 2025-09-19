@@ -1,0 +1,81 @@
+{# templates/core/partials/_faq_block.html #}
+<section id="faq" class="faq max-w-3xl mx-auto px-4 py-8">
+  <h2 class="text-3xl font-semibold mb-4">FAQ</h2>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">Как проходит услуга по шагам?</button>
+  <div class="acc-panel" id="faq4" role="region" aria-labelledby="faq4-trigger">
+    <p>Заявка → подтверждение заказа → приезд представителя → упаковка и пломбирование → оформление акта → хранение и доставка → встреча и проверка → оплата</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq1" id="faq1-trigger">Что я получу при передаче багажа?</button>
+  <div class="acc-panel" id="faq1" role="region" aria-labelledby="faq1-trigger">
+    <p>Мы выдаём Акт приёма-передачи: количество мест, состояние, номера пломб, время и адреса. Возврат багажа — строго по акту.</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq2" id="faq2-trigger">Как происходит оплата?</button>
+  <div class="acc-panel" id="faq2" role="region" aria-labelledby="faq2-trigger">
+    <p>Только безналично и после возврата багажа. Доступны: QR-код, СБП, платёжная ссылка.</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq12" id="faq12-trigger">Что происходит в случае задержки/отмены рейса?</button>
+  <div class="acc-panel" id="faq12" role="region" aria-labelledby="faq12-trigger">
+    <p>Мы отслеживаем рейсы и оперативно согласуем с вами корректировки времени доставки или забора.</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq5" id="faq5-trigger">Где вы работаете?</button>
+  <div class="acc-panel" id="faq5" role="region" aria-labelledby="faq5-trigger">
+    <p>Москва и область, все аэропорты и вокзалы столицы. По РФ — отправка через партнёрские службы по согласованию.</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq7" id="faq7-trigger">Что нельзя передавать?</button>
+  <div class="acc-panel" id="faq7" role="region" aria-labelledby="faq7-trigger">
+    <p>Опасные вещества, оружие, наркотические и ядовитые вещества, скоропорт, наличные, драгоценности, документы и любые запрещённые предметы.</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq8" id="faq8-trigger">Как обеспечивается сохранность?</button>
+  <div class="acc-panel" id="faq8" role="region" aria-labelledby="faq8-trigger">
+    <p>Профессиональная упаковка, пломбирование с уникальным номером и фотофиксация. Номер пломбы указан в акте.</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq9" id="faq9-trigger">Можно ли изменить время или адрес?</button>
+  <div class="acc-panel" id="faq9" role="region" aria-labelledby="faq9-trigger">
+    <p>Да, по возможности расписания. Сообщите минимум за 1 час до выбранного слота.</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq14" id="faq14-trigger">Как связаться с вами?</button>
+  <div class="acc-panel" id="faq14" role="region" aria-labelledby="faq14-trigger">
+    <p>Телефон, WhatsApp, Telegram и email — смотрите раздел «Контакты».</p>
+  </div>
+
+  <button class="acc-trigger" aria-expanded="false" aria-controls="faq3" id="faq3-trigger">Если я не смогу получить багаж лично?</button>
+  <div class="acc-panel" id="faq3" role="region" aria-labelledby="faq3-trigger">
+    <p>Организуем отправку удобным способом: курьер по РФ, ПВЗ или адресная доставка. Согласуем условия заранее.</p>
+  </div>
+</section>
+
+<style>
+  .faq .acc-trigger{width:100%;text-align:left;border:1px solid #e5e7eb;border-radius:16px;padding:16px 20px;margin-bottom:10px;background:#fff;font-size:18px;line-height:1.3;font-weight:600;display:flex;justify-content:space-between;align-items:center;transition:background .2s,border-color .2s}
+  .faq .acc-trigger::after{content:"+";font-size:22px;line-height:1}
+  .faq .acc-trigger[aria-expanded="true"]{background:#f8fafc;border-color:#cbd5e1}
+  .faq .acc-trigger[aria-expanded="true"]::after{content:"–"}
+  .faq .acc-panel{overflow:hidden;max-height:0;transition:max-height .25s ease;padding:0 4px;margin:-5px 0 10px 0}
+  .faq .acc-panel p{padding:8px 4px 6px}
+</style>
+
+<script>
+  (function(){
+    const triggers=document.querySelectorAll('.acc-trigger');
+    function closeAll(){triggers.forEach(b=>{b.setAttribute('aria-expanded','false');const p=b.nextElementSibling;p.style.maxHeight=null;});}
+    triggers.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const isOpen=btn.getAttribute('aria-expanded')==='true';
+        closeAll();
+        if(!isOpen){
+          btn.setAttribute('aria-expanded','true');
+          const panel=btn.nextElementSibling;
+          panel.style.maxHeight=panel.scrollHeight+'px';
+        }
+      });
+    });
+  })();
+</script>
