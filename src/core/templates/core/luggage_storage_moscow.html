@@ -3,192 +3,127 @@
 {% block title %}Luggage storage Moscow — Drop & Delivery{% endblock %}
 {% block content %}
 
-<style>
-.dd-page .dd-card{border:0;border-radius:24px;box-shadow:0 12px 30px rgba(13,110,253,.08);background:#fff}
-.dd-page .dd-hero{background:linear-gradient(180deg,#f5fbff 0%,#ffffff 60%);border-radius:32px;padding:32px}
-.dd-page .dd-badge{background:#e9f2ff;border-radius:999px;padding:.35rem .75rem;font-weight:600}
-.dd-page .dd-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#f1f6ff}
-.dd-page .dd-step{height:100%}
-.dd-page h1{letter-spacing:-.02em}
-.dd-page .hero-ill img{display:block;width:100%;height:auto}
-</style>
-
-<div class="dd-page">
-  <!-- HERO -->
-  <section class="dd-hero mb-5">
-    <div class="row g-4 align-items-center">
-      <div class="col-lg-7">
-        <span class="dd-badge text-primary"><i class="bi bi-bag me-1"></i>Luggage storage with delivery</span>
-        <h1 class="display-5 fw-bold mt-3">Luggage storage in Moscow — <span class="text-primary">door-to-door</span></h1>
-        <p class="lead text-secondary mt-3">
-          We pick up your luggage at the hotel or apartment, seal and store it safely.
-          Then deliver to the airport, train station or any address — right on time.
-        </p>
-        <div class="d-flex gap-3 mt-3">
-          <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg"><i class="bi bi-send me-1"></i>Book now</a>
-          <a href="{% url 'index' %}#tariffs" class="btn btn-outline-primary btn-lg"><i class="bi bi-tag me-1"></i>Prices</a>
-        </div>
-      </div>
-      <div class="col-lg-5">
-        <div class="hero-ill p-4 text-center">
-          <img src="{% static 'core/img/dnd_storage.png' %}"
-               alt="Drop & Delivery — luggage storage and delivery in Moscow"
-               class="img-fluid rounded-4"
-               loading="lazy" decoding="async">
-          <div class="small text-muted mt-2">Travel light — enjoy Moscow 🧳</div>
-        </div>
+<section class="hero-clean mb-5">
+  <div class="row align-items-center gy-4">
+    <div class="col-lg-7">
+      <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2">
+        <i class="bi bi-bag me-1"></i> Luggage storage with delivery
+      </span>
+      <h1 class="display-4 fw-bold mt-3">Luggage storage in Moscow — <span class="text-primary">door-to-door</span></h1>
+      <p class="lead text-secondary mt-3">
+        We pick up your luggage at the hotel or apartment, seal it and store safely.
+        Then deliver to the airport, train station or any address — right on time.
+      </p>
+      <div class="d-flex gap-3 mt-3">
+        <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-send me-1"></i>Book now</a>
+        <a href="{% url 'index' %}#tariffs" class="btn btn-lg btn-outline-primary px-4"><i class="bi bi-tag me-1"></i>Prices</a>
       </div>
     </div>
-  </section>
-
-  <!-- BENEFITS -->
-  <section class="mb-5">
-    <h2 class="h3 mb-3">Why choose us</h2>
-    <div class="row g-3">
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 h-100">
-          <div class="dd-icon"><i class="bi bi-taxi-front"></i></div>
-          <h3 class="h5 mt-3 mb-2">Door-to-door</h3>
-          <p class="text-secondary mb-0">No need to search for lockers.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 h-100">
-          <div class="dd-icon"><i class="bi bi-clock-history"></i></div>
-          <h3 class="h5 mt-3 mb-2">Time-saving</h3>
-          <p class="text-secondary mb-0">No queues or extra trips.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 h-100">
-          <div class="dd-icon"><i class="bi bi-shield-check"></i></div>
-          <h3 class="h5 mt-3 mb-2">Secure</h3>
-          <p class="text-secondary mb-0">Sealed luggage kept at a facility.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 h-100">
-          <div class="dd-icon"><i class="bi bi-calendar2-week"></i></div>
-          <h3 class="h5 mt-3 mb-2">Flexible</h3>
-          <p class="text-secondary mb-0">Pick-up and delivery time windows.</p>
-        </div>
+    <div class="col-lg-5">
+      <div class="hero-ill p-4 text-center surface">
+        <img src="{% static 'core/img/dnd_storage.png' %}"
+             alt="Drop & Delivery — luggage storage and delivery in Moscow"
+             loading="lazy" decoding="async">
+        <div class="small text-muted mt-2">Travel light — enjoy Moscow 🧳</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- HOW IT WORKS -->
-  <section class="mb-5">
-    <h2 class="h3 mb-3">How it works</h2>
-    <div class="row g-3">
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 dd-step">
-          <div class="d-flex align-items-center gap-2">
-            <div class="dd-icon"><i class="bi bi-chat-left-dots"></i></div>
-            <span class="badge text-bg-primary rounded-pill">1</span>
-          </div>
-          <h3 class="h6 mt-3 mb-1">Request</h3>
-          <p class="text-secondary mb-0">Book on the website or via messenger.</p>
-        </div>
+<section class="mb-5">
+  <h2 class="h3 mb-3">Why choose us</h2>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-taxi-front fs-4"></i></div>
+      <h3 class="h5 mt-3 mb-2">Door-to-door</h3>
+      <p class="text-secondary mb-0">No need to search for lockers.</p>
+    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-clock-history fs-4"></i></div>
+      <h3 class="h5 mt-3 mb-2">Time-saving</h3>
+      <p class="text-secondary mb-0">No queues or extra trips.</p>
+    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-shield-check fs-4"></i></div>
+      <h3 class="h5 mt-3 mb-2">Secure</h3>
+      <p class="text-secondary mb-0">Sealed luggage kept at a facility.</p>
+    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-calendar2-week fs-4"></i></div>
+      <h3 class="h5 mt-3 mb-2">Flexible</h3>
+      <p class="text-secondary mb-0">Pick-up and delivery time windows.</p>
+    </div></div>
+  </div>
+</section>
+
+<section class="mb-5">
+  <h2 class="h3 mb-3">How it works</h2>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-flex align-items-center gap-2">
+        <div class="rounded-3 bg-light p-3"><i class="bi bi-chat-left-dots"></i></div><span class="badge text-bg-primary rounded-pill">1</span>
       </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 dd-step">
-          <div class="d-flex align-items-center gap-2">
-            <div class="dd-icon"><i class="bi bi-person-check"></i></div>
-            <span class="badge text-bg-primary rounded-pill">2</span>
-          </div>
-          <h3 class="h6 mt-3 mb-1">Pick-up</h3>
-          <p class="text-secondary mb-0">Our representative seals and takes your luggage.</p>
-        </div>
+      <h3 class="h6 mt-3 mb-1">Request</h3><p class="text-secondary mb-0">Book on the website or via messenger.</p>
+    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-flex align-items-center gap-2">
+        <div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div><span class="badge text-bg-primary rounded-pill">2</span>
       </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 dd-step">
-          <div class="d-flex align-items-center gap-2">
-            <div class="dd-icon"><i class="bi bi-box-seam"></i></div>
-            <span class="badge text-bg-primary rounded-pill">3</span>
-          </div>
-          <h3 class="h6 mt-3 mb-1">Storage</h3>
-          <p class="text-secondary mb-0">We keep it safely until the requested time.</p>
-        </div>
+      <h3 class="h6 mt-3 mb-1">Pick-up</h3><p class="text-secondary mb-0">Our representative seals and takes your luggage.</p>
+    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-flex align-items-center gap-2">
+        <div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div><span class="badge text-bg-primary rounded-pill">3</span>
       </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="dd-card p-3 dd-step">
-          <div class="d-flex align-items-center gap-2">
-            <div class="dd-icon"><i class="bi bi-geo-alt"></i></div>
-            <span class="badge text-bg-primary rounded-pill">4</span>
-          </div>
-          <h3 class="h6 mt-3 mb-1">Delivery</h3>
-          <p class="text-secondary mb-0">We deliver to airport/station/any address on time.</p>
-        </div>
+      <h3 class="h6 mt-3 mb-1">Storage</h3><p class="text-secondary mb-0">We keep it safely until the requested time.</p>
+    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
+      <div class="d-flex align-items-center gap-2">
+        <div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div><span class="badge text-bg-primary rounded-pill">4</span>
       </div>
+      <h3 class="h6 mt-3 mb-1">Delivery</h3><p class="text-secondary mb-0">We deliver to airport/station/any address on time.</p>
+    </div></div>
+  </div>
+</section>
+
+<section class="mb-5">
+  <div class="surface p-4 d-lg-flex align-items-center justify-content-between">
+    <div>
+      <h2 class="h4 mb-1">Ready to help today</h2>
+      <p class="text-secondary mb-0">We’ll confirm address and time in a couple of messages.</p>
     </div>
-  </section>
+    <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4 mt-3 mt-lg-0"><i class="bi bi-lightning-charge me-1"></i>Book now</a>
+  </div>
+</section>
 
-  <!-- CTA -->
-  <section class="mb-5">
-    <div class="dd-card p-4 d-lg-flex align-items-center justify-content-between">
-      <div>
-        <h2 class="h4 mb-1">Ready to help today</h2>
-        <p class="text-secondary mb-0">We’ll confirm address and time in a couple of messages.</p>
-      </div>
-      <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg mt-3 mt-lg-0"><i class="bi bi-lightning-charge me-1"></i>Book now</a>
+<section class="mb-5">
+  <h2 class="h3 mb-3">FAQ</h2>
+  <div class="accordion" id="faqEn">
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e1">Do you operate in Moscow region?</button></h2>
+      <div id="e1" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, we cover Moscow and the region.</div></div>
     </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mb-5">
-    <h2 class="h3 mb-3">FAQ</h2>
-    <div class="accordion" id="faqEn">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e1">
-            Do you operate in Moscow region?
-          </button>
-        </h2>
-        <div id="e1" class="accordion-collapse collapse" data-bs-parent="#faqEn">
-          <div class="accordion-body text-secondary">Yes, we cover Moscow and the region.</div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e2">
-            Is urgent 1–2h delivery possible?
-          </button>
-        </h2>
-        <div id="e2" class="accordion-collapse collapse" data-bs-parent="#faqEn">
-          <div class="accordion-body text-secondary">Yes, upon request and availability.</div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e3">
-            How long can I store luggage?
-          </button>
-        </h2>
-        <div id="e3" class="accordion-collapse collapse" data-bs-parent="#faqEn">
-          <div class="accordion-body text-secondary">No strict limit — we’ll arrange a suitable option.</div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e4">
-            How to reschedule time/address?
-          </button>
-        </h2>
-        <div id="e4" class="accordion-collapse collapse" data-bs-parent="#faqEn">
-          <div class="accordion-body text-secondary">Message us — we will adjust quickly.</div>
-        </div>
-      </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e2">Is urgent 1–2h delivery possible?</button></h2>
+      <div id="e2" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, upon request and availability.</div></div>
     </div>
-  </section>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e3">How long can I store luggage?</button></h2>
+      <div id="e3" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">No strict limit — we’ll arrange a suitable option.</div></div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e4">How to reschedule time/address?</button></h2>
+      <div id="e4" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Message us — we will adjust quickly.</div></div>
+    </div>
+  </div>
+</section>
 
-  <!-- FAQ JSON-LD -->
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-    {"@type":"Question","name":"Do you operate in Moscow region?","acceptedAnswer":{"@type":"Answer","text":"Yes, we cover Moscow and the region."}},
-    {"@type":"Question","name":"Is urgent 1–2h delivery possible?","acceptedAnswer":{"@type":"Answer","text":"Yes, upon request and availability."}},
-    {"@type":"Question","name":"How long can I store luggage?","acceptedAnswer":{"@type":"Answer","text":"No strict limit — we’ll arrange a suitable option."}},
-    {"@type":"Question","name":"How to reschedule time/address?","acceptedAnswer":{"@type":"Answer","text":"Message us — we will adjust quickly."}}
-  ]}
-  </script>
-</div>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"Do you operate in Moscow region?","acceptedAnswer":{"@type":"Answer","text":"Yes, we cover Moscow and the region."}},
+  {"@type":"Question","name":"Is urgent 1–2h delivery possible?","acceptedAnswer":{"@type":"Answer","text":"Yes, upon request and availability."}},
+  {"@type":"Question","name":"How long can I store luggage?","acceptedAnswer":{"@type":"Answer","text":"No strict limit — we’ll arrange a suitable option."}},
+  {"@type":"Question","name":"How to reschedule time/address?","acceptedAnswer":{"@type":"Answer","text":"Message us — we will adjust quickly."}}
+]}
+</script>
 {% endblock %}
