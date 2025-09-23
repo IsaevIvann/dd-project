@@ -108,10 +108,19 @@
       font-family: var(--dd-font);
     }
 
-    /* Навигация */
-    .navbar-nav .nav-link{ transition: color .2s, background .2s; font-weight:600; letter-spacing:.01em; }
-    .navbar-nav .nav-link.btn{ color:#fff !important; }
-    .navbar-nav .nav-link:hover, .navbar-nav .nav-link:focus{ color:#0d6efd !important; }
+    /* Навигация (облегчили вес ссылок) */
+    .navbar-brand{ font-weight: 700; }
+    .navbar-nav .nav-link{
+      transition: color .2s, background .2s;
+      font-weight: 400;            /* тоньше, как просили */
+      letter-spacing: .01em;
+    }
+    .navbar-nav .nav-link.btn{
+      color:#fff !important;
+      font-weight:600;             /* кнопка остаётся плотной */
+    }
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus{ color:#0d6efd !important; }
 
     /* Кнопки — скруглённые как на главной */
     .btn{ border-radius:9999px; font-weight:600; }
