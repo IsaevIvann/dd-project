@@ -41,6 +41,13 @@ def privacy(request):
     return render(request, "core/privacy.html")
 
 
+def storage_moscow(request):
+    return render(request, "core/storage_moscow.html")
+
+def luggage_storage_moscow(request):
+    return render(request, "core/luggage_storage_moscow.html")
+
+
 def order_create(request):
     if request.method == "POST":
         form = OrderForm(request.POST)

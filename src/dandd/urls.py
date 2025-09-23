@@ -2,6 +2,8 @@
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
+
+from core import views
 from core.views import index, order_create, offer, contacts, privacy, telegram_webhook, LinkChatView, yandex_verify
 
 urlpatterns = [
@@ -18,6 +20,8 @@ urlpatterns = [
     path("robots.txt", TemplateView.as_view(template_name="core/robots.txt", content_type="text/plain"), name="robots"),
     path("sitemap.xml", TemplateView.as_view(template_name="core/sitemap.xml", content_type="application/xml"), name="sitemap"),
     path("faq/", TemplateView.as_view(template_name="core/faq.html"), name="faq"),
+    path("hranenie-bagazha-moskva/", views.storage_moscow, name="storage_moscow"),
+    path("luggage-storage-moscow/", views.luggage_storage_moscow, name="luggage_storage_moscow"),
 
 ]
 

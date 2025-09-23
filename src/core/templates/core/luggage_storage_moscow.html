@@ -1,0 +1,76 @@
+{% extends "core/base.html" %}
+{% block title %}Luggage storage Moscow — Drop & Delivery{% endblock %}
+{% block content %}
+  <h1 class="mb-4">Luggage storage in Moscow with delivery</h1>
+  <p>Carrying suitcases around Moscow is inconvenient: early check-out, late flight or a few free hours in the city. Station lockers are not always practical: queues, limited working hours and extra travel.</p>
+
+  <p><strong>Drop & Delivery</strong> offers a door-to-door service: we pick up your luggage at a hotel, apartment or office, seal and photograph it, store it at a secure facility and deliver it to the airport, train station or any address at the requested time.</p>
+
+  <h2 class="mt-4">Why choose us</h2>
+  <ul>
+    <li><b>Door-to-door.</b> No need to look for lockers.</li>
+    <li><b>Time-saving.</b> No queues or extra trips.</li>
+    <li><b>Secure storage.</b> Sealed luggage kept at a facility.</li>
+    <li><b>Flexible timing.</b> Pick-up and delivery windows that suit you.</li>
+    <li><b>For tourists & business.</b> Perfect for flights, events and transfers.</li>
+  </ul>
+
+  <h2 class="mt-4">How it works</h2>
+  <ol>
+    <li>Place an order on the website or via messenger.</li>
+    <li>Our representative picks up and seals your luggage.</li>
+    <li>We store it safely until the agreed time.</li>
+    <li>We deliver to the airport/station/any address on time.</li>
+  </ol>
+
+  <div class="alert alert-primary mt-4">
+    Ready to help today. <a class="alert-link" href="{% url 'order_create' %}">Book now</a>.
+  </div>
+
+  <h2 class="mt-4">FAQ</h2>
+  <p><b>Multi-day storage?</b> Yes, by agreement.</p>
+  <p><b>Moscow region covered?</b> Yes.</p>
+  <p><b>Urgent 1–2h delivery?</b> Possible on request.</p>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I book luggage pick-up and delivery?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Place an order on the website or via messenger. We confirm the address and time windows, pick up your luggage and deliver it to the requested location on time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you operate in the Moscow region?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we cover Moscow and the Moscow region. Pricing and timing are confirmed during booking."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is urgent delivery within 1–2 hours possible?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, urgent orders are possible upon request and subject to availability."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long can I store my luggage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no strict limit. Tell us the duration when booking and we will arrange a suitable option."
+      }
+    }
+  ]
+}
+</script>
+
+{% endblock %}
