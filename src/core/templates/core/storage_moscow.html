@@ -1,76 +1,132 @@
 {% extends "core/base.html" %}
 {% block title %}Хранение багажа в Москве — Drop & Delivery{% endblock %}
 {% block content %}
-  <h1 class="mb-4">Хранение багажа в Москве с доставкой</h1>
-  <p>В Москве часто возникает ситуация, когда чемоданы мешают планам: позднее заселение, ранний выезд, пересадка между рейсами или прогулка без лишних вещей. Камеры хранения на вокзалах и в аэропортах не всегда удобны: очереди, ограниченный график, поездки туда-обратно.</p>
 
-  <p><strong>Drop & Delivery</strong> решает задачу «под ключ»: забираем багаж у двери (отель, апартаменты, офис), пломбируем, фотографируем и храним на охраняемом складе. В нужное время привозим чемоданы по адресу — в аэропорт, на вокзал или куда скажете.</p>
+<style>
+/* Лёгкий «фирменный» стиль, локально для этой страницы */
+.dd-page .dd-card{border:0;border-radius:24px;box-shadow:0 12px 30px rgba(13,110,253,.08);background:#fff}
+.dd-page .dd-hero{background:linear-gradient(180deg,#f5fbff 0%,#ffffff 60%);border-radius:32px;padding:32px}
+.dd-page .dd-badge{background:#e9f2ff;border-radius:999px;padding:.35rem .75rem;font-weight:600}
+.dd-page .dd-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#f1f6ff}
+.dd-page .dd-step{height:100%}
+.dd-page h1{letter-spacing:-.02em}
+</style>
 
-  <h2 class="mt-4">Почему это удобно</h2>
-  <ul>
-    <li><b>От двери до двери.</b> Не нужно искать камеру хранения и ехать к ней.</li>
-    <li><b>Экономия времени.</b> Без очередей и лишних переездов.</li>
-    <li><b>Безопасность.</b> Пломбирование и хранение на складе.</li>
-    <li><b>Гибкое время.</b> Забор и доставка в удобные окна.</li>
-    <li><b>Для туристов и жителей.</b> Подходит для перелётов, переездов, мероприятий.</li>
-  </ul>
+<div class="dd-page">
 
-  <h2 class="mt-4">Как это работает</h2>
-  <ol>
-    <li>Оформляете заявку на сайте или пишете в мессенджер.</li>
-    <li>Наш представитель забирает багаж по адресу и оформляет пломбы.</li>
-    <li>Мы храним чемоданы на складе до нужного времени.</li>
-    <li>Доставляем багаж точно по адресу и времени.</li>
-  </ol>
+  <!-- HERO -->
+  <section class="dd-hero mb-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-7">
+        <span class="dd-badge text-primary"><i class="bi bi-bag me-1"></i>Хранение с доставкой</span>
+        <h1 class="display-5 fw-bold mt-3">Хранение багажа в Москве — <span class="text-primary">без очередей и поездок</span></h1>
+        <p class="lead text-secondary mt-3">
+          Заберём чемоданы у двери, опечатаем и бережно сохраним на складе.
+          В нужное время привезём в аэропорт, на вокзал или по адресу — точно в срок.
+        </p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg"><i class="bi bi-send me-1"></i>Оставить заявку</a>
+          <a href="{% url 'index' %}#tariffs" class="btn btn-outline-primary btn-lg"><i class="bi bi-tag me-1"></i>Тарифы</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="dd-card p-4 text-center">
+          <i class="bi bi-suitcase2-fill" style="font-size:64px;"></i>
+          <p class="text-muted mt-3 mb-0">Ваш багаж — под присмотром и уже в пути ✈️</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="alert alert-primary mt-4">
-    Готовы забрать багаж в ближайшее время. <a class="alert-link" href="{% url 'order_create' %}">Оставить заявку</a>.
-  </div>
+  <!-- ПРЕИМУЩЕСТВА -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Почему это удобно</h2>
+    <div class="row g-3">
+      {% for item in [
+        ('bi-truck','От двери до двери','Не нужно ехать в камеру хранения и обратно.'),
+        ('bi-clock-history','Экономия времени','Без очередей и ожиданий — согласуем удобные окна.'),
+        ('bi-shield-check','Надёжно','Пломбирование и фотофиксация при передаче.'),
+        ('bi-calendar2-week','Гибко','Короткое и длительное хранение, Москва и область.'),
+      ] %}
+      <div class="col-md-6 col-lg-3">
+        <div class="dd-card p-3 h-100">
+          <div class="dd-icon"><i class="bi {{ item.0 }}"></i></div>
+          <h3 class="h5 mt-3 mb-2">{{ item.1 }}</h3>
+          <p class="text-secondary mb-0">{{ item.2 }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
 
-  <h2 class="mt-4">Частые вопросы</h2>
-  <p><b>Можно ли на несколько дней?</b> Да, срок хранения договариваемся заранее.</p>
-  <p><b>Работаете по области?</b> Да, Москва и МО.</p>
-  <p><b>Срочно за 1–2 часа?</b> Да, по согласованию.</p>
+  <!-- КАК ЭТО РАБОТАЕТ -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Как это работает</h2>
+    <div class="row g-3">
+      {% for n,icon,title,desc in [
+        ('1','bi-chat-dots','Заявка','Оставляете заявку на сайте или пишете в мессенджер.'),
+        ('2','bi-person-check','Встреча','Представитель приезжает по адресу, пломбирует багаж.'),
+        ('3','bi-box-seam','Хранение','Сохраняем чемоданы на складе до нужного времени.'),
+        ('4','bi-geo-alt','Доставка','Привозим по адресу/в аэропорт/на вокзал — вовремя.')
+      ] %}
+      <div class="col-md-6 col-lg-3">
+        <div class="dd-card p-3 dd-step">
+          <div class="d-flex align-items-center gap-2">
+            <div class="dd-icon"><i class="bi {{ icon }}"></i></div>
+            <span class="badge text-bg-primary rounded-pill">{{ n }}</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">{{ title }}</h3>
+          <p class="text-secondary mb-0">{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Как заказать услугу хранения и доставки багажа?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Оставьте заявку на сайте или напишите в мессенджер. Мы уточним адрес и удобные окна времени, заберем багаж и доставим по вашему адресу в согласованный срок."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Работаете ли вы по Московской области?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Да, мы обслуживаем Москву и Московскую область. Стоимость и сроки согласуем при оформлении заявки."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Можно ли срочно — в течение 1–2 часов?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Да, срочные заказы возможны по согласованию и при наличии свободных слотов."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "На какой срок можно оставить багаж?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Срок хранения не ограничен. Уточните длительность при заказе — подберем решение и согласуем условия."
-      }
-    }
-  ]
-}
-</script>
+  <!-- CTA -->
+  <section class="mb-5">
+    <div class="dd-card p-4 d-lg-flex align-items-center justify-content-between">
+      <div>
+        <h2 class="h4 mb-1">Готовы забрать багаж сегодня</h2>
+        <p class="text-secondary mb-0">Согласуем время и адрес в пару сообщений.</p>
+      </div>
+      <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg mt-3 mt-lg-0"><i class="bi bi-lightning-charge me-1"></i>Оставить заявку</a>
+    </div>
+  </section>
 
+  <!-- FAQ -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">FAQ</h2>
+    <div class="accordion" id="faqStorage">
+      {% for q,a in [
+        ('Можно на несколько дней?','Да, срок не ограничен — согласуем при оформлении.'),
+        ('Работаете по области?','Да, Москва и Московская область.'),
+        ('Срочно за 1–2 часа?','Возможна ускоренная доставка по согласованию.'),
+        ('Как изменить время или адрес?','Напишите нам — оперативно перестроим слот.')
+      ] %}
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s{{ forloop.counter }}">
+            {{ q }}
+          </button>
+        </h2>
+        <div id="s{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#faqStorage">
+          <div class="accordion-body text-secondary">{{ a }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- FAQ JSON-LD -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"Можно на несколько дней?","acceptedAnswer":{"@type":"Answer","text":"Да, срок не ограничен — согласуем при оформлении."}},
+    {"@type":"Question","name":"Работаете по области?","acceptedAnswer":{"@type":"Answer","text":"Да, Москва и Московская область."}},
+    {"@type":"Question","name":"Срочно за 1–2 часа?","acceptedAnswer":{"@type":"Answer","text":"Возможна ускоренная доставка по согласованию."}},
+    {"@type":"Question","name":"Как изменить время или адрес?","acceptedAnswer":{"@type":"Answer","text":"Напишите нам — оперативно перестроим слот."}}
+  ]}
+  </script>
+
+</div>
 {% endblock %}
