@@ -32,7 +32,7 @@
         Доставка багажа в Москве и области — путешествуйте <span class="text-primary">налегке</span>
       </h1>
       <p class="fs-5 text-muted mb-4">
-        Представитель приедет, упакует и опечатает чемоданы. Мы сохраним их на складе и привезём
+        Представитель приедет, упакует и заберет чемоданы. Мы сохраним их на складе и привезём
         <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
       </p>
       <div class="d-flex flex-wrap gap-3">
@@ -180,198 +180,103 @@
         </div>
       </div>
 
-      <!-- Правая карточка -->
-      <div class="col-lg-6">
-        <div class="card-dd p-4 h-100 d-flex flex-column">
-          <div class="d-flex align-items-start gap-3 mb-2">
-            <div class="emoji-badge">🧭</div>
+<div class="col-lg-6">
+  <div class="surface p-4 h-100">
+    <h3 class="h4 mb-2">Примеры маршрутов и зон</h3>
+    <p class="text-secondary mb-3">
+      В пределах <b>МКАД</b> — <b>Зона 1</b>. За МКАД — <b>Зона 1.5</b>.
+      Хранение — по единому тарифу.
+    </p>
+
+    <div class="row g-3">
+      <!-- Пример 1 -->
+      <div class="col-md-6">
+        <div class="bg-light rounded-4 p-3 h-100">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi bi-geo-alt fs-4"></i>
             <div>
-              <div class="h5 fw-bold mb-1" style="color:var(--ink)">Не уверены, к какой зоне относится адрес?</div>
-              <div class="text-muted">Укажите адрес — мы подскажем зону и применим нужный коэффициент автоматически.</div>
+              <div class="fw-semibold">ЦАО → Шереметьево</div>
+              <div class="small text-secondary">Зона <b>1</b> (в пределах МКАД)</div>
             </div>
           </div>
+          <hr class="my-2">
+          <ul class="small text-secondary mb-0 ps-3">
+            <li>2 чемодана</li>
+            <li>1 сутки хранения включены</li>
+          </ul>
+        </div>
+      </div>
 
-          <label class="form-label mt-2 dd-muted">Адрес или место (например, «Внуково», «Одинцово»)</label>
-          <div class="d-flex gap-2 flex-wrap">
-            <input id="zoneAddress" class="form-control flex-grow-1" type="text" placeholder="Введите адрес">
-            <button id="detectZone" class="btn btn-primary pill px-4" type="button">Определить зону</button>
+      <!-- Пример 2 -->
+      <div class="col-md-6">
+        <div class="bg-light rounded-4 p-3 h-100">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi bi-geo-alt fs-4"></i>
+            <div>
+              <div class="fw-semibold">Одинцово → Домодедово</div>
+              <div class="small text-secondary">Зона <b>1.5</b> (за МКАД)</div>
+            </div>
           </div>
+          <hr class="my-2">
+          <ul class="small text-secondary mb-0 ps-3">
+            <li>3–4 единицы багажа</li>
+            <li>Коэффициент зоны 1.5</li>
+          </ul>
+        </div>
+      </div>
 
-          <div id="zoneResult" class="mt-3"></div>
+      <!-- Пример 3 -->
+      <div class="col-md-6">
+        <div class="bg-light rounded-4 p-3 h-100">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi bi-geo-alt fs-4"></i>
+            <div>
+              <div class="fw-semibold">Арбат → Курский вокзал</div>
+              <div class="small text-secondary">Зона <b>1</b></div>
+            </div>
+          </div>
+          <hr class="my-2">
+          <ul class="small text-secondary mb-0 ps-3">
+            <li>1–3 единицы</li>
+            <li>Без наценки по зоне</li>
+          </ul>
+        </div>
+      </div>
 
-          <ul class="mt-3 mb-0 text-muted" style="padding-left:1.1rem;">
-            <li><strong>Зона 1</strong> — Москва в пределах МКАД, все аэропорты и вокзалы.</li>
-            <li><strong>Зона 1.5</strong> — Московская область (за МКАД).</li>
+      <!-- Пример 4 -->
+      <div class="col-md-6">
+        <div class="bg-light rounded-4 p-3 h-100">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi bi-geo-alt fs-4"></i>
+            <div>
+              <div class="fw-semibold">Мытищи → Внуково</div>
+              <div class="small text-secondary">Зона <b>1.5</b></div>
+            </div>
+          </div>
+          <hr class="my-2">
+          <ul class="small text-secondary mb-0 ps-3">
+            <li>5+ единиц багажа</li>
+            <li>Коэффициент 1.5 к базовой услуге</li>
           </ul>
         </div>
       </div>
     </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <a href="{% url 'index' %}#tariffs" class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-tag me-1"></i> Смотреть тарифы
+      </a>
+      <a href="{% url 'order_create' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-send me-1"></i> Оставить заявку
+      </a>
+    </div>
+
+    <div class="small text-muted mt-2">
+      * Зона влияет только на услугу «забор + доставка». Хранение — по единому тарифу.
+    </div>
   </div>
-</section>
+</div>
 
-<style>
-  .emoji-badge{
-    width:44px;height:44px;border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    background:#eef5ff;font-size:22px;
-    box-shadow:0 8px 20px rgba(16,24,40,.06)
-  }
-  #zones .form-control{border-radius:12px;padding:.8rem .9rem;border-color:#e5e7eb}
-  #zones .form-control:focus{border-color:#2563eb;box-shadow:0 0 0 .35rem rgba(37,99,235,.15)}
-  #zoneResult .pill{display:inline-block;border-radius:999px;padding:6px 12px;font-weight:600}
-  #zoneResult .pill--z1{background:rgba(34,197,94,.14);color:#166534}
-  #zoneResult .pill--z15{background:rgba(234,179,8,.16);color:#92400e}
-</style>
-
-<!-- Яндекс.Карты для геокодирования -->
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=ВАШ_КЛЮЧ" defer></script>
-
-<script>
-  /* ====== КАЛЬКУЛЯТОР ====== */
-  function ddCalc(){
-    const items = Math.max(1, parseInt(document.getElementById('dd-items').value || '1', 10));
-    const days  = Math.max(1, parseInt(document.getElementById('dd-days').value  || '1', 10));
-    const zoneK = parseFloat(document.getElementById('dd-zone').value || '1.0');
-
-    // Тарифы
-    let base = 3500;
-    if (items >= 4 && items <= 6) base = 4000;
-    else if (items >= 7) base = 4500 + (items - 7) * 500;
-
-    const baseWithZone = Math.round(base * zoneK);
-    const storageDays = Math.max(0, days - 1);
-    const storageCost = storageDays * 500;
-    const total = baseWithZone + storageCost;
-
-    const lines = [
-      `База за ${items} ед.: ${base.toLocaleString('ru-RU')} ₽ × ${zoneK.toFixed(1)} = <b>${baseWithZone.toLocaleString('ru-RU')} ₽</b>`,
-      `Хранение: 1-е сутки бесплатно + ${storageDays} × 500 ₽ = <b>${storageCost.toLocaleString('ru-RU')} ₽</b>`
-    ];
-
-    document.getElementById('dd-total').innerHTML = `${total.toLocaleString('ru-RU')} ₽`;
-    document.getElementById('dd-lines').innerHTML = lines.join('<br>');
-    document.getElementById('dd-result').hidden = false;
-  }
-
-  /* ====== ОПРЕДЕЛЕНИЕ ЗОНЫ (МКАД) ====== */
-  (function(){
-    const MKAD_POLY = [
-      [55.774558,37.842762],[55.76522,37.842789],[55.755723,37.843323],[55.747399,37.843575],[55.739103,37.843513],
-      [55.730482,37.843208],[55.721939,37.842819],[55.712203,37.841709],[55.703048,37.840271],[55.694287,37.839005],
-      [55.68529,37.836521],[55.675945,37.832779],[55.667752,37.82909],[55.658667,37.824787],[55.650053,37.820278],
-      [55.641443,37.815876],[55.63229,37.811191],[55.623655,37.806671],[55.615094,37.802227],[55.606402,37.797878],
-      [55.597201,37.793205],[55.587839,37.78854],[55.578834,37.784149],[55.570058,37.78009],[55.561405,37.776127],
-      [55.552736,37.772003],[55.544001,37.76804],[55.535073,37.76408],[55.526113,37.758938],[55.517578,37.754311],
-      [55.509168,37.74984],[55.500171,37.743828],[55.491469,37.739227],[55.482824,37.734814],[55.474282,37.729515],
-      [55.466,37.724747],[55.456507,37.721359],[55.448131,37.719173],[55.439682,37.716888],[55.431333,37.714573],
-      [55.4226,37.7131],[55.414925,37.7112],[55.406906,37.7096],[55.398876,37.70789],[55.391009,37.705563],
-      [55.38239,37.703026],[55.374578,37.700981],[55.366962,37.697868],[55.358655,37.693508],[55.350843,37.688847],
-      [55.34271,37.684071],[55.334482,37.679554],[55.32614,37.675141],[55.317603,37.670696],[55.309003,37.66629],
-      [55.300476,37.661877],[55.292293,37.657559],[55.284,37.654106],[55.27556,37.651073],[55.266991,37.648117],
-      [55.258385,37.646004],[55.249802,37.643753],[55.241273,37.641293],[55.232799,37.638985],[55.224273,37.636612],
-      [55.215759,37.634167],[55.207154,37.631931],[55.198653,37.629635],[55.1901,37.627342],[55.181512,37.625049],
-      [55.172985,37.622765],[55.164454,37.620468],[55.155952,37.618175],[55.147415,37.615879],[55.138905,37.613594],
-      [55.130386,37.611301],[55.121876,37.609016],[55.113327,37.606716],[55.104809,37.604424],[55.096287,37.602131],
-      [55.087772,37.599842],[55.079243,37.597557],[55.070724,37.595264],[55.062199,37.592972],[55.053673,37.590679],
-      [55.045143,37.58839],[55.036617,37.586098],[55.028091,37.583805],[55.019566,37.581512],[55.011036,37.579224],
-      [55.00251,37.576931],[54.99398,37.574642],[54.985455,37.57235],[54.976929,37.570061],[54.968403,37.567768],
-      [54.959877,37.565475],[54.951351,37.563187],[54.942825,37.560894],[54.934299,37.558601],[54.925774,37.556313],
-      [54.917248,37.55402],[54.908722,37.551727],[54.900196,37.549438],[54.89167,37.547146],[54.883144,37.544857],
-      [54.874619,37.542564],[54.866093,37.540276],[54.857567,37.537983],[54.849041,37.53569],[54.840515,37.533401],
-      [54.831989,37.531109],[54.823463,37.52882],[54.814938,37.526527],[54.806412,37.524239],[54.797886,37.521946],
-      [54.78936,37.519653],[54.780834,37.517365],[54.772308,37.515072],[54.763782,37.512783],[54.755257,37.51049],
-      [54.746731,37.508202],[54.738205,37.505909],[54.729679,37.503616],[54.721153,37.501328],[54.712627,37.499035],
-      [54.704102,37.496746],[54.695576,37.494453]
-    ];
-
-    const airports = ["шереметьево","домодедово","внуково","жуковский","svo","dme","vko","zia"];
-    const rails = ["белорусский","курский","ленинградский","киевский","казанский","павелецкий","рижский","савёловский","савеловский","ярославский","вокзал","ржд"];
-
-    const input = document.getElementById('zoneAddress');
-    const btn   = document.getElementById('detectZone');
-    const out   = document.getElementById('zoneResult');
-    const zoneSelect = document.getElementById('dd-zone');
-
-    function render(res, src){
-      out.innerHTML =
-        `<span class="pill ${res.val==='1.0'?'pill--z1':'pill--z15'}">${res.zone}</span>
-         <span class="ms-2 text-muted">коэффициент ${res.coef}${res.addr ? ` • ${res.addr}`:''}${src?` • ${src}`:''}</span>`;
-      if (zoneSelect) zoneSelect.value = res.val;
-    }
-
-    function pointInPolygon(lat, lon, poly){
-      let inside = false;
-      for (let i=0, j=poly.length-1; i<poly.length; j=i++){
-        const xi = poly[i][0], yi = poly[i][1];
-        const xj = poly[j][0], yj = poly[j][1];
-        const intersect = ((yi>lon)!==(yj>lon)) && (lat < (xj - xi) * (lon - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
-      }
-      return inside;
-    }
-
-    function fallbackDecide(q){
-      const lower = q.toLowerCase();
-      const isAirport = airports.some(a => lower.includes(a));
-      const isRail    = rails.some(r => lower.includes(r));
-      const isMoscow  = /(^|\s)москв[аеыу]|мкад/.test(lower);
-      return (isAirport || isRail || isMoscow)
-        ? {zone:"Зона 1", coef:"×1.0", val:"1.0"}
-        : {zone:"Зона 1.5", coef:"×1.5", val:"1.5"};
-    }
-
-    function ensureYmapsReady(){
-      return new Promise((resolve, reject)=>{
-        const start = Date.now();
-        function check(){
-          if (window.ymaps && ymaps.ready) return ymaps.ready(resolve);
-          if (Date.now()-start>8000) return reject(new Error('ymaps timeout'));
-          setTimeout(check, 100);
-        }
-        check();
-      });
-    }
-
-    async function geocode(q){
-      await ensureYmapsReady();
-      const result = await ymaps.geocode(q, { results: 1 });
-      if (!result || result.geoObjects.getLength()===0) throw new Error('not_found');
-      const obj   = result.geoObjects.get(0);
-      const coords= obj.geometry.getCoordinates();
-      const meta  = obj.properties.get('metaDataProperty') || {};
-      const text  = (meta.GeocoderMetaData && meta.GeocoderMetaData.text) || obj.getAddressLine() || q;
-      return { coords, text };
-    }
-
-    btn.addEventListener('click', async ()=>{
-      const q = (input.value||'').trim();
-      if (!q){ out.innerHTML = '<span class="text-muted">Введите адрес</span>'; return; }
-
-      out.innerHTML = '<span class="text-muted">Определяем зону…</span>';
-
-      try{
-        const { coords, text } = await geocode(q);
-        const lower = text.toLowerCase();
-
-        if (airports.some(a=>lower.includes(a)) || rails.some(r=>lower.includes(r))){
-          render({zone:"Зона 1", coef:"×1.0", val:"1.0", addr:text}, 'по картам');
-          return;
-        }
-
-        const inside = pointInPolygon(coords[0], coords[1], MKAD_POLY);
-        render(
-          inside
-            ? {zone:"Зона 1", coef:"×1.0", val:"1.0", addr:text}
-            : {zone:"Зона 1.5", coef:"×1.5", val:"1.5", addr:text},
-          'по картам'
-        );
-      }catch(e){
-        const fb = fallbackDecide(q);
-        render(fb, 'эвристика');
-      }
-    });
-  })();
-</script>
 
 <!-- FAQ (тот же контент, из общего include) -->
 {% include "core/partials/_faq_block.html" %}
