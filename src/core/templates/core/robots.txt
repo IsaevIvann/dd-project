@@ -1,5 +1,19 @@
-User-agent: *
-Disallow: /
-Allow: /
+# robots.txt for drop-delivery.ru
 
-Sitemap: https://drop-delivery.ru/sitemap.xml
+# (необязательно) блокируем отдельные краулеры ИИ
+User-agent: GPTBot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+# основное правило для всех
+User-agent: *
+Disallow:
+
+# карта сайта и канонический хост (рекомендация Яндекса)
+Sitemap: https://www.drop-delivery.ru/sitemap.xml
+Host: www.drop-delivery.ru
+
+# чистим UTM/клики-параметры, чтобы не плодить дублей (директива Яндекса)
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&utm_referrer&yclid&gclid&fbclid /
