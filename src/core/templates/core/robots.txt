@@ -1,6 +1,6 @@
 # robots.txt for drop-delivery.ru
 
-# Блокируем отдельные AI/расширенные краулеры (по желанию)
+# (по желанию) блокируем отдельные AI/расширенные краулеры
 User-agent: Amazonbot
 Disallow: /
 User-agent: Applebot-Extended
@@ -18,7 +18,7 @@ Disallow: /
 User-agent: meta-externalagent
 Disallow: /
 
-# Основное правило для всех: индексация разрешена
+# Правило для всех: индексация разрешена
 User-agent: *
 Disallow:
 
