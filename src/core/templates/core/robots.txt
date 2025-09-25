@@ -1,6 +1,6 @@
 # robots.txt for drop-delivery.ru
 
-# (по желанию) блокируем отдельные AI/расширенные краулеры
+# Optional: block specific AI/extended crawlers
 User-agent: Amazonbot
 Disallow: /
 User-agent: Applebot-Extended
@@ -18,13 +18,13 @@ Disallow: /
 User-agent: meta-externalagent
 Disallow: /
 
-# Правило для всех: индексация разрешена
+# Default rule for all: allow indexing
 User-agent: *
 Disallow:
 
-# Карта сайта и канонический хост (для Яндекса)
+# Sitemap and canonical host (Yandex-specific Host)
 Sitemap: https://www.drop-delivery.ru/sitemap.xml
 Host: www.drop-delivery.ru
 
-# Убираем мусорные параметры (Яндекс)
+# Remove tracking params (Yandex Clean-param)
 Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&utm_referrer&yclid&gclid&fbclid /
