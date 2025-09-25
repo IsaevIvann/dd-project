@@ -22,9 +22,9 @@ Disallow: /
 User-agent: *
 Disallow:
 
-# Карта сайта и канонический хост (директивы Яндекса)
+# Карта сайта и канонический хост (для Яндекса)
 Sitemap: https://www.drop-delivery.ru/sitemap.xml
 Host: www.drop-delivery.ru
 
-# Чистим мусорные параметры, чтобы не плодить дублей (Яндекс)
+# Убираем мусорные параметры (Яндекс)
 Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&utm_referrer&yclid&gclid&fbclid /
