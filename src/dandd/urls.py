@@ -22,6 +22,7 @@ urlpatterns = [
     path("faq/", TemplateView.as_view(template_name="core/faq.html"), name="faq"),
     path("hranenie-bagazha-moskva/", views.storage_moscow, name="storage_moscow"),
     path("luggage-storage-moscow/", views.luggage_storage_moscow, name="luggage_storage_moscow"),
+    path("benefits/", TemplateView.as_view(template_name="core/benefits.html"), name="benefits"),
 
 ]
 
