@@ -197,4 +197,15 @@
     <a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">Смотреть все вопросы</a>
   </div>
 </section>
+
+  <section class="card-dd p-4 mt-4">
+  <h5 class="fw-bold mb-2">Популярные направления</h5>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Доставка в Внуково</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'zia' %}">Доставка в Жуковский</a>
+  </div>
+</section>
+
 {% endblock %}

@@ -1,0 +1,93 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{{ meta_title }}{% endblock %}
+
+{% block content %}
+<link rel="canonical" href="{{ canonical }}"/>
+
+<style>
+  :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
+  .hero-clean{border-radius:32px;padding:2rem;background:#fff;box-shadow:0 20px 50px rgba(16,24,40,.06)}
+  .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
+  .pill{border-radius:999px}
+</style>
+
+<section class="hero-clean mb-4">
+  <h1 class="fw-bold" style="color:var(--ink)">{{ h1 }}</h1>
+  <p class="text-muted mb-0">{{ meta_desc }}</p>
+</section>
+
+<section class="row g-3 mb-4">
+  <div class="col-md-6">
+    <div class="card-dd p-4 h-100">
+      <h2 class="h5 fw-bold mb-2">Доставка багажа {{ data.name_prep }}</h2>
+      <ul class="text-muted mb-3" style="padding-left:1.1rem">
+        <li>Заберём у двери, упакуем и опечатаем (пломба с номером, фотофиксация).</li>
+        <li>Оформим акт (кол-во мест, состояние, номера пломб, адреса и время).</li>
+        <li>Привезём к терминалу: {% for t in data.terminals %}{{ t }}{% if not forloop.last %}, {% endif %}{% endfor %}.</li>
+        <li>Оплата после проверки багажа.</li>
+      </ul>
+      <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card-dd p-4 h-100">
+      <h2 class="h5 fw-bold mb-2">Доставка багажа {{ data.name_gen }}</h2>
+      <ul class="text-muted mb-3" style="padding-left:1.1rem">
+        <li>Встречаем у выхода/стойки выдачи — к нужному терминалу.</li>
+        <li>Проверяете целостность по акту — затем оплата.</li>
+        <li>Доставим по адресу в Москве (Зона 1) или в Московскую область (Зона 1.5).</li>
+      </ul>
+      <a href="{% url 'order_create' %}" class="btn btn-outline-primary pill px-4">Оставить заявку</a>
+    </div>
+  </div>
+</section>
+
+<!-- Блок цен/калькулятора — та же логика, что на главной -->
+<section class="card-dd p-4 mb-4">
+  <h2 class="h5 fw-bold mb-2">Тарифы и расчёт</h2>
+  <div class="text-muted mb-2">1 сутки хранения включены. Москва (Зона 1) / Московская область (Зона 1.5).</div>
+  <a href="/#tariffs" class="btn btn-sm btn-secondary pill">Открыть калькулятор</a>
+</section>
+
+<!-- Локальные FAQ под интент аэропорта -->
+<section class="card-dd p-4 mb-4">
+  <h2 class="h5 fw-bold mb-3">FAQ по {{ data.title }}</h2>
+  <details class="mb-2">
+    <summary class="fw-semibold">Можно ли изменить время подачи из-за задержки рейса?</summary>
+    <div class="text-muted mt-1">Да. Мы следим за рейсами и сдвигаем слот. Сообщите нам номер рейса при заказе.</div>
+  </details>
+  <details class="mb-2">
+    <summary class="fw-semibold">Где происходит встреча при доставке {{ data.name_gen }}?</summary>
+    <div class="text-muted mt-1">Согласуем терминал и точку (выход, парковка, стойка выдачи). Курьер будет на месте вовремя.</div>
+  </details>
+  <details>
+    <summary class="fw-semibold">Как происходит оплата?</summary>
+    <div class="text-muted mt-1">Безналично после проверки багажа: QR, СБП или платёжная ссылка.</div>
+  </details>
+</section>
+
+<!-- Перелинковка на другие аэропорты -->
+<section class="card-dd p-4">
+  <h2 class="h6 fw-bold mb-2">Другие аэропорты</h2>
+  <div class="d-flex flex-wrap gap-2">
+    {% for k, title in aeros_nav %}
+      <a class="btn btn-light border pill" href="{% url 'aero' k %}">Доставка в {{ title }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- JSON-LD под интенты "в" и "из" -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Доставка багажа {{ data.name_prep }}",
+     "acceptedAnswer":{"@type":"Answer","text":"Забираем у двери, упаковываем и опечатываем багаж, оформляем акт и доставляем к нужному терминалу. Оплата после проверки."}},
+    {"@type":"Question","name":"Доставка багажа {{ data.name_gen }}",
+     "acceptedAnswer":{"@type":"Answer","text":"Встречаем у терминала, сверяем по акту и доставляем по адресу. Москва — Зона 1, МО — Зона 1.5."}}
+  ]
+}
+</script>
+{% endblock %}

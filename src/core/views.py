@@ -17,6 +17,69 @@ from .notify import send_welcome
 from .serializers import LinkChatSerializer
 from .utils import build_telegram_deeplink
 
+from django.shortcuts import render, get_object_or_404
+from django.http import Http404
+
+AEROPORTS = {
+    # код: все формы названия + синонимы для SEO/redirect и терминалы
+    "svo": {
+        "title": "Шереметьево",
+        "name_prep": "в Шереметьево",     # предл. падеж «в …»
+        "name_gen":  "из Шереметьева",    # родит. падеж «из …»
+        "synonyms":  ["svo", "шереметьево", "sheremetyevo", "шереметьева"],
+        "terminals": ["B", "C", "D", "E", "F"]
+    },
+    "dme": {
+        "title": "Домодедово",
+        "name_prep": "в Домодедово",
+        "name_gen":  "из Домодедова",
+        "synonyms":  ["dme", "домодедово", "domodedovo", "домодедова"],
+        "terminals": ["Терминал 1"]
+    },
+    "vko": {
+        "title": "Внуково",
+        "name_prep": "в Внуково",
+        "name_gen":  "из Внукова",
+        "synonyms":  ["vko", "внуково", "vnukovo", "внукова"],
+        "terminals": ["A", "B", "C"]
+    },
+    "zia": {
+        "title": "Жуковский",
+        "name_prep": "в Жуковский",
+        "name_gen":  "из Жуковского",
+        "synonyms":  ["zia", "жуко́вский", "zhukovsky", "жуковский", "жуковского"],
+        "terminals": ["Терминал"]
+    },
+}
+
+def aero(request, code):
+    code = code.lower()
+    data = AEROPORTS.get(code)
+    if not data:
+        raise Http404()
+
+    # SEO-переменные
+    h1 = f"Доставка багажа {data['name_prep']} и {data['name_gen']} — D&D"
+    title = f"Доставка багажа {data['name_prep']} / {data['name_gen']} — D&D"
+    desc = (
+        f"Заберём у двери, упакуем и опечатаем, оформим акт и доставим {data['name_prep']} "
+        f"или {data['name_gen']} — точно ко времени. Первые сутки хранения включены."
+    )
+    # каноникал
+    canonical = request.build_absolute_uri()
+
+    ctx = {
+        "code": code,
+        "data": data,
+        "h1": h1,
+        "meta_title": title,
+        "meta_desc": desc,
+        "canonical": canonical,
+        # для внутренних ссылок на соседние аэропорты
+        "aeros_nav": [(k, v["title"]) for k, v in AEROPORTS.items() if k != code],
+    }
+    return render(request, "core/aero.html", ctx)
+
 
 def _client_ip(request):
     xff = request.META.get("HTTP_X_FORWARDED_FOR")
