@@ -6,7 +6,16 @@
   <div class="col-lg-6 col-md-8">
     <div class="card shadow-lg border-0 rounded-4">
       <div class="card-body p-4">
-        <h2 class="mb-4 text-center fw-bold">Оставить заявку</h2>
+        <h2 class="mb-3 text-center fw-bold">Оставить заявку</h2>
+
+        <!-- Баннер зоны работы -->
+        <div class="alert alert-info d-flex gap-2 align-items-start rounded-3 mb-4" role="alert">
+          <i class="bi bi-geo-alt fs-5"></i>
+          <div>
+            <strong>Работаем только в Москве и Московской области.</strong>
+            Также доставляем в/из аэропортов SVO, VKO, DME, ZIA.
+          </div>
+        </div>
 
         <form method="post" novalidate autocomplete="off" id="orderForm">
           {% csrf_token %}
@@ -34,8 +43,7 @@
             .dtl-wrap.filled .fake-ph,
             .dtl-wrap.focused .fake-ph{opacity:0}
 
-            /* ВАЖНО: скрываем нативные сегменты ТОЛЬКО когда нет значения И НЕТ ФОКУСА.
-               При фокусе они сразу показываются и обновляются посимвольно. */
+            /* ВАЖНО: скрываем нативные сегменты ТОЛЬКО когда нет значения И НЕТ ФОКУСА. */
             .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit,
             .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
             .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-text,
@@ -47,7 +55,6 @@
             .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]::-webkit-datetime-edit-ampm-field{
               color:transparent;opacity:0
             }
-            /* фолбэк для некоторых реализаций */
             .dtl-wrap:not(.filled):not(.focused) input[type="datetime-local"]{color:transparent}
             .dtl-wrap.filled input[type="datetime-local"]{color:inherit}
 
@@ -107,6 +114,8 @@
             <div class="col-12 mt-2">
               <label for="id_pickup_address" class="form-label"><i class="bi bi-geo-alt"></i> Адрес забора</label>
               {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Адрес / аэропорт / вокзал"|attr:"id:id_pickup_address" }}
+              <small class="text-muted">Только Москва и Московская область</small>
+              <div id="pickup_warn" class="text-danger small mt-1 d-none">Мы работаем только в Москве и МО.</div>
               {{ form.pickup_address.errors }}
             </div>
 
@@ -122,6 +131,8 @@
             <div class="col-12">
               <label for="id_delivery_address" class="form-label"><i class="bi bi-geo"></i> Адрес доставки</label>
               {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Адрес / аэропорт / вокзал"|attr:"id:id_delivery_address" }}
+              <small class="text-muted">Только Москва и Московская область</small>
+              <div id="delivery_warn" class="text-danger small mt-1 d-none">Мы работаем только в Москве и МО.</div>
               {{ form.delivery_address.errors }}
             </div>
 
@@ -202,7 +213,7 @@
           </div>
 
           <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary btn-lg w-100 py-2 shadow-sm">
+            <button id="order-submit" type="submit" class="btn btn-primary btn-lg w-100 py-2 shadow-sm" title="">
               <i class="bi bi-check-circle"></i> Отправить заявку
             </button>
           </div>
@@ -269,12 +280,15 @@
     const days=Math.ceil(ms/(24*60*60*1000));
     return Math.max(0,days-1);
   }
-  const MOSCOW_MARKERS=[" москва","москва","МКАД","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский","вокзал"];
+
+  /* Маркеры Москвы/МО для зоны и валидации */
+  const MOSCOW_MARKERS=[" москва","москва","мск","МКАД","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский","вокзал"];
   const MO_TOWNS=["одинцово","химки","мытищи","люберцы","балашиха","красногорск","королёв","королев","подольск","реутов","видное","долгопрудный","лобня","домодедово","котельники","область","обл."];
+
   function detectZoneByText(a,b){
     const t=((a||"")+" "+(b||"")).toLowerCase();
     const inMoscow=MOSCOW_MARKERS.some(k=>t.includes(k));
-    const inMO=MO_TOWNS.some(k=>t.includes(k))||t.includes("московская область");
+    const inMO=MO_TOWNS.some(k=>t.includes(k))||t.includes("московская область")||t.includes("московская обл");
     return (inMO && !inMoscow)?1.5:1.0;
   }
   function formatRub(n){return n.toLocaleString('ru-RU')+" ₽";}
@@ -317,6 +331,7 @@
       totalEl.textContent=formatRub(total);
       estCostInput.value=total;
       syncItems();
+      validateAreas(); // подсветка ошибок при пересчёте
     }
 
     itemsPlus?.addEventListener('click',()=>{itemsInput.value=Math.min(99,(parseInt(itemsInput.value||"1",10)+1));recalc();});
@@ -327,6 +342,50 @@
       el&&el.addEventListener('change',recalc);
     });
     recalc();
+
+    /* --- Клиентская проверка адресов (Москва/МО/аэропорты) --- */
+    const pickupWarn   = document.getElementById('pickup_warn');
+    const deliveryWarn = document.getElementById('delivery_warn');
+    const submitBtn    = document.getElementById('order-submit');
+
+    function isAllowedAreaText(t) {
+      const s = (t || "").toLowerCase();
+      const hasMoscow = MOSCOW_MARKERS.some(k => s.includes(k)) ||
+                        s.includes("мск") || s.includes("москва ") || s.startsWith("москва");
+      const hasMO = MO_TOWNS.some(k => s.includes(k)) || s.includes("московская область") || s.includes("московская обл");
+      const hasAirport = ["svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский"].some(k => s.includes(k));
+      return hasMoscow || hasMO || hasAirport;
+    }
+
+    function validateAreas() {
+      const okPickup   = isAllowedAreaText(pickupAddr?.value);
+      const okDelivery = isAllowedAreaText(deliveryAddr?.value);
+
+      if (pickupWarn)   pickupWarn.classList.toggle('d-none',   okPickup);
+      if (deliveryWarn) deliveryWarn.classList.toggle('d-none', okDelivery);
+
+      const ok = okPickup && okDelivery;
+      if (submitBtn) {
+        submitBtn.disabled = !ok;
+        submitBtn.title = ok ? "" : "Укажите адреса в Москве или Московской области";
+      }
+      return ok;
+    }
+
+    [pickupAddr, deliveryAddr].forEach(el => {
+      el && el.addEventListener('input',  validateAreas);
+      el && el.addEventListener('change', validateAreas);
+    });
+
+    const form = document.getElementById('orderForm');
+    form && form.addEventListener('submit', function(e){
+      if (!validateAreas()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
+
+    validateAreas();
   })();
 </script>
 {% endblock %}

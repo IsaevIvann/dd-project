@@ -25,21 +25,21 @@ AEROPORTS = {
     "svo": {
         "title": "Шереметьево",
         "name_prep": "в Шереметьево",     # предл. падеж «в …»
-        "name_gen":  "из Шереметьева",    # родит. падеж «из …»
+        "name_gen":  "из Шереметьево",    # родит. падеж «из …»
         "synonyms":  ["svo", "шереметьево", "sheremetyevo", "шереметьева"],
         "terminals": ["B", "C", "D", "E", "F"]
     },
     "dme": {
         "title": "Домодедово",
         "name_prep": "в Домодедово",
-        "name_gen":  "из Домодедова",
+        "name_gen":  "из Домодедово",
         "synonyms":  ["dme", "домодедово", "domodedovo", "домодедова"],
         "terminals": ["Терминал 1"]
     },
     "vko": {
         "title": "Внуково",
         "name_prep": "в Внуково",
-        "name_gen":  "из Внукова",
+        "name_gen":  "из Внуково",
         "synonyms":  ["vko", "внуково", "vnukovo", "внукова"],
         "terminals": ["A", "B", "C"]
     },
