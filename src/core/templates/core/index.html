@@ -1,23 +1,29 @@
 {% extends "core/base.html" %}
 {% load static %}
+
+{% block title %}D&D — доставка багажа в Москве и области{% endblock %}
+
+{# CSS Swiper + стили героя #}
 {% block extra_head %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 <style>
-  /* Стили слайдера под ваш стиль */
+  :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
+  body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;}
+  h1,h2,h3,h4{letter-spacing:-0.01em;}
+  .pill{border-radius:999px}
+  .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
   .hero-slider{border-radius:32px;box-shadow:0 20px 50px rgba(16,24,40,.06);background:#fff;overflow:hidden}
-  .hero-slide{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;padding:3.5rem 2rem;min-height:520px}
+  .hero-slide{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;padding:3.5rem 2rem;min-height:520px;position:relative}
   .hero-slide .left{display:flex;flex-direction:column;justify-content:center}
   .hero-slide .right{display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .hero-slide .right .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08);padding:1.25rem}
+  .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08);padding:1.25rem}
   .hero-slide h1,.hero-slide h2{color:var(--ink)}
   .hero-slide .accent{color:#0d6efd}
   .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-  .hero-actions .btn{border-radius:999px}
-  .swiper-button-prev,.swiper-button-next{
-    color:#1b2a4a;width:46px;height:46px;background:#fff;border-radius:50%;
-    box-shadow:0 10px 30px rgba(15,23,42,.12)
-  }
-  .swiper-button-prev:after,.swiper-button-next:after{font-size:16px;font-weight:700}
+  .hero-actions .btn{border-radius:999px;position:relative;z-index:2;pointer-events:auto}
+  .hero-swiper{overflow:hidden}
+  .swiper-pagination{position:absolute;left:0;right:0;bottom:16px;z-index:3}
+  .swiper-button-prev,.swiper-button-next{display:none!important}
   .swiper-pagination-bullet{opacity:.4;background:#1b2a4a}
   .swiper-pagination-bullet-active{opacity:1;background:#0d6efd}
   @media (max-width:992px){
@@ -26,60 +32,16 @@
     .hero-slide h2{font-size:clamp(24px,5vw,34px)}
   }
 </style>
-{% block extra_scripts %}
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-  const hero = new Swiper('.hero-swiper', {
-    loop: true,
-    speed: 650,
-    autoplay: { delay: 4500, disableOnInteraction: false },
-    pagination: { el: '.swiper-pagination', clickable: true },
-    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-    effect: 'slide',
-    a11y: { enabled: true }
-  });
-  // Пауза при ховере/фокусе
-  const el = document.querySelector('.hero-swiper');
-  el.addEventListener('mouseenter', () => hero.autoplay.stop());
-  el.addEventListener('mouseleave', () => hero.autoplay.start());
-  el.addEventListener('focusin', () => hero.autoplay.stop());
-  el.addEventListener('focusout', () => hero.autoplay.start());
-
-  // (необязательно) цель Метрики при смене слайда
-  hero.on('slideChange', () => { if(window.ym){ ym(104157204,'reachGoal','hero_slide_change'); } });
-</script>
 {% endblock %}
 
-{% endblock %}
-{% block title %}D&D — доставка багажа в Москве и области{% endblock %}
 {% block content %}
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-  :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
-  body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;}
-  h1,h2,h3,h4{letter-spacing:-0.01em;}
-  .pill{border-radius:999px}
-  .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
-  .hero-clean{border-radius:32px;padding:3.5rem 2rem;background:#fff;box-shadow:0 20px 50px rgba(16,24,40,.06)}
-  .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08)}
-  .icon-wrap{width:68px;height:68px;border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(16,24,40,.06)}
-  .icon-blue{background:#e6f0ff;color:#2563eb;}
-  .icon-green{background:#e9fff4;color:#0e9f6e;}
-  .icon-cyan{background:#e6fcff;color:#0891b2;}
-  .icon-amber{background:#fff5e6;color:#f59e0b;}
-  .tariff-title{color:var(--muted);}
-  .tariff-price{font-size:1.6rem;font-weight:400;line-height:1.3;color:var(--ink);letter-spacing:normal}
-  .tariff-price .rub{font-weight:300}
-  .tariff-price .period{font-weight:400}
-  .tariff-note{color:var(--muted);}
-</style>
 
 <!-- HERO SLIDER -->
 <section class="mb-5">
   <div class="swiper hero-swiper hero-slider" aria-label="Промо-слайдер D&D">
     <div class="swiper-wrapper">
 
-      {# СЛАЙД 1 — то, что у тебя было в текущем hero #}
+      <!-- Слайд 1 -->
       <div class="swiper-slide">
         <article class="hero-slide">
           <div class="left">
@@ -107,7 +69,7 @@
         </article>
       </div>
 
-      {# СЛАЙД 2 — «Хранение с доставкой» из /storage_moscow #}
+      <!-- Слайд 2 -->
       <div class="swiper-slide">
         <article class="hero-slide">
           <div class="left">
@@ -135,7 +97,7 @@
         </article>
       </div>
 
-      {# СЛАЙД 3 — «Почему нас выбирают» из /benefits #}
+      <!-- Слайд 3 -->
       <div class="swiper-slide">
         <article class="hero-slide">
           <div class="left">
@@ -162,13 +124,10 @@
 
     </div>
 
-    <!-- Навигация -->
+    <!-- Пагинация (точки) -->
     <div class="swiper-pagination"></div>
-    <div class="swiper-button-prev" aria-label="Предыдущий слайд"></div>
-    <div class="swiper-button-next" aria-label="Следующий слайд"></div>
   </div>
 </section>
-
 
 <!-- ШАГИ -->
 <section class="p-4 p-md-5 mb-5" style="border-radius:28px;background:#f7fbff">
@@ -202,7 +161,7 @@
   </div>
 </section>
 
-<!-- ТАРИФЫ + КАЛЬКУЛЯТОР -->
+<!-- ТАРИФЫ + КАЛЬКУЛЯТОР (как было) -->
 <section id="tariffs" class="mb-5">
   <style>
     .dd-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #d6e4ff;background:#ecf3ff;color:#1e3a8a;font-size:12px}
@@ -246,9 +205,8 @@
       </div>
     </div>
   </div>
+</section>
 
-
-<!-- КАЛЬКУЛЯТОР + краткое описание зон -->
 <section class="mb-5 mt-4 mt-lg-5">
   <div class="surface p-4">
     <h2 class="h4 mb-3">Калькулятор стоимости доставки багажа</h2>
@@ -281,7 +239,6 @@
       Базовая стоимость умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за весь заказ.
     </div>
 
-    <!-- ↓ Новый компактный блок с зонами прямо внутри калькулятора -->
     <hr class="my-4">
 
     <div class="row gx-4 gy-3">
@@ -294,18 +251,11 @@
         <div class="h6 mb-1">Московская область</div>
       </div>
     </div>
-
-    <p class="small text-muted mt-3 mb-0">
-    </p>
   </div>
 </section>
 
-
-
-<!-- FAQ (тот же контент, из общего include) -->
 {% include "core/partials/_faq_block.html" %}
 
-<!-- Мини-CTA -->
 <section class="card-dd p-4 p-md-5 mb-4 text-center">
   <h4 class="fw-bold mb-2">Путешествуйте по Москве налегке</h4>
   <div class="text-muted mb-3">Багаж — на нас. Доставим точно ко времени!</div>
@@ -315,7 +265,7 @@
   </div>
 </section>
 
-  <section class="card-dd p-4 mt-4">
+<section class="card-dd p-4 mt-4">
   <h5 class="fw-bold mb-2">Популярные направления</h5>
   <div class="d-flex flex-wrap gap-2">
     <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
@@ -325,4 +275,28 @@
   </div>
 </section>
 
+{% endblock %}
+
+{# JS Swiper + инициализация #}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const hero = new Swiper('.hero-swiper', {
+    loop: true,
+    speed: 650,
+    effect: 'fade',
+    fadeEffect: { crossFade: true },
+    autoplay: { delay: 4500, disableOnInteraction: false },
+    pagination: { el: '.swiper-pagination', clickable: true },
+    preventClicks: false,
+    preventClicksPropagation: false,
+    allowTouchMove: true,
+    simulateTouch: true,
+  });
+  const el = document.querySelector('.hero-swiper');
+  el.addEventListener('mouseenter', () => hero.autoplay.stop());
+  el.addEventListener('mouseleave', () => hero.autoplay.start());
+  el.addEventListener('focusin', () => hero.autoplay.stop());
+  el.addEventListener('focusout', () => hero.autoplay.start());
+</script>
 {% endblock %}
