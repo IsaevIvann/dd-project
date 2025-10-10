@@ -3,33 +3,46 @@
 
 {% block title %}D&D — доставка багажа в Москве и области{% endblock %}
 
-{# CSS Swiper + стили героя #}
 {% block extra_head %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 <style>
   :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
+  /* базовая типографика для этой страницы */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
   body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;}
   h1,h2,h3,h4{letter-spacing:-0.01em;}
+
   .pill{border-radius:999px}
   .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
+
+  /* HERO SLIDER — одинаковая высота и масштаб */
   .hero-slider{border-radius:32px;box-shadow:0 20px 50px rgba(16,24,40,.06);background:#fff;overflow:hidden}
-  .hero-slide{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;padding:3.5rem 2rem;min-height:520px;position:relative}
-  .hero-slide .left{display:flex;flex-direction:column;justify-content:center}
+  .hero-slide{
+    display:grid;grid-template-columns:1.15fr .85fr;gap:32px;
+    padding:3.5rem 2rem;
+    min-height:560px;
+    position:relative;
+  }
+  .hero-slide .left{display:flex;flex-direction:column;justify-content:center;max-width:720px}
   .hero-slide .right{display:flex;flex-direction:column;align-items:center;justify-content:center}
   .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08);padding:1.25rem}
-  .hero-slide h1,.hero-slide h2{color:var(--ink)}
-  .hero-slide .accent{color:#0d6efd}
+  .hero-ill img{display:block;width:100%;max-width:520px;aspect-ratio:4/3;object-fit:contain;border-radius:16px}
+  .hero-title{font-weight:800;font-size:clamp(32px,3.8vw,48px);line-height:1.1;color:var(--ink);margin:0 0 12px}
+  .hero-sub{font-size:1.125rem;color:var(--muted);margin:0 0 24px}
+  .accent{color:#0d6efd}
   .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
   .hero-actions .btn{border-radius:999px;position:relative;z-index:2;pointer-events:auto}
+
+  .hero-caption{min-height:22px}
   .hero-swiper{overflow:hidden}
   .swiper-pagination{position:absolute;left:0;right:0;bottom:16px;z-index:3}
   .swiper-button-prev,.swiper-button-next{display:none!important}
   .swiper-pagination-bullet{opacity:.4;background:#1b2a4a}
   .swiper-pagination-bullet-active{opacity:1;background:#0d6efd}
+
   @media (max-width:992px){
     .hero-slide{grid-template-columns:1fr;padding:2rem;min-height:auto}
-    .hero-slide h1{font-size:clamp(28px,6vw,38px)}
-    .hero-slide h2{font-size:clamp(24px,5vw,34px)}
+    .hero-title{font-size:clamp(26px,6vw,36px)}
   }
 </style>
 {% endblock %}
@@ -45,10 +58,10 @@
       <div class="swiper-slide">
         <article class="hero-slide">
           <div class="left">
-            <h1 class="fw-bold display-5 mb-3">
+            <h1 class="hero-title">
               Доставка багажа в Москве и области — путешествуйте <span class="accent">налегке</span>
             </h1>
-            <p class="fs-5 text-muted mb-4">
+            <p class="hero-sub">
               Представитель приедет, упакует и заберет чемоданы. Мы сохраним их на складе и привезём
               <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
             </p>
@@ -61,9 +74,8 @@
             <div class="hero-ill text-center">
               <img src="{% static 'core/img/dnd-hero.png' %}"
                    alt="Drop & Delivery — доставка багажа: забор, хранение и доставка"
-                   class="img-fluid rounded-4"
-                   loading="eager" fetchpriority="high" decoding="async">
-              <div class="small text-muted mt-2">Ваш багаж — под защитой и уже в пути ✈️</div>
+                   class="img-fluid" loading="eager" fetchpriority="high" decoding="async">
+              <div class="small text-muted mt-2 hero-caption">Ваш багаж — под защитой и уже в пути ✈️</div>
             </div>
           </div>
         </article>
@@ -76,8 +88,8 @@
             <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2 mb-2">
               <i class="bi bi-bag me-1"></i> Хранение с доставкой
             </span>
-            <h2 class="fw-bold mt-1">Хранение багажа в Москве — <span class="accent">без очередей и поездок</span></h2>
-            <p class="fs-5 text-muted mb-4">
+            <h2 class="hero-title">Хранение багажа в Москве — <span class="accent">без очередей и поездок</span></h2>
+            <p class="hero-sub">
               Заберём чемоданы у двери, опечатаем и бережно сохраним. В нужное время привезём в аэропорт, на вокзал или по адресу — точно в срок.
             </p>
             <div class="hero-actions">
@@ -89,9 +101,8 @@
             <div class="hero-ill text-center">
               <img src="{% static 'core/img/dnd_storage.png' %}"
                    alt="Хранение багажа с доставкой по Москве"
-                   class="img-fluid rounded-4"
-                   loading="lazy" decoding="async">
-              <div class="small text-muted mt-2">Ваш багаж — под присмотром и уже в пути ✈️</div>
+                   class="img-fluid" loading="lazy" decoding="async">
+              <div class="small text-muted mt-2 hero-caption">Ваш багаж — под присмотром и уже в пути ✈️</div>
             </div>
           </div>
         </article>
@@ -101,8 +112,8 @@
       <div class="swiper-slide">
         <article class="hero-slide">
           <div class="left">
-            <h2 class="fw-bold">Почему нас выбирают: <span class="accent">от двери до двери</span></h2>
-            <p class="fs-5 text-muted mb-4">
+            <h2 class="hero-title">Почему нас выбирают: <span class="accent">от двери до двери</span></h2>
+            <p class="hero-sub">
               Аккуратно упакуем и опечатаем багаж, оформим акт, храним на охраняемом складе и доставим в нужную точку — аэропорт, вокзал или по адресу. Отслеживаем рейсы и подстраиваемся под время.
             </p>
             <div class="hero-actions">
@@ -114,9 +125,8 @@
             <div class="hero-ill text-center">
               <img src="{% static 'core/img/dnd-hero.png' %}"
                    alt="D&D — доставка багажа от двери до двери"
-                   class="img-fluid rounded-4"
-                   loading="lazy">
-              <div class="small text-muted mt-2">Страхование до 30 000 ₽ включено</div>
+                   class="img-fluid" loading="lazy">
+              <div class="small text-muted mt-2 hero-caption">Страхование до 30 000 ₽ включено</div>
             </div>
           </div>
         </article>
@@ -161,7 +171,7 @@
   </div>
 </section>
 
-<!-- ТАРИФЫ + КАЛЬКУЛЯТОР (как было) -->
+<!-- ТАРИФЫ + КАЛЬКУЛЯТОР -->
 <section id="tariffs" class="mb-5">
   <style>
     .dd-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #d6e4ff;background:#ecf3ff;color:#1e3a8a;font-size:12px}
@@ -277,7 +287,6 @@
 
 {% endblock %}
 
-{# JS Swiper + инициализация #}
 {% block extra_scripts %}
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
@@ -286,7 +295,7 @@
     speed: 650,
     effect: 'fade',
     fadeEffect: { crossFade: true },
-    autoplay: { delay: 4500, disableOnInteraction: false },
+    autoplay: { delay: 3000, disableOnInteraction: false }, // 3 секунды
     pagination: { el: '.swiper-pagination', clickable: true },
     preventClicks: false,
     preventClicksPropagation: false,
