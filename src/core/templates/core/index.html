@@ -1,5 +1,56 @@
 {% extends "core/base.html" %}
 {% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<style>
+  /* Стили слайдера под ваш стиль */
+  .hero-slider{border-radius:32px;box-shadow:0 20px 50px rgba(16,24,40,.06);background:#fff;overflow:hidden}
+  .hero-slide{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;padding:3.5rem 2rem;min-height:520px}
+  .hero-slide .left{display:flex;flex-direction:column;justify-content:center}
+  .hero-slide .right{display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .hero-slide .right .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08);padding:1.25rem}
+  .hero-slide h1,.hero-slide h2{color:var(--ink)}
+  .hero-slide .accent{color:#0d6efd}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .hero-actions .btn{border-radius:999px}
+  .swiper-button-prev,.swiper-button-next{
+    color:#1b2a4a;width:46px;height:46px;background:#fff;border-radius:50%;
+    box-shadow:0 10px 30px rgba(15,23,42,.12)
+  }
+  .swiper-button-prev:after,.swiper-button-next:after{font-size:16px;font-weight:700}
+  .swiper-pagination-bullet{opacity:.4;background:#1b2a4a}
+  .swiper-pagination-bullet-active{opacity:1;background:#0d6efd}
+  @media (max-width:992px){
+    .hero-slide{grid-template-columns:1fr;padding:2rem;min-height:auto}
+    .hero-slide h1{font-size:clamp(28px,6vw,38px)}
+    .hero-slide h2{font-size:clamp(24px,5vw,34px)}
+  }
+</style>
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const hero = new Swiper('.hero-swiper', {
+    loop: true,
+    speed: 650,
+    autoplay: { delay: 4500, disableOnInteraction: false },
+    pagination: { el: '.swiper-pagination', clickable: true },
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    effect: 'slide',
+    a11y: { enabled: true }
+  });
+  // Пауза при ховере/фокусе
+  const el = document.querySelector('.hero-swiper');
+  el.addEventListener('mouseenter', () => hero.autoplay.stop());
+  el.addEventListener('mouseleave', () => hero.autoplay.start());
+  el.addEventListener('focusin', () => hero.autoplay.stop());
+  el.addEventListener('focusout', () => hero.autoplay.start());
+
+  // (необязательно) цель Метрики при смене слайда
+  hero.on('slideChange', () => { if(window.ym){ ym(104157204,'reachGoal','hero_slide_change'); } });
+</script>
+{% endblock %}
+
+{% endblock %}
 {% block title %}D&D — доставка багажа в Москве и области{% endblock %}
 {% block content %}
 <style>
@@ -23,35 +74,101 @@
   .tariff-note{color:var(--muted);}
 </style>
 
-<!-- HERO -->
-<section class="hero-clean mb-5">
-  <div class="row align-items-center gy-4">
-    <div class="col-lg-7">
-      <!-- H1 с ключом -->
-      <h1 class="fw-bold display-5 mb-3" style="color:var(--ink)">
-        Доставка багажа в Москве и области — путешествуйте <span class="text-primary">налегке</span>
-      </h1>
-      <p class="fs-5 text-muted mb-4">
-        Представитель приедет, упакует и заберет чемоданы. Мы сохраним их на складе и привезём
-        <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
-      </p>
-      <div class="d-flex flex-wrap gap-3">
-        <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
-        <a href="#tariffs" class="btn btn-lg btn-outline-primary pill px-4"><i class="bi bi-tags"></i> Тарифы</a>
+<!-- HERO SLIDER -->
+<section class="mb-5">
+  <div class="swiper hero-swiper hero-slider" aria-label="Промо-слайдер D&D">
+    <div class="swiper-wrapper">
+
+      {# СЛАЙД 1 — то, что у тебя было в текущем hero #}
+      <div class="swiper-slide">
+        <article class="hero-slide">
+          <div class="left">
+            <h1 class="fw-bold display-5 mb-3">
+              Доставка багажа в Москве и области — путешествуйте <span class="accent">налегке</span>
+            </h1>
+            <p class="fs-5 text-muted mb-4">
+              Представитель приедет, упакует и заберет чемоданы. Мы сохраним их на складе и привезём
+              <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
+            </p>
+            <div class="hero-actions">
+              <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
+              <a href="#tariffs" class="btn btn-lg btn-outline-primary px-4"><i class="bi bi-tags"></i> Тарифы</a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="hero-ill text-center">
+              <img src="{% static 'core/img/dnd-hero.png' %}"
+                   alt="Drop & Delivery — доставка багажа: забор, хранение и доставка"
+                   class="img-fluid rounded-4"
+                   loading="eager" fetchpriority="high" decoding="async">
+              <div class="small text-muted mt-2">Ваш багаж — под защитой и уже в пути ✈️</div>
+            </div>
+          </div>
+        </article>
       </div>
-    </div>
-    <div class="col-lg-5">
-      <div class="hero-ill p-4 text-center">
-        <img src="{% static 'core/img/dnd-hero.png' %}"
-             alt="Drop & Delivery — Сервис доставки багажа: забор, хранение и доставка. Доставим в удобное место и время!"
-             class="img-fluid rounded-4"
-             loading="lazy"
-             decoding="async">
-        <div class="small text-muted mt-2">Ваш багаж — под защитой и уже в пути ✈️</div>
+
+      {# СЛАЙД 2 — «Хранение с доставкой» из /storage_moscow #}
+      <div class="swiper-slide">
+        <article class="hero-slide">
+          <div class="left">
+            <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2 mb-2">
+              <i class="bi bi-bag me-1"></i> Хранение с доставкой
+            </span>
+            <h2 class="fw-bold mt-1">Хранение багажа в Москве — <span class="accent">без очередей и поездок</span></h2>
+            <p class="fs-5 text-muted mb-4">
+              Заберём чемоданы у двери, опечатаем и бережно сохраним. В нужное время привезём в аэропорт, на вокзал или по адресу — точно в срок.
+            </p>
+            <div class="hero-actions">
+              <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-send me-1"></i>Оставить заявку</a>
+              <a href="{% url 'index' %}#tariffs" class="btn btn-lg btn-outline-primary px-4"><i class="bi bi-tag me-1"></i>Тарифы</a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="hero-ill text-center">
+              <img src="{% static 'core/img/dnd_storage.png' %}"
+                   alt="Хранение багажа с доставкой по Москве"
+                   class="img-fluid rounded-4"
+                   loading="lazy" decoding="async">
+              <div class="small text-muted mt-2">Ваш багаж — под присмотром и уже в пути ✈️</div>
+            </div>
+          </div>
+        </article>
       </div>
+
+      {# СЛАЙД 3 — «Почему нас выбирают» из /benefits #}
+      <div class="swiper-slide">
+        <article class="hero-slide">
+          <div class="left">
+            <h2 class="fw-bold">Почему нас выбирают: <span class="accent">от двери до двери</span></h2>
+            <p class="fs-5 text-muted mb-4">
+              Аккуратно упакуем и опечатаем багаж, оформим акт, храним на охраняемом складе и доставим в нужную точку — аэропорт, вокзал или по адресу. Отслеживаем рейсы и подстраиваемся под время.
+            </p>
+            <div class="hero-actions">
+              <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
+              <a href="{% url 'faq' %}" class="btn btn-lg btn-outline-primary px-4">Частые вопросы</a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="hero-ill text-center">
+              <img src="{% static 'core/img/dnd-hero.png' %}"
+                   alt="D&D — доставка багажа от двери до двери"
+                   class="img-fluid rounded-4"
+                   loading="lazy">
+              <div class="small text-muted mt-2">Страхование до 30 000 ₽ включено</div>
+            </div>
+          </div>
+        </article>
+      </div>
+
     </div>
+
+    <!-- Навигация -->
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev" aria-label="Предыдущий слайд"></div>
+    <div class="swiper-button-next" aria-label="Следующий слайд"></div>
   </div>
 </section>
+
 
 <!-- ШАГИ -->
 <section class="p-4 p-md-5 mb-5" style="border-radius:28px;background:#f7fbff">
