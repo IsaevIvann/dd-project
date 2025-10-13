@@ -1,59 +1,57 @@
 {% extends "core/base.html" %}
 {% load static %}
 
-{% block title %}D&D — доставка багажа в Москве и области{% endblock %}
+{% block title %}D&D — доставка и хранение багажа в Москве и области{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-<style>
-  :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
-  /* базовая типографика для этой страницы */
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-  body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;}
-  h1,h2,h3,h4{letter-spacing:-0.01em;}
+  <meta name="description" content="Заберём чемоданы у двери, опечатаем и сохраним, привезём ко времени — в аэропорт, на вокзал или по адресу в Москве и области. Прозрачные условия и аккуратная работа представителя.">
+  <meta property="og:title" content="D&D — доставка и хранение багажа в Москве и области">
+  <meta property="og:description" content="Забор, хранение и доставка багажа от двери до двери — ко времени и без лишних поездок.">
+  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
 
-  .pill{border-radius:999px}
-  .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
-
-  /* HERO SLIDER — одинаковая высота и масштаб */
-  .hero-slider{border-radius:32px;box-shadow:0 20px 50px rgba(16,24,40,.06);background:#fff;overflow:hidden}
-  .hero-slide{
-    display:grid;grid-template-columns:1.15fr .85fr;gap:32px;
-    padding:3.5rem 2rem;
-    min-height:560px;
-    position:relative;
-  }
-  .hero-slide .left{display:flex;flex-direction:column;justify-content:center;max-width:720px}
-  .hero-slide .right{display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08);padding:1.25rem}
-  .hero-ill img{display:block;width:100%;max-width:520px;aspect-ratio:4/3;object-fit:contain;border-radius:16px}
-  .hero-title{font-weight:800;font-size:clamp(32px,3.8vw,48px);line-height:1.1;color:var(--ink);margin:0 0 12px}
-  .hero-sub{font-size:1.125rem;color:var(--muted);margin:0 0 24px}
-  .accent{color:#0d6efd}
-  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-  .hero-actions .btn{border-radius:999px;position:relative;z-index:2;pointer-events:auto}
-
-  .hero-caption{min-height:22px}
-  .hero-swiper{overflow:hidden}
-  .swiper-pagination{position:absolute;left:0;right:0;bottom:16px;z-index:3}
-  .swiper-button-prev,.swiper-button-next{display:none!important}
-  .swiper-pagination-bullet{opacity:.4;background:#1b2a4a}
-  .swiper-pagination-bullet-active{opacity:1;background:#0d6efd}
-
-  @media (max-width:992px){
-    .hero-slide{grid-template-columns:1fr;padding:2rem;min-height:auto}
-    .hero-title{font-size:clamp(26px,6vw,36px)}
-  }
-</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <style>
+    :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;}
+    h1,h2,h3,h4{letter-spacing:-0.01em;}
+    .pill{border-radius:999px}
+    .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
+    .hero-slider{border-radius:32px;box-shadow:0 20px 50px rgba(16,24,40,.06);background:#fff;overflow:hidden}
+    .hero-slide{
+      display:grid;grid-template-columns:1.15fr .85fr;gap:32px;
+      padding:3.5rem 2rem;
+      min-height:560px;
+      position:relative;
+    }
+    .hero-slide .left{display:flex;flex-direction:column;justify-content:center;max-width:720px}
+    .hero-slide .right{display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08);padding:1.25rem}
+    .hero-ill img{display:block;width:100%;max-width:520px;aspect-ratio:4/3;object-fit:contain;border-radius:16px}
+    .hero-title{font-weight:800;font-size:clamp(32px,3.8vw,48px);line-height:1.1;color:var(--ink);margin:0 0 12px}
+    .hero-sub{font-size:1.125rem;color:var(--muted);margin:0 0 24px}
+    .accent{color:#0d6efd}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-actions .btn{border-radius:999px;position:relative;z-index:2;pointer-events:auto}
+    .hero-caption{min-height:22px}
+    .hero-swiper{overflow:hidden}
+    .swiper-pagination{position:absolute;left:0;right:0;bottom:16px;z-index:3}
+    .swiper-button-prev,.swiper-button-next{display:none!important}
+    .swiper-pagination-bullet{opacity:.4;background:#1b2a4a}
+    .swiper-pagination-bullet-active{opacity:1;background:#0d6efd}
+    @media (max-width:992px){
+      .hero-slide{grid-template-columns:1fr;padding:2rem;min-height:auto}
+      .hero-title{font-size:clamp(26px,6vw,36px)}
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
-
 <!-- HERO SLIDER -->
 <section class="mb-5">
   <div class="swiper hero-swiper hero-slider" aria-label="Промо-слайдер D&D">
     <div class="swiper-wrapper">
-
       <!-- Слайд 1 -->
       <div class="swiper-slide">
         <article class="hero-slide">
@@ -72,9 +70,7 @@
           </div>
           <div class="right">
             <div class="hero-ill text-center">
-              <img src="{% static 'core/img/dnd-hero.png' %}"
-                   alt="Drop & Delivery — доставка багажа: забор, хранение и доставка"
-                   class="img-fluid" loading="eager" fetchpriority="high" decoding="async">
+              <img src="{% static 'core/img/dnd-hero.png' %}" alt="Drop & Delivery — доставка багажа: забор, хранение и доставка" class="img-fluid" loading="eager" fetchpriority="high" decoding="async">
               <div class="small text-muted mt-2 hero-caption">Ваш багаж — под защитой и уже в пути ✈️</div>
             </div>
           </div>
@@ -85,7 +81,6 @@
       <div class="swiper-slide">
         <article class="hero-slide">
           <div class="left">
-
             <h2 class="hero-title">Хранение багажа в Москве — <span class="accent">без очередей и поездок</span></h2>
             <p class="hero-sub">
               Заберём чемоданы у двери, опечатаем и бережно сохраним. В нужное время привезём в аэропорт, на вокзал или по адресу — точно в срок.
@@ -97,9 +92,7 @@
           </div>
           <div class="right">
             <div class="hero-ill text-center">
-              <img src="{% static 'core/img/dnd_storage.png' %}"
-                   alt="Хранение багажа с доставкой по Москве"
-                   class="img-fluid" loading="lazy" decoding="async">
+              <img src="{% static 'core/img/dnd_storage.png' %}" alt="Хранение багажа с доставкой по Москве" class="img-fluid" loading="lazy" decoding="async">
               <div class="small text-muted mt-2 hero-caption">Ваш багаж — под присмотром и уже в пути ✈️</div>
             </div>
           </div>
@@ -121,18 +114,13 @@
           </div>
           <div class="right">
             <div class="hero-ill text-center">
-              <img src="{% static 'core/img/dnd-hero.png' %}"
-                   alt="D&D — доставка багажа от двери до двери"
-                   class="img-fluid" loading="lazy">
-              <div class="small text-muted mt-2 hero-caption">Страхование до 30 000 ₽ включено</div>
+              <img src="{% static 'core/img/dnd-hero.png' %}" alt="D&D — доставка багажа от двери до двери" class="img-fluid" loading="lazy">
+              <div class="small text-muted mt-2 hero-caption"></div>
             </div>
           </div>
         </article>
       </div>
-
     </div>
-
-    <!-- Пагинация (точки) -->
     <div class="swiper-pagination"></div>
   </div>
 </section>
@@ -181,7 +169,6 @@
   </style>
 
   <h3 class="fw-bold text-center mb-4">Тарифы на доставку багажа</h3>
-
   <div class="row g-4">
     <div class="col-md-4">
       <div class="card-dd p-4 h-100 text-center">
@@ -192,7 +179,6 @@
         <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
       </div>
     </div>
-
     <div class="col-md-4">
       <div class="card-dd p-4 h-100 text-center">
         <div class="small tariff-title mb-1">4–6 единиц</div>
@@ -202,7 +188,6 @@
         <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
       </div>
     </div>
-
     <div class="col-md-4">
       <div class="card-dd p-4 h-100 text-center">
         <div class="small tariff-title mb-1">7+ единиц</div>
@@ -218,7 +203,6 @@
 <section class="mb-5 mt-4 mt-lg-5">
   <div class="surface p-4">
     <h2 class="h4 mb-3">Калькулятор стоимости доставки багажа</h2>
-
     <form class="row g-3 align-items-end">
       <div class="col-md-4">
         <label class="form-label">Количество единиц</label>
@@ -235,20 +219,14 @@
           <option>Зона 1.5 — Московская область (×1.5)</option>
         </select>
       </div>
-
       <div class="col-12 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary">
-          <i class="bi bi-calculator me-1"></i> Рассчитать
-        </button>
+        <button type="button" class="btn btn-primary"><i class="bi bi-calculator me-1"></i> Рассчитать</button>
       </div>
     </form>
-
     <div class="small text-secondary mt-2">
       Базовая стоимость умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за весь заказ.
     </div>
-
     <hr class="my-4">
-
     <div class="row gx-4 gy-3">
       <div class="col-md-6">
         <div class="fw-semibold small text-uppercase text-muted mb-1">Зона 1 (коэффициент: ×1.0)</div>
@@ -282,28 +260,27 @@
     <a class="btn btn-light border pill" href="{% url 'aero' 'zia' %}">Доставка в Жуковский</a>
   </div>
 </section>
-
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-  const hero = new Swiper('.hero-swiper', {
-    loop: true,
-    speed: 650,
-    effect: 'fade',
-    fadeEffect: { crossFade: true },
-    autoplay: { delay: 3000, disableOnInteraction: false }, // 3 секунды
-    pagination: { el: '.swiper-pagination', clickable: true },
-    preventClicks: false,
-    preventClicksPropagation: false,
-    allowTouchMove: true,
-    simulateTouch: true,
-  });
-  const el = document.querySelector('.hero-swiper');
-  el.addEventListener('mouseenter', () => hero.autoplay.stop());
-  el.addEventListener('mouseleave', () => hero.autoplay.start());
-  el.addEventListener('focusin', () => hero.autoplay.stop());
-  el.addEventListener('focusout', () => hero.autoplay.start());
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    const hero = new Swiper('.hero-swiper', {
+      loop: true,
+      speed: 650,
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      pagination: { el: '.swiper-pagination', clickable: true },
+      preventClicks: false,
+      preventClicksPropagation: false,
+      allowTouchMove: true,
+      simulateTouch: true,
+    });
+    const el = document.querySelector('.hero-swiper');
+    el.addEventListener('mouseenter', () => hero.autoplay.stop());
+    el.addEventListener('mouseleave', () => hero.autoplay.start());
+    el.addEventListener('focusin', () => hero.autoplay.stop());
+    el.addEventListener('focusout', () => hero.autoplay.start());
+  </script>
 {% endblock %}
