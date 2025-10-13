@@ -1,6 +1,38 @@
 {% extends "core/base.html" %}
 {% load static %}
+
 {% block title %}Хранение багажа в Москве — Drop & Delivery{% endblock %}
+
+{% block extra_head %}
+  <meta name="description" content="Хранение багажа в Москве с забором у двери и доставкой ко времени. Опечатаем, бережно сохраним на складе и привезём в аэропорт, на вокзал или по адресу. Первые сутки хранения включены, подробности — в тарифах.">
+  <meta property="og:title" content="Хранение багажа в Москве — Drop & Delivery">
+  <meta property="og:description" content="Заберём багаж у двери, опечатаем и сохраним на складе. Доставка ко времени — в аэропорт, на вокзал или по адресу по Москве и области.">
+  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+
+  {# JSON-LD: Service — без фиксированной цены, ссылка на тарифы #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Хранение багажа в Москве с доставкой",
+    "serviceType":"Luggage storage with pickup and delivery",
+    "areaServed":["Moscow","Moscow Oblast"],
+    "provider":{
+      "@type":"Organization",
+      "name":"Drop & Delivery",
+      "url":"{{ SITE_URL }}/",
+      "logo":"{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}"
+    },
+    "hasOfferCatalog":{
+      "@type":"OfferCatalog",
+      "name":"Тарифы на доставку и хранение",
+      "url":"{{ SITE_URL }}/#tariffs"
+    }
+  }
+  </script>
+{% endblock %}
+
 {% block content %}
 
 <section class="hero-clean mb-5">

@@ -1,6 +1,43 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% block title %}Luggage storage Moscow — Drop & Delivery{% endblock %}
+
+{% block title %}Luggage storage in Moscow — Drop & Delivery{% endblock %}
+
+{% block extra_head %}
+  <meta name="description" content="Door-to-door luggage storage in Moscow: we pick up at your hotel or apartment, seal and store safely, then deliver to the airport, train station or any address right on time. First day of storage included — see prices on the main page.">
+  <meta property="og:title" content="Luggage storage in Moscow — Drop & Delivery">
+  <meta property="og:description" content="Pick-up, safe storage and on-time delivery to airport, station or any address in Moscow. Travel light.">
+  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+
+  {# Hreflang alternates for EN/RU versions #}
+  <link rel="alternate" hreflang="en" href="{{ SITE_URL }}{{ CANONICAL_PATH }}">
+  <link rel="alternate" hreflang="ru" href="{{ SITE_URL }}/hranenie-bagazha-moskva/">
+  <link rel="alternate" hreflang="x-default" href="{{ SITE_URL }}/">
+
+  {# JSON-LD: Service — no fixed price, link to tariffs on homepage #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Luggage storage in Moscow with pick-up and delivery",
+    "serviceType":"Luggage storage and delivery",
+    "areaServed": ["Moscow", "Moscow Oblast"],
+    "provider": {
+      "@type":"Organization",
+      "name":"Drop & Delivery",
+      "url":"{{ SITE_URL }}/",
+      "logo":"{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}"
+    },
+    "hasOfferCatalog": {
+      "@type":"OfferCatalog",
+      "name":"Prices and tariffs",
+      "url":"{{ SITE_URL }}/#tariffs"
+    }
+  }
+  </script>
+{% endblock %}
+
 {% block content %}
 
 <section class="hero-clean mb-5">
