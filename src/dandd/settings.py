@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 import dj_database_url
 
+SITE_URL = "https://www.drop-delivery.ru"
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ---------- .env загрузка (без падений) ----------
@@ -75,6 +77,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context.site_globals",
             ],
         },
     },
