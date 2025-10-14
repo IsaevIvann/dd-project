@@ -1,40 +1,45 @@
 {% extends "core/base.html" %}
 {% load static %}
-
 {% block title %}Хранение багажа в Москве — Drop & Delivery{% endblock %}
 
 {% block extra_head %}
-  <meta name="description" content="Хранение багажа в Москве с забором у двери и доставкой ко времени. Опечатаем, бережно сохраним на складе и привезём в аэропорт, на вокзал или по адресу. Первые сутки хранения включены, подробности — в тарифах.">
-  <meta property="og:title" content="Хранение багажа в Москве — Drop & Delivery">
-  <meta property="og:description" content="Заберём багаж у двери, опечатаем и сохраним на складе. Доставка ко времени — в аэропорт, на вокзал или по адресу по Москве и области.">
-  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
-  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+  {# Hreflang alternates RU/EN #}
+  <link rel="alternate" hreflang="ru" href="{{ SITE_URL }}/hranenie-bagazha-moskva/">
+  <link rel="alternate" hreflang="en" href="{{ SITE_URL }}/luggage-storage-moscow/">
+  <link rel="alternate" hreflang="x-default" href="{{ SITE_URL }}/">
 
-  {# JSON-LD: Service — без фиксированной цены, ссылка на тарифы #}
+  {# JSON-LD: WebPage (RU) + ссылка на EN #}
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
-    "@type":"Service",
-    "name":"Хранение багажа в Москве с доставкой",
-    "serviceType":"Luggage storage with pickup and delivery",
-    "areaServed":["Moscow","Moscow Oblast"],
-    "provider":{
-      "@type":"Organization",
-      "name":"Drop & Delivery",
-      "url":"{{ SITE_URL }}/",
-      "logo":"{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}"
-    },
-    "hasOfferCatalog":{
-      "@type":"OfferCatalog",
-      "name":"Тарифы на доставку и хранение",
-      "url":"{{ SITE_URL }}/#tariffs"
-    }
+    "@type":"WebPage",
+    "@id":"{{ SITE_URL }}/hranenie-bagazha-moskva/#webpage",
+    "url":"{{ SITE_URL }}/hranenie-bagazha-moskva/",
+    "name":"Хранение багажа в Москве — Drop & Delivery",
+    "inLanguage":"ru",
+    "isPartOf":{"@id":"{{ SITE_URL }}/#website"},
+    "about":{"@id":"{{ SITE_URL }}/#organization"},
+    "workTranslation":{"@type":"WebPage","@id":"{{ SITE_URL }}/luggage-storage-moscow/#webpage","inLanguage":"en","url":"{{ SITE_URL }}/luggage-storage-moscow/"}
+  }
+  </script>
+
+  {# JSON-LD: HowTo — шаги этой страницы #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"HowTo",
+    "name":"Как оформить хранение багажа с доставкой",
+    "step":[
+      {"@type":"HowToStep","name":"Заявка","text":"Оставляете заявку — согласуем время и адреса."},
+      {"@type":"HowToStep","name":"Встреча","text":"Приезжает представитель, пломбируем чемоданы."},
+      {"@type":"HowToStep","name":"Хранение","text":"Охраняемый склад, 1 сутки включены."},
+      {"@type":"HowToStep","name":"Доставка","text":"Привезём к аэропорту/вокзалу или по адресу ко времени."}
+    ]
   }
   </script>
 {% endblock %}
 
 {% block content %}
-
 <section class="hero-clean mb-5">
   <div class="row align-items-center gy-4">
     <div class="col-lg-7">
@@ -53,9 +58,7 @@
     </div>
     <div class="col-lg-5">
       <div class="hero-ill p-4 text-center surface">
-        <img src="{% static 'core/img/dnd_storage.png' %}"
-             alt="Drop & Delivery — хранение багажа с доставкой по Москве"
-             loading="lazy" decoding="async">
+        <img src="{% static 'core/img/dnd_storage.png' %}" alt="Drop & Delivery — хранение багажа с доставкой по Москве" loading="lazy" decoding="async">
         <div class="small text-muted mt-2">Ваш багаж — под присмотром и уже в пути ✈️</div>
       </div>
     </div>
@@ -65,56 +68,40 @@
 <section class="mb-5">
   <h2 class="h3 mb-3">Почему это удобно</h2>
   <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-truck fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">От двери до двери</h3>
-      <p class="text-secondary mb-0">Не нужно ехать в камеру хранения и обратно.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-clock-history fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">Экономия времени</h3>
-      <p class="text-secondary mb-0">Без очередей — согласуем удобные окна.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-shield-check fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">Надёжно</h3>
-      <p class="text-secondary mb-0">Пломбы и фотофиксация при передаче.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-calendar2-week fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">Гибко</h3>
-      <p class="text-secondary mb-0">Короткое и длительное хранение, Москва и область.</p>
-    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-truck fs-4"></i></div><h3 class="h5 mt-3 mb-2">От двери до двери</h3><p class="text-secondary mb-0">Не нужно ехать в камеру хранения и обратно.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-clock-history fs-4"></i></div><h3 class="h5 mt-3 mb-2">Экономия времени</h3><p class="text-secondary mb-0">Без очередей — согласуем удобные окна.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-shield-check fs-4"></i></div><h3 class="h5 mt-3 mb-2">Надёжно</h3><p class="text-secondary mb-0">Пломбы и фотофиксация при передаче.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-calendar2-week fs-4"></i></div><h3 class="h5 mt-3 mb-2">Гибко</h3><p class="text-secondary mb-0">Короткое и длительное хранение, Москва и область.</p></div></div>
   </div>
 </section>
 
 <section class="mb-5">
   <h2 class="h3 mb-3">Как это работает</h2>
   <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-chat-dots"></i></div><span class="badge text-bg-primary rounded-pill">1</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Заявка</h3><p class="text-secondary mb-0">Оставляете на сайте или пишете в мессенджер.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div><span class="badge text-bg-primary rounded-pill">2</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Встреча</h3><p class="text-secondary mb-0">Представитель приезжает по адресу, пломбирует багаж.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div><span class="badge text-bg-primary rounded-pill">3</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Хранение</h3><p class="text-secondary mb-0">Сохраняем чемоданы на складе до нужного времени.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div><span class="badge text-bg-primary rounded-pill">4</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Доставка</h3><p class="text-secondary mb-0">Привозим по адресу/в аэропорт/на вокзал — вовремя.</p>
-    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-chat-dots"></i></div><span class="badge text-bg-primary rounded-pill">1</span></div><h3 class="h6 mt-3 mb-1">Заявка</h3><p class="text-secondary mb-0">Оставляете на сайте или пишете в мессенджер.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div><span class="badge text-bg-primary rounded-pill">2</span></div><h3 class="h6 mt-3 mb-1">Встреча</h3><p class="text-secondary mb-0">Представитель приезжает по адресу, пломбирует багаж.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div><span class="badge text-bg-primary rounded-pill">3</span></div><h3 class="h6 mt-3 mb-1">Хранение</h3><p class="text-secondary mb-0">Сохраняем чемоданы на складе до нужного времени.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div><span class="badge text-bg-primary rounded-pill">4</span></div><h3 class="h6 mt-3 mb-1">Доставка</h3><p class="text-secondary mb-0">Привозим по адресу/в аэропорт/на вокзал — вовремя.</p></div></div>
+  </div>
+</section>
+
+{# ДЛИННЫЙ SEO-ТЕКСТ НА ЛЕНДИНГЕ #}
+<section class="surface p-4 p-md-5 mb-5">
+  <h2 class="h4 fw-bold mb-3">Где оставить багаж в Москве — простой способ без очередей</h2>
+  <p class="text-secondary mb-2">Drop & Delivery забирает багаж у двери, оформляет передачу с фото и пломбами, хранит на складе и доставляет ко времени в нужную точку. Это удобная альтернатива камерам хранения в аэропорту или на вокзале: не нужно тратить время на поездки и ожидание.</p>
+  <p class="text-secondary mb-2">Сервис подходит туристам с пересадкой, семьям с детьми, гостям столицы и жителям города при переезде. Первые 1 сутки хранения включены в тарифы, далее — единая ставка. Мы отслеживаем рейсы и оперативно корректируем время встречи при изменениях расписания.</p>
+  <p class="text-secondary mb-0">Работаем по Москве и области, доставляем в Шереметьево, Домодедово, Внуково, Жуковский и по адресам в городе. Оплата — после проверки целостности багажа.</p>
+</section>
+
+{# СМОТРИТЕ ТАКЖЕ #}
+<section class="surface p-4 p-md-5 mb-5">
+  <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-light border pill" href="{% url 'index' %}#tariffs">Тарифы и калькулятор</a>
+    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Почему мы — от двери до двери</a>
+    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ: ответы на частые вопросы</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
   </div>
 </section>
 
@@ -131,26 +118,13 @@
 <section class="mb-5">
   <h2 class="h3 mb-3">FAQ</h2>
   <div class="accordion" id="faqStorage">
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s1">Можно на несколько дней?</button></h2>
-      <div id="s1" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Да, срок не ограничен — согласуем при оформлении.</div></div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s2">Работаете по области?</button></h2>
-      <div id="s2" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Да, Москва и Московская область.</div></div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s3">Срочно за 1–2 часа?</button></h2>
-      <div id="s3" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Возможна ускоренная доставка по согласованию.</div></div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s4">Как изменить время или адрес?</button></h2>
-      <div id="s4" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Напишите нам — оперативно перестроим слот.</div></div>
-    </div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s1">Можно на несколько дней?</button></h2><div id="s1" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Да, срок не ограничен — согласуем при оформлении.</div></div></div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s2">Работаете по области?</button></h2><div id="s2" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Да, Москва и Московская область.</div></div></div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s3">Срочно за 1–2 часа?</button></h2><div id="s3" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Возможна ускоренная доставка по согласованию.</div></div></div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s4">Как изменить время или адрес?</button></h2><div id="s4" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Напишите нам — оперативно перестроим слот.</div></div></div>
   </div>
 </section>
 
-<!-- FAQ JSON-LD -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
   {"@type":"Question","name":"Можно на несколько дней?","acceptedAnswer":{"@type":"Answer","text":"Да, срок не ограничен — согласуем при оформлении."}},

@@ -11,6 +11,48 @@
   <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+  {# JSON-LD: HowTo — шаги с главной #}
+  <script type="application/ld+json">
+  {
+   "@context":"https://schema.org",
+   "@type":"HowTo",
+   "name":"Как оформить доставку и хранение багажа в Москве",
+   "description":"Пошаговая инструкция: от заявки до доставки ко времени.",
+   "step":[
+    {"@type":"HowToStep","name":"Заявка","text":"Оставьте заявку на сайте или в мессенджере — согласуем адреса и время."},
+    {"@type":"HowToStep","name":"Встреча","text":"Представитель приедет с документами и упаковкой, пломбируем и сфотографируем багаж."},
+    {"@type":"HowToStep","name":"Опечатываем","text":"Каждая единица багажа пломбируется с уникальным номером и фиксируется в акте."},
+    {"@type":"HowToStep","name":"Доставка","text":"Привозим в аэропорт, на вокзал или по адресу строго к вашему времени."},
+    {"@type":"HowToStep","name":"Оплата","text":"Проверяете целостность — затем оплачиваете удобным способом."}
+   ]
+  }
+  </script>
+
+  {# JSON-LD: Service — ссылки на тарифы без «жёсткой» цены #}
+  <script type="application/ld+json">
+  {
+   "@context":"https://schema.org",
+   "@type":"Service",
+   "name":"Доставка и хранение багажа — Москва и область",
+   "serviceType":"Door-to-door luggage delivery & storage",
+   "provider":{"@id":"https://www.drop-delivery.ru/#organization"},
+   "areaServed":["Москва","Московская область"],
+   "url":"{{ SITE_URL }}/",
+   "offers":{
+     "@type":"AggregateOffer",
+     "priceCurrency":"RUB",
+     "priceSpecification":[
+       {"@type":"UnitPriceSpecification","name":"1–3 единицы","price":"3500","priceCurrency":"RUB"},
+       {"@type":"UnitPriceSpecification","name":"4–6 единиц","price":"4000","priceCurrency":"RUB"},
+       {"@type":"UnitPriceSpecification","name":"7+ единиц","price":"4500","priceCurrency":"RUB"}
+     ],
+     "url":"{{ SITE_URL }}#tariffs",
+     "availability":"https://schema.org/InStock"
+   }
+  }
+  </script>
+
   <style>
     :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
@@ -19,12 +61,7 @@
     .pill{border-radius:999px}
     .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
     .hero-slider{border-radius:32px;box-shadow:0 20px 50px rgba(16,24,40,.06);background:#fff;overflow:hidden}
-    .hero-slide{
-      display:grid;grid-template-columns:1.15fr .85fr;gap:32px;
-      padding:3.5rem 2rem;
-      min-height:560px;
-      position:relative;
-    }
+    .hero-slide{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;padding:3.5rem 2rem;min-height:560px;position:relative}
     .hero-slide .left{display:flex;flex-direction:column;justify-content:center;max-width:720px}
     .hero-slide .right{display:flex;flex-direction:column;align-items:center;justify-content:center}
     .hero-ill{border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,24,40,.08);padding:1.25rem}
@@ -33,7 +70,6 @@
     .hero-sub{font-size:1.125rem;color:var(--muted);margin:0 0 24px}
     .accent{color:#0d6efd}
     .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .hero-actions .btn{border-radius:999px;position:relative;z-index:2;pointer-events:auto}
     .hero-caption{min-height:22px}
     .hero-swiper{overflow:hidden}
     .swiper-pagination{position:absolute;left:0;right:0;bottom:16px;z-index:3}
@@ -56,13 +92,8 @@
       <div class="swiper-slide">
         <article class="hero-slide">
           <div class="left">
-            <h1 class="hero-title">
-              Доставка багажа в Москве и области — путешествуйте <span class="accent">налегке</span>
-            </h1>
-            <p class="hero-sub">
-              Представитель приедет, упакует и заберет чемоданы. Мы сохраним их на складе и привезём
-              <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.
-            </p>
+            <h1 class="hero-title">Доставка багажа в Москве и области — путешествуйте <span class="accent">налегке</span></h1>
+            <p class="hero-sub">Представитель приедет, упакует и заберет чемоданы. Мы сохраним их на складе и привезём <span class="fw-semibold">в удобное для вас место</span>: аэропорт, вокзал или отель — точно в срок.</p>
             <div class="hero-actions">
               <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
               <a href="#tariffs" class="btn btn-lg btn-outline-primary px-4"><i class="bi bi-tags"></i> Тарифы</a>
@@ -82,9 +113,7 @@
         <article class="hero-slide">
           <div class="left">
             <h2 class="hero-title">Хранение багажа в Москве — <span class="accent">без очередей и поездок</span></h2>
-            <p class="hero-sub">
-              Заберём чемоданы у двери, опечатаем и бережно сохраним. В нужное время привезём в аэропорт, на вокзал или по адресу — точно в срок.
-            </p>
+            <p class="hero-sub">Заберём чемоданы у двери, опечатаем и бережно сохраним. В нужное время привезём в аэропорт, на вокзал или по адресу — точно в срок.</p>
             <div class="hero-actions">
               <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-send me-1"></i>Оставить заявку</a>
               <a href="{% url 'index' %}#tariffs" class="btn btn-lg btn-outline-primary px-4"><i class="bi bi-tag me-1"></i>Тарифы</a>
@@ -104,9 +133,7 @@
         <article class="hero-slide">
           <div class="left">
             <h2 class="hero-title">Почему нас выбирают: <span class="accent">от двери до двери</span></h2>
-            <p class="hero-sub">
-              Аккуратно упакуем и опечатаем багаж, оформим акт, храним на охраняемом складе и доставим в нужную точку — аэропорт, вокзал или по адресу. Отслеживаем рейсы и подстраиваемся под время.
-            </p>
+            <p class="hero-sub">Аккуратно упакуем и опечатаем багаж, оформим акт, храним на охраняемом складе и доставим в нужную точку — аэропорт, вокзал или по адресу. Отслеживаем рейсы и подстраиваемся под время.</p>
             <div class="hero-actions">
               <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
               <a href="{% url 'faq' %}" class="btn btn-lg btn-outline-primary px-4">Частые вопросы</a>
@@ -114,8 +141,7 @@
           </div>
           <div class="right">
             <div class="hero-ill text-center">
-              <img src="{% static 'core/img/dnd-hero.png' %}" alt="D&D — доставка багажа от двери до двери" class="img-fluid" loading="lazy">
-              <div class="small text-muted mt-2 hero-caption"></div>
+              <img src="{% static 'core/img/dnd-hero.png' %}" alt="D&D — доставка багажа от двери до двери" class="img-fluid" loading="lazy" decoding="async">
             </div>
           </div>
         </article>
@@ -129,31 +155,11 @@
 <section class="p-4 p-md-5 mb-5" style="border-radius:28px;background:#f7fbff">
   <h3 class="fw-bold text-center mb-4">Как работает услуга доставки багажа</h3>
   <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
-    <div class="col text-center">
-      <div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-pencil-square fs-3"></i></div>
-      <h6 class="mb-1">1. Заявка</h6>
-      <div class="text-muted small">Оставляете на сайте или в мессенджере.</div>
-    </div>
-    <div class="col text-center">
-      <div class="icon-wrap icon-green mx-auto mb-3"><i class="bi bi-person-check fs-3"></i></div>
-      <h6 class="mb-1">2. Встреча</h6>
-      <div class="text-muted small">Приезжает представитель с документами и упаковкой.</div>
-    </div>
-    <div class="col text-center">
-      <div class="icon-wrap icon-cyan mx-auto mb-3"><i class="bi bi-lock fs-3"></i></div>
-      <h6 class="mb-1">3. Опечатываем</h6>
-      <div class="text-muted small">Пломбируем, фотографируем, выдаём квитанцию.</div>
-    </div>
-    <div class="col text-center">
-      <div class="icon-wrap icon-amber mx-auto mb-3"><i class="bi bi-geo-alt fs-3"></i></div>
-      <h6 class="mb-1">4. Доставка</h6>
-      <div class="text-muted small">Привозим по адресу, в аэропорт или на вокзал.</div>
-    </div>
-    <div class="col text-center">
-      <div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-credit-card fs-3"></i></div>
-      <h6 class="mb-1">5. Оплата</h6>
-      <div class="text-muted small">Проверяете целостность и сохранность — и только после этого оплачиваете.</div>
-    </div>
+    <div class="col text-center"><div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-pencil-square fs-3"></i></div><h6 class="mb-1">1. Заявка</h6><div class="text-muted small">Оставляете на сайте или в мессенджере.</div></div>
+    <div class="col text-center"><div class="icon-wrap icon-green mx-auto mb-3"><i class="bi bi-person-check fs-3"></i></div><h6 class="mb-1">2. Встреча</h6><div class="text-muted small">Приезжает представитель с документами и упаковкой.</div></div>
+    <div class="col text-center"><div class="icon-wrap icon-cyan mx-auto mb-3"><i class="bi bi-lock fs-3"></i></div><h6 class="mb-1">3. Опечатываем</h6><div class="text-muted small">Пломбируем, фотографируем, выдаём квитанцию.</div></div>
+    <div class="col text-center"><div class="icon-wrap icon-amber mx-auto mb-3"><i class="bi bi-geo-alt fs-3"></i></div><h6 class="mb-1">4. Доставка</h6><div class="text-muted small">Привозим по адресу, в аэропорт или на вокзал.</div></div>
+    <div class="col text-center"><div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-credit-card fs-3"></i></div><h6 class="mb-1">5. Оплата</h6><div class="text-muted small">Проверяете целостность — и только после этого оплачиваете.</div></div>
   </div>
 </section>
 
@@ -169,34 +175,28 @@
   </style>
 
   <h3 class="fw-bold text-center mb-4">Тарифы на доставку багажа</h3>
+
   <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100 text-center">
-        <div class="small tariff-title mb-1">1–3 единицы</div>
-        <div class="tariff-price mb-2">от 3 500 <span class="rub">₽</span></div>
-        <div class="dd-divider"></div>
-        <div class="text-muted small">Забор → хранение → доставка</div>
-        <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100 text-center">
-        <div class="small tariff-title mb-1">4–6 единиц</div>
-        <div class="tariff-price mb-2">от 4 000 <span class="rub">₽</span></div>
-        <div class="dd-divider"></div>
-        <div class="text-muted small">Забор → хранение → доставка</div>
-        <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100 text-center">
-        <div class="small tariff-title mb-1">7+ единиц</div>
-        <div class="tariff-price mb-2">4 500 <span class="rub">₽</span> + 500 ₽/за каждую доп. ед.</div>
-        <div class="dd-divider"></div>
-        <div class="text-muted small">Забор → хранение → доставка</div>
-        <div class="mt-2"><span class="dd-chip">1 сутки хранения бесплатно</span></div>
-      </div>
-    </div>
+    <div class="col-md-4"><div class="card-dd p-4 h-100 text-center">
+      <div class="small tariff-title mb-1">1–3 единицы</div>
+      <div class="tariff-price mb-2">от 3 500 <span class="rub">₽</span></div>
+      <div class="dd-divider"></div><div class="text-muted small">Забор → хранение → доставка</div>
+      <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
+    </div></div>
+
+    <div class="col-md-4"><div class="card-dd p-4 h-100 text-center">
+      <div class="small tariff-title mb-1">4–6 единиц</div>
+      <div class="tariff-price mb-2">от 4 000 <span class="rub">₽</span></div>
+      <div class="dd-divider"></div><div class="text-muted small">Забор → хранение → доставка</div>
+      <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
+    </div></div>
+
+    <div class="col-md-4"><div class="card-dd p-4 h-100 text-center">
+      <div class="small tariff-title mb-1">7+ единиц</div>
+      <div class="tariff-price mb-2">4 500 <span class="rub">₽</span> + 500 ₽/за каждую доп. ед.</div>
+      <div class="dd-divider"></div><div class="text-muted small">Забор → хранение → доставка</div>
+      <div class="mt-2"><span class="dd-chip">1 сутки хранения бесплатно</span></div>
+    </div></div>
   </div>
 </section>
 
@@ -204,16 +204,9 @@
   <div class="surface p-4">
     <h2 class="h4 mb-3">Калькулятор стоимости доставки багажа</h2>
     <form class="row g-3 align-items-end">
-      <div class="col-md-4">
-        <label class="form-label">Количество единиц</label>
-        <input type="number" min="1" value="2" class="form-control" />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Дней хранения (включая 1-е)</label>
-        <input type="number" min="1" value="1" class="form-control" />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Зона</label>
+      <div class="col-md-4"><label class="form-label">Количество единиц</label><input type="number" min="1" value="2" class="form-control" /></div>
+      <div class="col-md-4"><label class="form-label">Дней хранения (включая 1-е)</label><input type="number" min="1" value="1" class="form-control" /></div>
+      <div class="col-md-4"><label class="form-label">Зона</label>
         <select class="form-select">
           <option selected>Зона 1 — Москва, все аэропорты (×1.0)</option>
           <option>Зона 1.5 — Московская область (×1.5)</option>
@@ -223,20 +216,46 @@
         <button type="button" class="btn btn-primary"><i class="bi bi-calculator me-1"></i> Рассчитать</button>
       </div>
     </form>
-    <div class="small text-secondary mt-2">
-      Базовая стоимость умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за весь заказ.
-    </div>
+    <div class="small text-secondary mt-2">Базовая стоимость умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за весь заказ.</div>
     <hr class="my-4">
     <div class="row gx-4 gy-3">
-      <div class="col-md-6">
-        <div class="fw-semibold small text-uppercase text-muted mb-1">Зона 1 (коэффициент: ×1.0)</div>
-        <div class="h6 mb-1">Москва, все аэропорты и вокзалы</div>
-      </div>
-      <div class="col-md-6">
-        <div class="fw-semibold small text-uppercase text-muted mb-1">Зона 1.5 (коэффициент: ×1.5)</div>
-        <div class="h6 mb-1">Московская область</div>
-      </div>
+      <div class="col-md-6"><div class="fw-semibold small text-uppercase text-muted mb-1">Зона 1 (коэффициент: ×1.0)</div><div class="h6 mb-1">Москва, все аэропорты и вокзалы</div></div>
+      <div class="col-md-6"><div class="fw-semibold small text-uppercase text-muted mb-1">Зона 1.5 (коэффициент: ×1.5)</div><div class="h6 mb-1">Московская область</div></div>
     </div>
+  </div>
+</section>
+
+{# ДЛИННЫЙ SEO-ТЕКСТ #}
+<section id="about-service" class="surface p-4 p-md-5 mb-5">
+  <h2 class="h4 fw-bold mb-3">Доставка и хранение багажа в Москве — удобно и вовремя</h2>
+  <p class="text-secondary mb-2">
+    Ищете, где оставить багаж в Москве на несколько часов или дней без очередей и поездок в камеру хранения?
+    Сервис <b>Drop & Delivery</b> забирает чемоданы <b>от двери</b>, бережно <b>упаковывает и пломбирует</b>, хранит на складе и
+    <b>доставляет ко времени</b> в аэропорт, на вокзал или по адресу. Это альтернатива классическим камерам хранения:
+    без бумажной волокиты и с точной подстройкой под ваш график.
+  </p>
+  <p class="text-secondary mb-2">
+    Услуга подходит путешественникам с пересадкой, семьям с детьми, деловым гостям столицы и тем, кто переезжает внутри города.
+    Мы фиксируем номера пломб и состояние багажа в акте, а также отслеживаем задержки рейсов — если меняется расписание, корректируем время встречи.
+    <b>Оплата — после проверки</b> целостности и комплектности, всё прозрачно и спокойно.
+  </p>
+  <p class="text-secondary mb-0">
+    Работаем по Москве и области: можно заказать <i>доставку багажа в Шереметьево, Домодедово, Внуково, Жуковский</i> или по любому адресу.
+    Первые <b>1 сутки хранения включены</b> во все тарифы, дальше — единая ставка, указанная в разделе «Тарифы».
+    Для крупных заказов и нестандартных маршрутов предложим индивидуальное решение.
+  </p>
+</section>
+
+{# СМОТРИТЕ ТАКЖЕ #}
+<section class="surface p-4 p-md-5 mb-5">
+  <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-light border pill" href="{% url 'storage_moscow' %}">Хранение багажа в Москве</a>
+    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Почему мы — от двери до двери</a>
+    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ: ответы на частые вопросы</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Доставка в Внуково</a>
   </div>
 </section>
 
@@ -246,9 +265,7 @@
   <h4 class="fw-bold mb-2">Путешествуйте по Москве налегке</h4>
   <div class="text-muted mb-3">Багаж — на нас. Доставим точно ко времени!</div>
   <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4"><i class="bi bi-bag"></i> Оставить заявку</a>
-  <div class="mt-3">
-    <a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">Смотреть все вопросы</a>
-  </div>
+  <div class="mt-3"><a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">Смотреть все вопросы</a></div>
 </section>
 
 <section class="card-dd p-4 mt-4">
@@ -266,16 +283,12 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     const hero = new Swiper('.hero-swiper', {
-      loop: true,
-      speed: 650,
-      effect: 'fade',
+      loop: true, speed: 650, effect: 'fade',
       fadeEffect: { crossFade: true },
       autoplay: { delay: 3000, disableOnInteraction: false },
       pagination: { el: '.swiper-pagination', clickable: true },
-      preventClicks: false,
-      preventClicksPropagation: false,
-      allowTouchMove: true,
-      simulateTouch: true,
+      preventClicks: false, preventClicksPropagation: false,
+      allowTouchMove: true, simulateTouch: true,
     });
     const el = document.querySelector('.hero-swiper');
     el.addEventListener('mouseenter', () => hero.autoplay.stop());

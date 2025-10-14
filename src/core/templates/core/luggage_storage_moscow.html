@@ -1,45 +1,45 @@
 {% extends "core/base.html" %}
 {% load static %}
-
-{% block title %}Luggage storage in Moscow — Drop & Delivery{% endblock %}
+{% block title %}Luggage storage Moscow — Drop & Delivery{% endblock %}
 
 {% block extra_head %}
-  <meta name="description" content="Door-to-door luggage storage in Moscow: we pick up at your hotel or apartment, seal and store safely, then deliver to the airport, train station or any address right on time. First day of storage included — see prices on the main page.">
-  <meta property="og:title" content="Luggage storage in Moscow — Drop & Delivery">
-  <meta property="og:description" content="Pick-up, safe storage and on-time delivery to airport, station or any address in Moscow. Travel light.">
-  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
-  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
-
-  {# Hreflang alternates for EN/RU versions #}
-  <link rel="alternate" hreflang="en" href="{{ SITE_URL }}{{ CANONICAL_PATH }}">
+  {# Hreflang alternates EN/RU #}
+  <link rel="alternate" hreflang="en" href="{{ SITE_URL }}/luggage-storage-moscow/">
   <link rel="alternate" hreflang="ru" href="{{ SITE_URL }}/hranenie-bagazha-moskva/">
   <link rel="alternate" hreflang="x-default" href="{{ SITE_URL }}/">
 
-  {# JSON-LD: Service — no fixed price, link to tariffs on homepage #}
+  {# JSON-LD: WebPage (EN) + link to RU #}
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
-    "@type":"Service",
-    "name":"Luggage storage in Moscow with pick-up and delivery",
-    "serviceType":"Luggage storage and delivery",
-    "areaServed": ["Moscow", "Moscow Oblast"],
-    "provider": {
-      "@type":"Organization",
-      "name":"Drop & Delivery",
-      "url":"{{ SITE_URL }}/",
-      "logo":"{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}"
-    },
-    "hasOfferCatalog": {
-      "@type":"OfferCatalog",
-      "name":"Prices and tariffs",
-      "url":"{{ SITE_URL }}/#tariffs"
-    }
+    "@type":"WebPage",
+    "@id":"{{ SITE_URL }}/luggage-storage-moscow/#webpage",
+    "url":"{{ SITE_URL }}/luggage-storage-moscow/",
+    "name":"Luggage storage in Moscow — Drop & Delivery",
+    "inLanguage":"en",
+    "isPartOf":{"@id":"{{ SITE_URL }}/#website"},
+    "about":{"@id":"{{ SITE_URL }}/#organization"},
+    "translationOfWork":{"@type":"WebPage","@id":"{{ SITE_URL }}/hranenie-bagazha-moskva/#webpage","inLanguage":"ru","url":"{{ SITE_URL }}/hranenie-bagazha-moskva/"}
+  }
+  </script>
+
+  {# JSON-LD: HowTo EN #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"HowTo",
+    "name":"How to book luggage storage with delivery in Moscow",
+    "step":[
+      {"@type":"HowToStep","name":"Request","text":"Book on the website or via messenger — we will confirm addresses and time."},
+      {"@type":"HowToStep","name":"Pick-up","text":"Our representative seals and photographs your luggage."},
+      {"@type":"HowToStep","name":"Storage","text":"Secure facility, first day included in the plan."},
+      {"@type":"HowToStep","name":"Delivery","text":"We deliver to airport/station/address right on time."}
+    ]
   }
   </script>
 {% endblock %}
 
 {% block content %}
-
 <section class="hero-clean mb-5">
   <div class="row align-items-center gy-4">
     <div class="col-lg-7">
@@ -58,9 +58,7 @@
     </div>
     <div class="col-lg-5">
       <div class="hero-ill p-4 text-center surface">
-        <img src="{% static 'core/img/dnd_storage.png' %}"
-             alt="Drop & Delivery — luggage storage and delivery in Moscow"
-             loading="lazy" decoding="async">
+        <img src="{% static 'core/img/dnd_storage.png' %}" alt="Drop & Delivery — luggage storage and delivery in Moscow" loading="lazy" decoding="async">
         <div class="small text-muted mt-2">Travel light — enjoy Moscow 🧳</div>
       </div>
     </div>
@@ -70,56 +68,40 @@
 <section class="mb-5">
   <h2 class="h3 mb-3">Why choose us</h2>
   <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-taxi-front fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">Door-to-door</h3>
-      <p class="text-secondary mb-0">No need to search for lockers.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-clock-history fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">Time-saving</h3>
-      <p class="text-secondary mb-0">No queues or extra trips.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-shield-check fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">Secure</h3>
-      <p class="text-secondary mb-0">Sealed luggage kept at a facility.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-calendar2-week fs-4"></i></div>
-      <h3 class="h5 mt-3 mb-2">Flexible</h3>
-      <p class="text-secondary mb-0">Pick-up and delivery time windows.</p>
-    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-taxi-front fs-4"></i></div><h3 class="h5 mt-3 mb-2">Door-to-door</h3><p class="text-secondary mb-0">No need to search for lockers.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-clock-history fs-4"></i></div><h3 class="h5 mt-3 mb-2">Time-saving</h3><p class="text-secondary mb-0">No queues or extra trips.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-shield-check fs-4"></i></div><h3 class="h5 mt-3 mb-2">Secure</h3><p class="text-secondary mb-0">Sealed luggage kept at a facility.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-calendar2-week fs-4"></i></div><h3 class="h5 mt-3 mb-2">Flexible</h3><p class="text-secondary mb-0">Pick-up and delivery time windows.</p></div></div>
   </div>
 </section>
 
 <section class="mb-5">
   <h2 class="h3 mb-3">How it works</h2>
   <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-chat-left-dots"></i></div><span class="badge text-bg-primary rounded-pill">1</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Request</h3><p class="text-secondary mb-0">Book on the website or via messenger.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div><span class="badge text-bg-primary rounded-pill">2</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Pick-up</h3><p class="text-secondary mb-0">Our representative seals and takes your luggage.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div><span class="badge text-bg-primary rounded-pill">3</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Storage</h3><p class="text-secondary mb-0">We keep it safely until the requested time.</p>
-    </div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div><span class="badge text-bg-primary rounded-pill">4</span>
-      </div>
-      <h3 class="h6 mt-3 mb-1">Delivery</h3><p class="text-secondary mb-0">We deliver to airport/station/any address on time.</p>
-    </div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-chat-left-dots"></i></div><span class="badge text-bg-primary rounded-pill">1</span></div><h3 class="h6 mt-3 mb-1">Request</h3><p class="text-secondary mb-0">Book on the website or via messenger.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div><span class="badge text-bg-primary rounded-pill">2</span></div><h3 class="h6 mt-3 mb-1">Pick-up</h3><p class="text-secondary mb-0">Our representative seals and takes your luggage.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div><span class="badge text-bg-primary rounded-pill">3</span></div><h3 class="h6 mt-3 mb-1">Storage</h3><p class="text-secondary mb-0">We keep it safely until the requested time.</p></div></div>
+    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div><span class="badge text-bg-primary rounded-pill">4</span></div><h3 class="h6 mt-3 mb-1">Delivery</h3><p class="text-secondary mb-0">We deliver to airport/station/any address on time.</p></div></div>
+  </div>
+</section>
+
+{# LONG SEO TEXT (EN) #}
+<section class="surface p-4 p-md-5 mb-5">
+  <h2 class="h4 fw-bold mb-3">Luggage storage in Moscow — simple and convenient</h2>
+  <p class="text-secondary mb-2">Drop & Delivery picks up luggage at your door, seals and documents it, stores at a secure facility and delivers right on time to the airport, train station or any address. It’s an easy alternative to lockers: no queues or extra trips.</p>
+  <p class="text-secondary mb-2">Perfect for tourists on layovers, families, business trips or moving within the city. The first day of storage is included in our plans; afterwards there’s a flat daily rate. We track flights and adjust the meeting time if schedules change.</p>
+  <p class="text-secondary mb-0">We operate across Moscow and the region, delivering to Sheremetyevo, Domodedovo, Vnukovo, Zhukovsky and city addresses. Payment is after you check your luggage.</p>
+</section>
+
+{# SEE ALSO #}
+<section class="surface p-4 p-md-5 mb-5">
+  <h2 class="h5 fw-bold mb-3">See also</h2>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-light border pill" href="{% url 'index' %}#tariffs">Prices & calculator</a>
+    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Why door-to-door</a>
+    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">To Sheremetyevo</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">To Domodedovo</a>
   </div>
 </section>
 
@@ -136,22 +118,10 @@
 <section class="mb-5">
   <h2 class="h3 mb-3">FAQ</h2>
   <div class="accordion" id="faqEn">
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e1">Do you operate in Moscow region?</button></h2>
-      <div id="e1" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, we cover Moscow and the region.</div></div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e2">Is urgent 1–2h delivery possible?</button></h2>
-      <div id="e2" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, upon request and availability.</div></div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e3">How long can I store luggage?</button></h2>
-      <div id="e3" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">No strict limit — we’ll arrange a suitable option.</div></div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e4">How to reschedule time/address?</button></h2>
-      <div id="e4" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Message us — we will adjust quickly.</div></div>
-    </div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e1">Do you operate in Moscow region?</button></h2><div id="e1" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, we cover Moscow and the region.</div></div></div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e2">Is urgent 1–2h delivery possible?</button></h2><div id="e2" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, upon request and availability.</div></div></div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e3">How long can I store luggage?</button></h2><div id="e3" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">No strict limit — we’ll arrange a suitable option.</div></div></div>
+    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e4">How to reschedule time/address?</button></h2><div id="e4" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Message us — we will adjust quickly.</div></div></div>
   </div>
 </section>
 
