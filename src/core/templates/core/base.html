@@ -113,7 +113,12 @@
 
   {% block extra_head %}{% endblock %}
 
-<!-- ─── JSON-LD: организация + хлебные крошки ─── -->
+<!-- Open Graph доп. -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- JSON-LD: Organization + WebSite (единый источник правды) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -125,39 +130,38 @@
       "url": "https://www.drop-delivery.ru/",
       "logo": "https://www.drop-delivery.ru/static/core/img/logo-512.png",
       "description": "Drop & Delivery — сервис по забору, хранению и доставке багажа по Москве и Московской области. Забираем чемоданы у двери, храним на складе и привозим в аэропорт, на вокзал или по адресу.",
-      "contactPoint": {
+      "contactPoint": [{
         "@type": "ContactPoint",
-        "telephone": "+7-999-999-9999",
-        "contactType": "customer service",
+        "telephone": "+7-915-383-55-35",
+        "contactType": "customer support",
         "areaServed": "RU",
-        "availableLanguage": ["Russian", "English"]
-      },
+        "availableLanguage": ["ru","en"]
+      }],
       "sameAs": [
-        "https://t.me/dropdelivery",
-        "https://www.instagram.com/dropdelivery.ru/"
+        "https://t.me/dropdeliv",
+        "https://wa.me/79153835535"
       ]
     },
     {
-      "@type": "BreadcrumbList",
-      "@id": "https://www.drop-delivery.ru/#breadcrumbs",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Главная",
-          "item": "https://www.drop-delivery.ru/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "{{ request.path|cut:'/'|default_if_none:''|title }}",
-          "item": "https://www.drop-delivery.ru{{ request.path }}"
-        }
-      ]
+      "@type": "WebSite",
+      "@id": "https://www.drop-delivery.ru/#website",
+      "url": "https://www.drop-delivery.ru/",
+      "name": "Drop & Delivery",
+      "inLanguage": ["ru","en"],
+      "publisher": { "@id": "https://www.drop-delivery.ru/#organization" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.drop-delivery.ru/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
   ]
 }
 </script>
+
+
+
+
 
 </head>
 <body>
