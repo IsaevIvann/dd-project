@@ -112,6 +112,53 @@
   </style>
 
   {% block extra_head %}{% endblock %}
+
+<!-- ─── JSON-LD: организация + хлебные крошки ─── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.drop-delivery.ru/#organization",
+      "name": "Drop & Delivery",
+      "url": "https://www.drop-delivery.ru/",
+      "logo": "https://www.drop-delivery.ru/static/core/img/logo-512.png",
+      "description": "Drop & Delivery — сервис по забору, хранению и доставке багажа по Москве и Московской области. Забираем чемоданы у двери, храним на складе и привозим в аэропорт, на вокзал или по адресу.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+7-999-999-9999",
+        "contactType": "customer service",
+        "areaServed": "RU",
+        "availableLanguage": ["Russian", "English"]
+      },
+      "sameAs": [
+        "https://t.me/dropdelivery",
+        "https://www.instagram.com/dropdelivery.ru/"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.drop-delivery.ru/#breadcrumbs",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Главная",
+          "item": "https://www.drop-delivery.ru/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "{{ request.path|cut:'/'|default_if_none:''|title }}",
+          "item": "https://www.drop-delivery.ru{{ request.path }}"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 </head>
 <body>
 <noscript><div><img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/></div></noscript>
