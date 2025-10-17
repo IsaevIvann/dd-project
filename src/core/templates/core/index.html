@@ -80,6 +80,14 @@
       .hero-slide{grid-template-columns:1fr;padding:2rem;min-height:auto}
       .hero-title{font-size:clamp(26px,6vw,36px)}
     }
+
+    /* калькулятор */
+    .dd-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #d6e4ff;background:#ecf3ff;color:#1e3a8a;font-size:12px}
+    .dd-divider{height:1px;background:#eef2ff;margin:8px 0 10px}
+    .dd-calc .form-control,.dd-calc .form-select{border-radius:12px;padding:.8rem .9rem;border-color:#e5e7eb}
+    .dd-calc .form-control:focus,.dd-calc .form-select:focus{border-color:#2563eb;box-shadow:0 0 0 .35rem rgba(37,99,235,.15)}
+    .dd-total{font-weight:800;font-size:1.6rem;color:var(--ink)}
+    .dd-muted{color:var(--muted)}
   </style>
 {% endblock %}
 
@@ -163,17 +171,8 @@
   </div>
 </section>
 
-<!-- ТАРИФЫ + КАЛЬКУЛЯТОР -->
+<!-- ТАРИФЫ -->
 <section id="tariffs" class="mb-5">
-  <style>
-    .dd-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #d6e4ff;background:#ecf3ff;color:#1e3a8a;font-size:12px}
-    .dd-divider{height:1px;background:#eef2ff;margin:8px 0 10px}
-    .dd-calc .form-control,.dd-calc .form-select{border-radius:12px;padding:.8rem .9rem;border-color:#e5e7eb}
-    .dd-calc .form-control:focus,.dd-calc .form-select:focus{border-color:#2563eb;box-shadow:0 0 0 .35rem rgba(37,99,235,.15)}
-    .dd-total{font-weight:800;font-size:1.6rem;color:var(--ink)}
-    .dd-muted{color:var(--muted)}
-  </style>
-
   <h3 class="fw-bold text-center mb-4">Тарифы на доставку багажа</h3>
 
   <div class="row g-4">
@@ -200,23 +199,46 @@
   </div>
 </section>
 
+<!-- КАЛЬКУЛЯТОР -->
 <section class="mb-5 mt-4 mt-lg-5">
-  <div class="surface p-4">
+  <div class="surface p-4 dd-calc">
     <h2 class="h4 mb-3">Калькулятор стоимости доставки багажа</h2>
-    <form class="row g-3 align-items-end">
-      <div class="col-md-4"><label class="form-label">Количество единиц</label><input type="number" min="1" value="2" class="form-control" /></div>
-      <div class="col-md-4"><label class="form-label">Дней хранения (включая 1-е)</label><input type="number" min="1" value="1" class="form-control" /></div>
-      <div class="col-md-4"><label class="form-label">Зона</label>
-        <select class="form-select">
-          <option selected>Зона 1 — Москва, все аэропорты (×1.0)</option>
-          <option>Зона 1.5 — Московская область (×1.5)</option>
+
+    <form id="dd-calc-form" class="row g-3 align-items-end" novalidate>
+      <div class="col-md-4">
+        <label for="calcUnits" class="form-label">Количество единиц</label>
+        <input id="calcUnits" type="number" min="1" value="2" class="form-control" />
+      </div>
+
+      <div class="col-md-4">
+        <label for="calcDays" class="form-label">Дней хранения (включая 1-е)</label>
+        <input id="calcDays" type="number" min="1" value="1" class="form-control" />
+      </div>
+
+      <div class="col-md-4">
+        <label for="calcZone" class="form-label">Зона</label>
+        <select id="calcZone" class="form-select">
+          <option value="1.0" selected>Зона 1 — Москва, все аэропорты (×1.0)</option>
+          <option value="1.5">Зона 1.5 — Московская область (×1.5)</option>
         </select>
       </div>
+
       <div class="col-12 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary"><i class="bi bi-calculator me-1"></i> Рассчитать</button>
+        <button id="dd-calc-btn" type="button" class="btn btn-primary">
+          <i class="bi bi-calculator me-1"></i> Рассчитать
+        </button>
       </div>
     </form>
-    <div class="small text-secondary mt-2">Базовая стоимость умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за весь заказ.</div>
+
+    <div class="small text-secondary mt-2">
+      Базовая стоимость умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за весь заказ.
+    </div>
+
+    <div id="dd-calc-result" class="alert alert-light border mt-3" role="status" aria-live="polite">
+      <div class="dd-total">0 ₽</div>
+      <div id="dd-calc-breakdown" class="text-secondary small mt-1"></div>
+    </div>
+
     <hr class="my-4">
     <div class="row gx-4 gy-3">
       <div class="col-md-6"><div class="fw-semibold small text-uppercase text-muted mb-1">Зона 1 (коэффициент: ×1.0)</div><div class="h6 mb-1">Москва, все аэропорты и вокзалы</div></div>
@@ -295,5 +317,68 @@
     el.addEventListener('mouseleave', () => hero.autoplay.start());
     el.addEventListener('focusin', () => hero.autoplay.stop());
     el.addEventListener('focusout', () => hero.autoplay.start());
+  </script>
+
+  <!-- D&D калькулятор: логика -->
+  <script>
+    (function(){
+      const form = document.getElementById('dd-calc-form');
+      if (!form) return;
+
+      const unitsEl = document.getElementById('calcUnits');
+      const daysEl  = document.getElementById('calcDays');
+      const zoneEl  = document.getElementById('calcZone');
+      const btn     = document.getElementById('dd-calc-btn');
+
+      const totalEl     = document.querySelector('#dd-calc-result .dd-total');
+      const breakdownEl = document.getElementById('dd-calc-breakdown');
+
+      const fmt = n => n.toLocaleString('ru-RU');
+
+      function sanitizeInt(val, min) {
+        const n = parseInt(val, 10);
+        return (Number.isFinite(n) && n >= min) ? n : min;
+      }
+
+      function basePrice(units) {
+        if (units <= 3) return 3500;
+        if (units <= 6) return 4000;
+        // 7+: 4500 + 500 ₽ за каждую единицу сверх 7
+        return 4500 + 500 * Math.max(0, units - 7);
+      }
+
+      function storageCost(days) {
+        const extra = Math.max(0, days - 1);
+        return 500 * extra; // за весь заказ
+      }
+
+      function calculate() {
+        const u = sanitizeInt(unitsEl.value, 1);
+        const d = sanitizeInt(daysEl.value, 1);
+        const k = parseFloat(zoneEl.value) || 1.0;
+
+        // нормализация значений в инпутах
+        unitsEl.value = u;
+        daysEl.value  = d;
+
+        const base = basePrice(u);
+        const move = Math.round(base * k);
+        const store = storageCost(d);
+        const total = move + store;
+
+        totalEl.textContent = fmt(total) + ' ₽';
+        breakdownEl.textContent =
+          `Доставка: ${fmt(base)} ₽ × коэффициент ${k} = ${fmt(move)} ₽. ` +
+          `Хранение: ${fmt(store)} ₽ (${d > 1 ? (d-1) + ' доп. сут.' : '1-е сутки бесплатно'}).`;
+      }
+
+      // пересчёт по клику и «на лету»
+      btn.addEventListener('click', calculate);
+      form.addEventListener('input', calculate);
+      form.addEventListener('change', calculate);
+
+      // первичная инициализация
+      calculate();
+    })();
   </script>
 {% endblock %}
