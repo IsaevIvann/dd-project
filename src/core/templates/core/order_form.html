@@ -1,4 +1,4 @@
-{% extends "core/base.html" %}
+ё{% extends "core/base.html" %}
 {% load widget_tweaks %}
 {% block title %}Оставить заявку — Drop & Delivery{% endblock %}
 {% block content %}
@@ -70,14 +70,29 @@
             }
             .dd-calc .qty .qty-btn:hover{background:#e2e8f0}
 
-            /* --- Согласия рядом, в одну строку, строго влево --- */
-            #consentsRow{
-              display:flex;flex-wrap:wrap;align-items:center;gap:1.25rem;justify-content:flex-start;margin-top:1rem
+            /* --- согласия одинаковые чекбоксы --- */
+            .dd-consents{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:flex-start;align-items:center;margin-top:1rem}
+            .dd-consents .form-check{display:inline-flex;align-items:center;margin:0;padding:0}
+            .dd-consents .form-check-label{margin-left:.55rem;line-height:1.25}
+
+            .dd-check{
+              --dd-cb-size:18px;
+              --dd-cb-color:#2563eb;
+              appearance:none;-webkit-appearance:none;-moz-appearance:none;
+              width:var(--dd-cb-size);height:var(--dd-cb-size);
+              border:2px solid var(--dd-cb-color);border-radius:4px;
+              background:#fff;display:inline-grid;place-content:center;
+              margin:0;outline:none;cursor:pointer;position:relative;
             }
-            /* Сброс bootstrap-позиционирования, чтобы ничего не накладывалось */
-            #consentsRow .form-check{display:inline-flex;align-items:center;margin:0;padding:0}
-            #consentsRow .form-check-input{position:static;margin:0}  /* главное! иначе “абсолют” у bootstrap */
-            #consentsRow .form-check-label{margin-left:.45rem}
+            .dd-check:focus{box-shadow:0 0 0 .15rem rgba(37,99,235,.2)}
+            .dd-check::before{
+              content:"";width:10px;height:6px;
+              border:2px solid #fff;border-top:0;border-left:0;
+              transform:rotate(45deg) scale(0);transform-origin:center;
+              transition:transform .12s ease-in-out;
+            }
+            .dd-check:checked{background:var(--dd-cb-color)}
+            .dd-check:checked::before{transform:rotate(45deg) scale(1)}
           </style>
 
           <div class="row g-3">
@@ -85,43 +100,32 @@
             <div class="col-12">
               <label for="id_name" class="form-label req"><i class="bi bi-person-circle"></i> Имя</label>
               {{ form.name|add_class:"form-control"|attr:"placeholder:Иван Иванов"|attr:"required:required"|attr:"aria-required:true" }}
-              <div class="invalid-hint" data-hint-for="id_name">Укажите имя.</div>
-              {{ form.name.errors }}
             </div>
 
             <div class="col-12 col-md-6">
               <label for="id_phone" class="form-label req"><i class="bi bi-telephone"></i> Телефон</label>
               {{ form.phone|add_class:"form-control"|attr:"placeholder:+7 900 000-00-00"|attr:"required:required"|attr:"aria-required:true" }}
-              <div class="invalid-hint" data-hint-for="id_phone">Укажите телефон.</div>
-              {{ form.phone.errors }}
             </div>
 
             <div class="col-12 col-md-6">
               <label for="id_email" class="form-label req"><i class="bi bi-envelope"></i> Email</label>
               {{ form.email|add_class:"form-control"|attr:"placeholder:you@example.com"|attr:"type:email"|attr:"required:required"|attr:"aria-required:true" }}
-              <div class="invalid-hint" data-hint-for="id_email">Укажите корректный email.</div>
-              {{ form.email.errors }}
             </div>
 
             <div class="col-12 col-md-6">
               <label for="id_telegram" class="form-label"><i class="bi bi-telegram"></i> Telegram</label>
               {{ form.telegram|add_class:"form-control"|attr:"placeholder:@username" }}
-              {{ form.telegram.errors }}
             </div>
 
             <div class="col-12 col-md-6">
               <label for="id_whatsapp" class="form-label"><i class="bi bi-whatsapp"></i> WhatsApp</label>
               {{ form.whatsapp|add_class:"form-control"|attr:"placeholder:+7 900 000-00-00" }}
-              {{ form.whatsapp.errors }}
             </div>
 
             <!-- Логистика -->
             <div class="col-12 mt-2">
               <label for="id_pickup_address" class="form-label req"><i class="bi bi-geo-alt"></i> Адрес забора</label>
               {{ form.pickup_address|add_class:"form-control"|attr:"placeholder:Адрес / аэропорт / вокзал"|attr:"id:id_pickup_address"|attr:"required:required"|attr:"aria-required:true" }}
-              <div id="pickup_warn" class="text-danger small mt-1 d-none">Мы работаем только в Москве и МО.</div>
-              <div class="invalid-hint" data-hint-for="id_pickup_address">Укажите адрес забора.</div>
-              {{ form.pickup_address.errors }}
             </div>
 
             <div class="col-12 col-md-6">
@@ -130,16 +134,11 @@
                 {{ form.pickup_time|add_class:"form-control"|attr:"id:id_pickup_time"|attr:"type:datetime-local"|attr:"required:required"|attr:"aria-required:true" }}
                 <span class="fake-ph">дата / время</span>
               </div>
-              <div class="invalid-hint" data-hint-for="id_pickup_time">Укажите дату и время забора.</div>
-              {{ form.pickup_time.errors }}
             </div>
 
             <div class="col-12">
               <label for="id_delivery_address" class="form-label req"><i class="bi bi-geo"></i> Адрес доставки</label>
               {{ form.delivery_address|add_class:"form-control"|attr:"placeholder:Адрес / аэропорт / вокзал"|attr:"id:id_delivery_address"|attr:"required:required"|attr:"aria-required:true" }}
-              <div id="delivery_warn" class="text-danger small mt-1 d-none">Мы работаем только в Москве и МО.</div>
-              <div class="invalid-hint" data-hint-for="id_delivery_address">Укажите адрес доставки.</div>
-              {{ form.delivery_address.errors }}
             </div>
 
             <div class="col-12 col-md-6">
@@ -148,74 +147,25 @@
                 {{ form.delivery_time|add_class:"form-control"|attr:"id:id_delivery_time"|attr:"type:datetime-local"|attr:"required:required"|attr:"aria-required:true" }}
                 <span class="fake-ph">дата / время</span>
               </div>
-              <div class="invalid-hint" data-hint-for="id_delivery_time">Укажите дату и время доставки.</div>
-              {{ form.delivery_time.errors }}
-            </div>
-
-            {% if form.items_count %}
-            <div class="col-12 col-md-6">
-              <label for="id_items_count" class="form-label"><i class="bi bi-suitcase"></i> Единиц багажа</label>
-              {{ form.items_count|add_class:"form-control"|attr:"min:1"|attr:"id:id_items_count" }}
-              {{ form.items_count.errors }}
-            </div>
-            {% endif %}
-
-            <!-- Калькулятор -->
-            <div class="col-12">
-              <div class="dd-calc card border-0 rounded-3 p-3" style="background:#f8fafc;border:1px solid #e5e7eb!important">
-                <div class="d-flex align-items-center mb-2">
-                  <i class="bi bi-calculator me-2"></i>
-                  <strong class="h6 mb-0">Калькулятор заказа</strong>
-                </div>
-
-                <div class="row g-3 align-items-center">
-                  <div class="col-12 col-md-5">
-                    <label class="form-label text-muted small mb-1">Единиц багажа</label>
-                    <div class="qty">
-                      <button class="qty-btn" type="button" id="itemsMinus" aria-label="Уменьшить">−</button>
-                      <input id="order-items" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Количество">
-                      <button class="qty-btn" type="button" id="itemsPlus" aria-label="Увеличить">+</button>
-                    </div>
-                  </div>
-
-                  <div class="col-12 col-md-7">
-                    <label class="form-label text-muted small mb-1 mb-md-2">Зона (определяется автоматически по адресам)</label>
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                      <span id="zonePill" class="badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2">Зона 1 (×1.0)</span>
-                      <span class="text-muted small" id="zoneNote">по умолчанию</span>
-                    </div>
-                    <input type="hidden" name="zone_coef" id="zone_coef" value="1.0">
-                  </div>
-
-                  <div class="col-12">
-                    <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 bg-white">
-                      <div class="text-muted">Итоговая стоимость</div>
-                      <div id="order-total" class="fw-bold">0 ₽</div>
-                    </div>
-                    <input type="hidden" name="estimated_cost" id="estimated_cost" value="0">
-                  </div>
-                </div>
-              </div>
             </div>
 
             <!-- Комментарий -->
             <div class="col-12">
               <label for="id_comment" class="form-label"><i class="bi bi-chat-dots"></i> Комментарий</label>
               {{ form.comment|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Пожелания, доп.комментарии, особенности багажа и т.п." }}
-              {{ form.comment.errors }}
             </div>
           </div>
 
-          <!-- Согласия рядом (в одну строку, выровнено влево) -->
-          <div id="consentsRow">
+          <!-- Согласия: выровнены слева, одинаковые чекбоксы -->
+          <div class="dd-consents">
             <div class="form-check">
-              {{ form.consent_pdn }}
+              {{ form.consent_pdn|add_class:"dd-check" }}
               <label class="form-check-label" for="{{ form.consent_pdn.id_for_label }}">
                 Я согласен(а) с <a href="{% url 'privacy' %}" target="_blank" rel="noopener">обработкой персональных данных</a>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="consent_offer" name="consent_offer" required>
+              <input class="dd-check" type="checkbox" id="consent_offer" name="consent_offer" required>
               <label class="form-check-label" for="consent_offer">
                 Я согласен(а) с <a href="https://www.drop-delivery.ru/offer/" target="_blank" rel="noopener">публичной офертой</a>
               </label>
@@ -238,15 +188,15 @@
 </div>
 
 <script>
-  /* Фейковый placeholder для datetime-local — возвращаем хук, чтобы не накладывалось */
+  /* фикс фейкового placeholder для datetime */
   (function(){
     function hook(wrapId,inputId){
       const wrap=document.getElementById(wrapId);
       const inp=document.getElementById(inputId);
-      if(!wrap||!inp) return;
-      function refresh(){ (inp.value && inp.value.trim()!=="") ? wrap.classList.add('filled') : wrap.classList.remove('filled'); }
+      if(!wrap||!inp)return;
+      function refresh(){(inp.value&&inp.value.trim()!=="")?wrap.classList.add('filled'):wrap.classList.remove('filled');}
       inp.addEventListener('focus',()=>wrap.classList.add('focused'));
-      inp.addEventListener('blur', ()=>wrap.classList.remove('focused'));
+      inp.addEventListener('blur',()=>wrap.classList.remove('focused'));
       inp.addEventListener('input',refresh);
       inp.addEventListener('change',refresh);
       refresh();
@@ -255,180 +205,15 @@
     hook('wrap_delivery','id_delivery_time');
   })();
 
-  /* Расчёт стоимости — как раньше */
-  function calcOrderTotal(items,storageDays,zoneK){
-    items=Math.max(1,parseInt(items||1,10));
-    storageDays=Math.max(0,parseInt(storageDays||0,10));
-    zoneK=parseFloat(zoneK||'1.0');
-    let base;
-    if(items<=3) base=3500;
-    else if(items<=6) base=4000;
-    else base=4500+(items-7)*500;
-    const baseWithZone=Math.round(base*zoneK);
-    const storage=storageDays*500;
-    const total=baseWithZone+storage;
-    return {total};
-  }
-  function parseLocalDateTime(str){
-    if(!str) return null;
-    let d=null; const iso=str.trim().replace(' ','T');
-    if(!isNaN(Date.parse(iso))) d=new Date(iso);
-    if(!d||isNaN(d)){
-      const m=str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}).*?(\d{1,2}):(\d{2})/);
-      if(m){const[_,dd,mm,yyyy,HH,MM]=m.map(Number);d=new Date(yyyy,mm-1,dd,HH,MM);}
-    }
-    return (d&&!isNaN(d))?d:null;
-  }
-  function daysAfterFirstFree(pickup,delivery){
-    if(!pickup||!delivery) return 0;
-    const ms=delivery-pickup; if(ms<=0) return 0;
-    const days=Math.ceil(ms/(24*60*60*1000));
-    return Math.max(0,days-1);
-  }
-  const MOSCOW_MARKERS=[" москва","москва","мск","МКАД","цао","сао","свао","вао","ювао","юао","юзао","зао","сзао","svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский","вокзал"];
-  const MO_TOWNS=["одинцово","химки","мытищи","люберцы","балашиха","красногорск","королёв","королев","подольск","реутов","видное","долгопрудный","лобня","домодедово","котельники","область","обл."];
-
-  function detectZoneByText(a,b){
-    const t=((a||"")+" "+(b||"")).toLowerCase();
-    const inMoscow=MOSCOW_MARKERS.some(k=>t.includes(k));
-    const inMO=MO_TOWNS.some(k=>t.includes(k))||t.includes("московская область")||t.includes("московская обл");
-    return (inMO && !inMoscow)?1.5:1.0;
-  }
-  function formatRub(n){return n.toLocaleString('ru-RU')+" ₽";}
-
+  /* блокировка кнопки, пока не отмечены обе галочки */
   (function(){
-    const itemsInput=document.getElementById('order-items');
-    const itemsPlus=document.getElementById('itemsPlus');
-    const itemsMinus=document.getElementById('itemsMinus');
-    const hiddenItems=document.getElementById('id_items_count');
-    const totalEl=document.getElementById('order-total');
-    const zonePill=document.getElementById('zonePill');
-    const zoneNote=document.getElementById('zoneNote');
-    const zoneCoefInput=document.getElementById('zone_coef');
-    const estCostInput=document.getElementById('estimated_cost');
-
-    const pickupAddr=document.getElementById('id_pickup_address');
-    const deliveryAddr=document.getElementById('id_delivery_address');
-    const pickupTime=document.getElementById('id_pickup_time');
-    const deliveryTime=document.getElementById('id_delivery_time');
-
-    function syncItems(){if(hiddenItems) hiddenItems.value=itemsInput.value;}
-    function currentZoneK(){return detectZoneByText(pickupAddr?.value,deliveryAddr?.value);}
-    function renderZone(k){
-      zoneCoefInput.value=String(k);
-      if(k===1.0){
-        zonePill.className="badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2";
-        zonePill.textContent="Зона 1 (×1.0)"; zoneNote.textContent="по умолчанию";
-      }else{
-        zonePill.className="badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2";
-        zonePill.textContent="Зона 1.5 (×1.5)"; zoneNote.textContent="определено по адресам";
-      }
-    }
-    function recalc(){
-      const k=currentZoneK(); renderZone(k);
-      const pick=parseLocalDateTime(pickupTime?.value);
-      const drop=parseLocalDateTime(deliveryTime?.value);
-      const storage=daysAfterFirstFree(pick,drop);
-      const items=parseInt(itemsInput.value||"1",10);
-      const {total}=calcOrderTotal(items,storage,k);
-      totalEl.textContent=formatRub(total);
-      estCostInput.value=total;
-      syncItems();
-      validateAreas();
-    }
-
-    itemsPlus?.addEventListener('click',()=>{itemsInput.value=Math.min(99,(parseInt(itemsInput.value||"1",10)+1));recalc();});
-    itemsMinus?.addEventListener('click',()=>{itemsInput.value=Math.max(1,(parseInt(itemsInput.value||"1",10)-1));recalc();});
-    itemsInput?.addEventListener('input',recalc);
-    [pickupAddr,deliveryAddr,pickupTime,deliveryTime].forEach(el=>{
-      el&&el.addEventListener('input',recalc);
-      el&&el.addEventListener('change',recalc);
-    });
-    recalc();
-
-    /* Клиентская проверка адресов */
-    const pickupWarn   = document.getElementById('pickup_warn');
-    const deliveryWarn = document.getElementById('delivery_warn');
-
-    function isAllowedAreaText(t){
-      const s=(t||"").toLowerCase();
-      const hasMoscow = MOSCOW_MARKERS.some(k=>s.includes(k)) || s.includes("мск") || s.includes("москва ");
-      const hasMO = MO_TOWNS.some(k=>s.includes(k)) || s.includes("московская область") || s.includes("московская обл");
-      const hasAirport = ["svo","vko","dme","zia","шереметьево","внуково","домодедово","жуковский"].some(k=>s.includes(k));
-      return hasMoscow || hasMO || hasAirport;
-    }
-
-    function validateAreas(){
-      const okPickup   = isAllowedAreaText(pickupAddr?.value);
-      const okDelivery = isAllowedAreaText(deliveryAddr?.value);
-      pickupWarn && pickupWarn.classList.toggle('d-none', okPickup);
-      deliveryWarn && deliveryWarn.classList.toggle('d-none', okDelivery);
-      return okPickup && okDelivery;
-    }
-
-    /* Общая UX-валидация */
-    function showInvalid(el, msg){
-      if(!el) return;
-      el.classList.add('is-invalid');
-      const hint = document.querySelector(`.invalid-hint[data-hint-for="${el.id}"]`);
-      if(hint){ hint.textContent = msg || hint.textContent; hint.classList.add('show'); }
-    }
-    function clearInvalid(el){
-      if(!el) return;
-      el.classList.remove('is-invalid');
-      const hint = document.querySelector(`.invalid-hint[data-hint-for="${el.id}"]`);
-      if(hint){ hint.classList.remove('show'); }
-    }
-    [pickupAddr,deliveryAddr,pickupTime,deliveryTime,
-     document.getElementById('id_name'),
-     document.getElementById('id_phone'),
-     document.getElementById('id_email')
-    ].forEach(el=>{
-      el&&el.addEventListener('input',()=>clearInvalid(el));
-      el&&el.addEventListener('change',()=>clearInvalid(el));
-    });
-
-    // чекбоксы согласий и блокировка кнопки
-    const form=document.getElementById('orderForm');
-    const offerEl = document.getElementById('consent_offer');
-    const pdnEl = document.getElementById('{{ form.consent_pdn.id_for_label }}') || document.getElementById('id_consent_pdn');
-    const submitBtn = document.getElementById('order-submit');
-    function toggleSubmit(){ submitBtn.disabled = !(offerEl?.checked && pdnEl?.checked); }
-    offerEl && offerEl.addEventListener('change', toggleSubmit);
-    pdnEl && pdnEl.addEventListener('change', toggleSubmit);
-    toggleSubmit();
-
-    form && form.addEventListener('submit', function(e){
-      let firstInvalid=null;
-
-      if(!form.checkValidity()){
-        e.preventDefault(); e.stopPropagation();
-        const requiredIds=[
-          'id_name','id_phone','id_email',
-          'id_pickup_address','id_pickup_time',
-          'id_delivery_address','id_delivery_time',
-          'consent_offer', (pdnEl? pdnEl.id : null)
-        ].filter(Boolean);
-        requiredIds.forEach(id=>{
-          const el=document.getElementById(id);
-          if(el && !el.checkValidity()){
-            showInvalid(el, el.validationMessage || 'Заполните это поле');
-            if(!firstInvalid) firstInvalid=el;
-          }
-        });
-      }
-
-      if(!validateAreas()){
-        e.preventDefault(); e.stopPropagation();
-        if(pickupAddr && !isAllowedAreaText(pickupAddr.value)){ showInvalid(pickupAddr,'Только Москва и Московская область'); firstInvalid=firstInvalid||pickupAddr; }
-        if(deliveryAddr && !isAllowedAreaText(deliveryAddr.value)){ showInvalid(deliveryAddr,'Только Москва и Московская область'); firstInvalid=firstInvalid||deliveryAddr; }
-      }
-
-      if(firstInvalid){
-        firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
-        firstInvalid.focus({preventScroll:true});
-      }
-    });
+    const offer=document.getElementById('consent_offer');
+    const pdn=document.getElementById('{{ form.consent_pdn.id_for_label }}')||document.getElementById('id_consent_pdn');
+    const btn=document.getElementById('order-submit');
+    function toggleBtn(){btn.disabled=!(offer?.checked&&pdn?.checked);}
+    offer?.addEventListener('change',toggleBtn);
+    pdn?.addEventListener('change',toggleBtn);
+    toggleBtn();
   })();
 </script>
 {% endblock %}
