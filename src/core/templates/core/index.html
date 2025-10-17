@@ -88,6 +88,11 @@
     .dd-calc .form-control:focus,.dd-calc .form-select:focus{border-color:#2563eb;box-shadow:0 0 0 .35rem rgba(37,99,235,.15)}
     .dd-total{font-weight:800;font-size:1.6rem;color:var(--ink)}
     .dd-muted{color:var(--muted)}
+
+    /* утилита, чтобы кнопка не растягивалась на md+ и всё встало в одну строку */
+    @media (min-width: 768px){
+      .w-md-auto{ width:auto!important; }
+    }
   </style>
 {% endblock %}
 
@@ -204,18 +209,18 @@
   <div class="surface p-4 dd-calc">
     <h2 class="h4 mb-3">Калькулятор стоимости доставки багажа</h2>
 
-    <form id="dd-calc-form" class="row g-3 align-items-end" novalidate>
-      <div class="col-md-4">
+    <form id="dd-calc-form" class="row gx-3 gy-3 align-items-end" novalidate>
+      <div class="col-12 col-md-3 col-lg-2">
         <label for="calcUnits" class="form-label">Количество единиц</label>
         <input id="calcUnits" type="number" min="1" value="2" class="form-control" />
       </div>
 
-      <div class="col-md-4">
+      <div class="col-12 col-md-3 col-lg-2">
         <label for="calcDays" class="form-label">Дней хранения (включая 1-е)</label>
         <input id="calcDays" type="number" min="1" value="1" class="form-control" />
       </div>
 
-      <div class="col-md-4">
+      <div class="col-12 col-md-4 col-lg-4">
         <label for="calcZone" class="form-label">Зона</label>
         <select id="calcZone" class="form-select">
           <option value="1.0" selected>Зона 1 — Москва, все аэропорты (×1.0)</option>
@@ -223,16 +228,14 @@
         </select>
       </div>
 
-      <div class="col-12 d-flex justify-content-end">
-        <button id="dd-calc-btn" type="button" class="btn btn-primary">
+      <div class="col-12 col-md-2 col-lg-4 text-md-end">
+        <button id="dd-calc-btn" type="button" class="btn btn-primary w-100 w-md-auto">
           <i class="bi bi-calculator me-1"></i> Рассчитать
         </button>
       </div>
     </form>
 
-    <div class="small text-secondary mt-2">
-      Базовая стоимость умножается на коэффициент зоны. Хранение — единый тариф: 1-е сутки бесплатно, далее 500 ₽/сутки за весь заказ.
-    </div>
+    {# УБРАНО пояснение про коэффициент/хранение #}
 
     <div id="dd-calc-result" class="alert alert-light border mt-3" role="status" aria-live="polite">
       <div class="dd-total">0 ₽</div>
