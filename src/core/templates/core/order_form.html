@@ -89,7 +89,6 @@
 
             <div class="col-12 col-md-6">
               <label for="id_email" class="form-label req"><i class="bi bi-envelope"></i> Email</label>
-              {# если у поля тип текст — принудительно ставим type=email #}
               {{ form.email|add_class:"form-control"|attr:"placeholder:you@example.com"|attr:"type:email"|attr:"required:required"|attr:"aria-required:true" }}
               <div class="invalid-hint" data-hint-for="id_email">Укажите корректный email.</div>
               {{ form.email.errors }}
@@ -198,13 +197,33 @@
             </div>
           </div>
 
-          <!-- Согласие -->
+          <!-- Согласия -->
           <div class="mt-3">
-            <div class="form-check mt-3">
+            <div class="form-check">
               {{ form.consent_pdn.errors }}
               <label class="form-check-label" for="{{ form.consent_pdn.id_for_label }}">
-                {{ form.consent_pdn }} Я согласен(а) с <a href="{% url 'privacy' %}" target="_blank" rel="noopener">обработкой персональных данных</a>
+                {{ form.consent_pdn }}
+                Я согласен(а) с
+                <a href="{% url 'privacy' %}" target="_blank" rel="noopener">обработкой персональных данных</a>
               </label>
+            </div>
+
+            <div class="form-check mt-2">
+              {% if form.consent_offer %}
+                {{ form.consent_offer.errors }}
+                <label class="form-check-label" for="{{ form.consent_offer.id_for_label }}">
+                  {{ form.consent_offer }} Я согласен(а) с
+                  <a href="https://www.drop-delivery.ru/offer/" target="_blank" rel="noopener">публичной офертой</a>
+                </label>
+                <div class="invalid-hint" data-hint-for="{{ form.consent_offer.id_for_label }}">Необходимо согласиться с публичной офертой.</div>
+              {% else %}
+                <input class="form-check-input" type="checkbox" id="consent_offer" name="consent_offer" required>
+                <label class="form-check-label" for="consent_offer">
+                  Я согласен(а) с
+                  <a href="https://www.drop-delivery.ru/offer/" target="_blank" rel="noopener">публичной офертой</a>
+                </label>
+                <div class="invalid-hint" data-hint-for="consent_offer">Необходимо согласиться с публичной офертой.</div>
+              {% endif %}
             </div>
           </div>
 
@@ -334,7 +353,6 @@
     /* Клиентская проверка адресов (Москва/МО/аэропорты) */
     const pickupWarn   = document.getElementById('pickup_warn');
     const deliveryWarn = document.getElementById('delivery_warn');
-    const submitBtn    = document.getElementById('order-submit');
 
     function isAllowedAreaText(t){
       const s=(t||"").toLowerCase();
@@ -365,14 +383,30 @@
       const hint = document.querySelector(`.invalid-hint[data-hint-for="${el.id}"]`);
       if(hint){ hint.classList.remove('show'); }
     }
-    [pickupAddr,deliveryAddr,pickupTime,deliveryTime,
-     document.getElementById('id_name'),
-     document.getElementById('id_phone'),
-     document.getElementById('id_email')
+
+    // Очистка подсветки при вводе
+    [
+      pickupAddr,deliveryAddr,pickupTime,deliveryTime,
+      document.getElementById('id_name'),
+      document.getElementById('id_phone'),
+      document.getElementById('id_email')
     ].forEach(el=>{
       el&&el.addEventListener('input',()=>clearInvalid(el));
       el&&el.addEventListener('change',()=>clearInvalid(el));
     });
+
+    // Поиск чекбоксов согласий (работает и с Django-полями, и с ручным input)
+    function findCheckboxIdByName(name, fallbackId){
+      const el = document.querySelector(`input[name="${name}"][type="checkbox"]`);
+      return el ? (el.id || fallbackId) : fallbackId;
+    }
+    const offerId = findCheckboxIdByName('consent_offer','consent_offer');
+    const pdnId   = findCheckboxIdByName('consent_pdn','id_consent_pdn');
+
+    const offerEl = document.getElementById(offerId);
+    const pdnEl   = document.getElementById(pdnId);
+    offerEl && offerEl.addEventListener('change', ()=>clearInvalid(offerEl));
+    pdnEl && pdnEl.addEventListener('change', ()=>clearInvalid(pdnEl));
 
     const form=document.getElementById('orderForm');
     form && form.addEventListener('submit', function(e){
@@ -381,7 +415,13 @@
       // нативная HTML5-проверка required/type
       if(!form.checkValidity()){
         e.preventDefault(); e.stopPropagation();
-        const requiredIds=['id_name','id_phone','id_email','id_pickup_address','id_pickup_time','id_delivery_address','id_delivery_time'];
+        const requiredIds=[
+          'id_name','id_phone','id_email',
+          'id_pickup_address','id_pickup_time',
+          'id_delivery_address','id_delivery_time',
+          offerId, // чекбокс оферты
+          pdnId    // чекбокс ПДн (если required в форме)
+        ];
         requiredIds.forEach(id=>{
           const el=document.getElementById(id);
           if(el && !el.checkValidity()){
@@ -403,6 +443,19 @@
         firstInvalid.focus({preventScroll:true});
       }
     });
+
+    // (опционально) Блокируем кнопку до согласий
+    (function lockUntilConsents(){
+      const submitBtn = document.getElementById('order-submit');
+      if(!submitBtn) return;
+      function toggleSubmit(){
+        const ok = (!!pdnEl?.checked) && (!!offerEl?.checked);
+        submitBtn.disabled = !ok;
+      }
+      pdnEl && pdnEl.addEventListener('change', toggleSubmit);
+      offerEl && offerEl.addEventListener('change', toggleSubmit);
+      toggleSubmit();
+    })();
   })();
 </script>
 {% endblock %}
