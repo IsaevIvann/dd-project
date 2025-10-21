@@ -1,6 +1,5 @@
 import json
 from uuid import UUID
-
 import requests
 from django.conf import settings
 from django.db.models import Q
@@ -260,3 +259,6 @@ class LinkChatView(APIView):
 
 def yandex_verify(request):
     return render(request, "core/yandex_d9211e0eacffb670.html")
+
+def concept(request):
+    return render(request, "core/concept.html", {"CANONICAL_PATH": request.path})

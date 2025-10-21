@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Концепция сервиса Drop & Delivery — хранение и доставка багажа по Москве{% endblock %}
+
+{% block extra_head %}
+  <meta name="description" content="Как работает Drop & Delivery: заберём багаж у двери, опечатаем и сохраним, вернём в аэропорт, на вокзал или по адресу. Без очередей, с фотофиксацией и страховкой.">
+  <link rel="canonical" href="{{ SITE_URL }}{{ CANONICAL_PATH|default:'/concept/' }}">
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Концепция Drop & Delivery — хранение и доставка багажа">
+  <meta property="og:description" content="Простая и безопасная услуга: забор, хранение и доставка багажа по Москве и области, в аэропорты и на вокзалы.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH|default:'/concept/' }}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+
+  <!-- JSON-LD: Service -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Drop & Delivery — хранение и доставка багажа",
+    "areaServed": "Moscow",
+    "serviceType": "Luggage Storage & Delivery",
+    "provider": {
+      "@type": "Organization",
+      "name": "Drop & Delivery"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Сценарии использования",
+      "itemListElement": [
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Хранение багажа на сутки"}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Куда деть чемодан до заселения"}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Хранение багажа у аэропортов"}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Хранение на время переезда/ремонта"}}
+      ]
+    }
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container" style="max-width: 980px;">
+    <h1 class="mb-3">Концепция Drop & Delivery</h1>
+    <p class="lead">
+      Мы избавляем людей от лишних поездок с багажом. Представитель приедет к вам, аккуратно упакует вещи,
+      опечатает, выдаст квитанцию и заберёт на охраняемое хранение. В нужный день и время мы доставим багаж
+      в аэропорт, на вокзал или по адресу. Быстро, прозрачно и безопасно.
+    </p>
+
+    <!-- Как это работает -->
+    <h2 class="mt-5 mb-3">Как это работает</h2>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="p-3 border rounded-3 h-100">
+          <h5 class="mb-2">1) П

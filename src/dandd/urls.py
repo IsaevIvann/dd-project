@@ -23,7 +23,8 @@ urlpatterns = [
     path("hranenie-bagazha-moskva/", views.storage_moscow, name="storage_moscow"),
     path("luggage-storage-moscow/", views.luggage_storage_moscow, name="luggage_storage_moscow"),
     path("benefits/", TemplateView.as_view(template_name="core/benefits.html"), name="benefits"),
-    path("aero/<slug:code>/", views.aero, name="aero"),  # /aero/svo/, /aero/dme/ и т.д.
+    path("aero/<slug:code>/", views.aero, name="aero"),
+    path("concept/", views.concept, name="concept"),
 
 ]
 
