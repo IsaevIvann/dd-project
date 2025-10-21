@@ -261,4 +261,11 @@ def yandex_verify(request):
     return render(request, "core/yandex_d9211e0eacffb670.html")
 
 def concept(request):
-    return render(request, "core/concept.html", {"CANONICAL_PATH": request.path})
+    base_url = getattr(settings, "SITE_URL", None)
+    if not base_url:
+        base_url = request.build_absolute_uri('/').rstrip('/')
+
+    return render(request, "core/concept.html", {
+        "CANONICAL_PATH": request.path,
+        "SITE_URL": base_url,
+    })

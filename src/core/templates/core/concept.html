@@ -5,16 +5,20 @@
 
 {% block extra_head %}
   <meta name="description" content="Как работает Drop & Delivery: заберём багаж у двери, опечатаем и сохраним, вернём в аэропорт, на вокзал или по адресу. Без очередей, с фотофиксацией и страховкой.">
-  <link rel="canonical" href="{{ SITE_URL }}{{ CANONICAL_PATH|default:'/concept/' }}">
 
-  <!-- OpenGraph -->
+  {# Каноникал — безопасно собираем абсолютный URL #}
+  {% with base=SITE_URL|default:"" path=CANONICAL_PATH|default:"/concept/" %}
+    {% if base %}
+      <link rel="canonical" href="{{ base }}{{ path }}">
+      <meta property="og:url" content="{{ base }}{{ path }}">
+    {% endif %}
+  {% endwith %}
+
   <meta property="og:title" content="Концепция Drop & Delivery — хранение и доставка багажа">
   <meta property="og:description" content="Простая и безопасная услуга: забор, хранение и доставка багажа по Москве и области, в аэропорты и на вокзалы.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH|default:'/concept/' }}">
-  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+  <meta property="og:image" content="{% static 'core/img/logo-512.png' %}">
 
-  <!-- JSON-LD: Service -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -22,10 +26,7 @@
     "name": "Drop & Delivery — хранение и доставка багажа",
     "areaServed": "Moscow",
     "serviceType": "Luggage Storage & Delivery",
-    "provider": {
-      "@type": "Organization",
-      "name": "Drop & Delivery"
-    },
+    "provider": { "@type": "Organization", "name": "Drop & Delivery" },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Сценарии использования",
@@ -50,9 +51,118 @@
       в аэропорт, на вокзал или по адресу. Быстро, прозрачно и безопасно.
     </p>
 
-    <!-- Как это работает -->
     <h2 class="mt-5 mb-3">Как это работает</h2>
     <div class="row g-4">
       <div class="col-md-6">
         <div class="p-3 border rounded-3 h-100">
-          <h5 class="mb-2">1) П
+          <h5 class="mb-2">1) Приезжаем к вам</h5>
+          <p class="mb-0">Оформление на месте: документы, согласование времени возврата, ответы на вопросы.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 border rounded-3 h-100">
+          <h5 class="mb-2">2) Упаковка и пломбирование</h5>
+          <p class="mb-0">Пломбы, фотофиксация. Вы получаете квитанцию с номером пломбы.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 border rounded-3 h-100">
+          <h5 class="mb-2">3) Безопасное хранение</h5>
+          <p class="mb-0">Охраняемый склад. Страхование включено до 30&nbsp;000&nbsp;₽.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 border rounded-3 h-100">
+          <h5 class="mb-2">4) Доставка к точке</h5>
+          <p class="mb-0">Возвращаем багаж к указанному времени: адрес, аэропорт или вокзал. Есть экспресс 1–2 часа.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="mt-5 mb-3">Какие задачи решаем</h2>
+    <ul class="list-unstyled">
+      <li class="mb-2">• <strong>Хранение на сутки</strong> — прилёт на день или между пересадками.</li>
+      <li class="mb-2">• <strong>До заселения в отель</strong> — где оставить чемодан до 14:00/15:00.</li>
+      <li class="mb-2">• <strong>Аэропорты</strong> — SVO, VKO, DME: привезём ко времени к терминалу.</li>
+      <li class="mb-2">• <strong>Вокзалы</strong> — Курский, Ленинградский, Павелецкий, Белорусский: без очередей.</li>
+      <li class="mb-2">• <strong>Переезд/ремонт</strong> — убираем вещи из дома на несколько дней.</li>
+      <li class="mb-2">• <strong>Передача багажа</strong> — доставим чемодан знакомым/коллегам.</li>
+    </ul>
+
+    <h2 class="mt-5 mb-3">Почему нас выбирают</h2>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="p-3 bg-light rounded-3 h-100">
+          <ul class="mb-0">
+            <li>От двери до двери — без поездок по городу.</li>
+            <li>Страхование до 30&nbsp;000&nbsp;₽ включено.</li>
+            <li>Фотофиксация, пломбы, прозрачные условия.</li>
+            <li>Оплата онлайн или наличными.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 bg-light rounded-3 h-100">
+          <ul class="mb-0">
+            <li>Экспресс-услуга: приоритет 1–2 часа.</li>
+            <li>Москва и область.</li>
+            <li>Доставка в аэропорты/на вокзалы ко времени.</li>
+            <li>Поддержка 7 дней в неделю.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="mt-5 mb-3">География</h2>
+    <p class="mb-1">Москва и Московская область.</p>
+    <p class="mb-4">Аэропорты: Шереметьево, Внуково, Домодедово. Вокзалы: Курский, Ленинградский, Павелецкий, Белорусский.</p>
+
+    <div class="text-center my-5">
+      <a href="/order/" class="btn btn-dark btn-lg px-4">Оставить заявку</a>
+      <p class="text-muted mt-2 mb-0" style="font-size: 0.95rem;">Представитель сможет приехать уже сегодня.</p>
+    </div>
+
+    <h2 class="mt-5 mb-3">Частые вопросы</h2>
+    <div class="accordion" id="conceptFaq">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q1">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a1">
+            Что с безопасностью и ценными вещами?
+          </button>
+        </h2>
+        <div id="a1" class="accordion-collapse collapse" data-bs-parent="#conceptFaq">
+          <div class="accordion-body">
+            Пломбируем багаж, фиксируем фото, выдаём квитанцию. Страхование включено до 30&nbsp;000&nbsp;₽.
+            Запрещённые предметы и наличные к хранению не принимаются (см. публичную оферту).
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2">
+            Можно ли срочно?
+          </button>
+        </h2>
+        <div id="a2" class="accordion-collapse collapse" data-bs-parent="#conceptFaq">
+          <div class="accordion-body">
+            Да, есть экспресс-услуга (приоритет 1–2 часа).
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3">
+            Где хранится багаж?
+          </button>
+        </h2>
+        <div id="a3" class="accordion-collapse collapse" data-bs-parent="#conceptFaq">
+          <div class="accordion-body">
+            На охраняемом складе с ограниченным доступом. Базово одна ночь включена тарифом.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
