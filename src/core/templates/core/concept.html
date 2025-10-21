@@ -4,22 +4,21 @@
 {% block title %}Концепция сервиса Drop & Delivery — хранение и доставка багажа по Москве{% endblock %}
 
 {% block extra_head %}
-<meta name="description" content="Drop & Delivery — сервис хранения и доставки багажа от двери до двери. Узнайте, как мы работаем, и почему это удобно и безопасно.">
-<link rel="canonical" href="{{ request.build_absolute_uri }}">
+  <meta name="description" content="Drop & Delivery — сервис хранения и доставки багажа от двери до двери. Узнайте, как мы работаем, и почему это удобно и безопасно.">
+  {% if SITE_URL and CANONICAL_PATH %}<link rel="canonical" href="{{ SITE_URL }}{{ CANONICAL_PATH }}">{% endif %}
 {% endblock %}
 
 {% block content %}
-<section class="py-5" style="background: #f9fbfd;">
-  <div class="container" style="max-width: 1100px;">
+<section class="py-5" style="background:#f9fbfd;">
+  <div class="container" style="max-width:1100px;">
 
     <!-- Hero -->
     <div class="row align-items-center justify-content-between mb-5">
       <div class="col-lg-6">
         <h1 class="fw-bold mb-3">Наша концепция: <span style="color:#007bff;">простота и забота о каждой вещи</span></h1>
         <p class="lead mb-4">
-          Мы создали Drop & Delivery, чтобы избавить вас от хлопот с багажом.
-          Заберём у двери, аккуратно упакуем и сохраним на охраняемом складе, а затем доставим туда, где вы будете —
-          в аэропорт, на вокзал или по адресу. Всё прозрачно, надёжно и по-человечески удобно.
+          Заберём у двери, аккуратно упакуем и сохраним на охраняемом складе, затем доставим туда, где вы будете —
+          в аэропорт, на вокзал или по адресу. Быстро, прозрачно и удобно.
         </p>
         <div class="d-flex gap-3">
           <a href="/order/" class="btn btn-primary btn-lg px-4">Оставить заявку</a>
@@ -32,18 +31,13 @@
       </div>
     </div>
 
-    <!-- Блок 1: Как это работает -->
+    <!-- Как это работает -->
     <h2 class="fw-semibold mb-4 text-center">Как это работает</h2>
     <div class="row g-4">
-      {% for step in [
-        {"title": "Забор багажа", "text": "Представитель приезжает к вам, оформляет акт и аккуратно принимает багаж."},
-        {"title": "Упаковка и пломбы", "text": "Используем безопасную упаковку и пломбы с фотофиксацией."},
-        {"title": "Охраняемое хранение", "text": "Склад с ограниченным доступом. Страховка до 30 000 ₽ включена."},
-        {"title": "Доставка по адресу", "text": "Привозим точно к сроку — аэропорт, вокзал, дом или офис."}
-      ] %}
+      {% for step in steps %}
       <div class="col-md-6 col-lg-3">
         <div class="card border-0 shadow-sm h-100 rounded-4 p-4 text-center">
-          <img src="{% static 'core/img/icon-box.png' %}" width="60" class="mb-3" alt="">
+          <img src="{% static step.icon %}" width="60" class="mb-3" alt="">
           <h5 class="fw-semibold mb-2">{{ step.title }}</h5>
           <p class="text-muted mb-0">{{ step.text }}</p>
         </div>
@@ -51,15 +45,10 @@
       {% endfor %}
     </div>
 
-    <!-- Блок 2: Сценарии -->
+    <!-- Сценарии -->
     <h2 class="fw-semibold mt-5 mb-4 text-center">Решаем реальные ситуации</h2>
     <div class="row g-4">
-      {% for s in [
-        {"title":"Хранение багажа на сутки", "text":"Для гостей столицы или между пересадками."},
-        {"title":"До заселения в отель", "text":"Оставьте чемоданы у нас, пока ждёте check-in."},
-        {"title":"Аэропорты и вокзалы", "text":"Доставка ко времени — Шереметьево, Внуково, Домодедово, Курский, Павелецкий."},
-        {"title":"Переезд или ремонт", "text":"Временно храним вещи, пока дома идёт обновление."}
-      ] %}
+      {% for s in scenarios %}
       <div class="col-md-6 col-lg-3">
         <div class="card border-0 bg-light h-100 rounded-4 p-4">
           <h6 class="fw-semibold mb-2">{{ s.title }}</h6>
@@ -69,15 +58,10 @@
       {% endfor %}
     </div>
 
-    <!-- Блок 3: Преимущества -->
+    <!-- Преимущества -->
     <h2 class="fw-semibold mt-5 mb-4 text-center">Наши сильные стороны</h2>
     <div class="row g-4">
-      {% for a in [
-        {"title":"От двери до двери","text":"Без очередей и поездок по городу."},
-        {"title":"Безопасность","text":"Пломбы, фото, страхование и прозрачность."},
-        {"title":"Удобная оплата","text":"Наличными или онлайн, как вам удобно."},
-        {"title":"Поддержка 7 дней","text":"Отвечаем и подстраиваемся под рейсы и график клиента."}
-      ] %}
+      {% for a in advantages %}
       <div class="col-md-6 col-lg-3">
         <div class="card border-0 shadow-sm h-100 rounded-4 p-4">
           <h6 class="fw-semibold mb-2">{{ a.title }}</h6>

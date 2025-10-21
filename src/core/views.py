@@ -260,12 +260,39 @@ class LinkChatView(APIView):
 def yandex_verify(request):
     return render(request, "core/yandex_d9211e0eacffb670.html")
 
+
 def concept(request):
-    base_url = getattr(settings, "SITE_URL", None)
-    if not base_url:
-        base_url = request.build_absolute_uri('/').rstrip('/')
+    base_url = getattr(settings, "SITE_URL", None) or request.build_absolute_uri('/').rstrip('/')
+
+    steps = [
+        {"icon": "core/img/icon-pickup.png", "title": "Забор багажа",
+         "text": "Представитель приезжает к вам, оформляет акт и аккуратно принимает багаж."},
+        {"icon": "core/img/icon-seal.png", "title": "Упаковка и пломбы",
+         "text": "Безопасная упаковка и пломбы с фотофиксацией."},
+        {"icon": "core/img/icon-warehouse.png", "title": "Охраняемое хранение",
+         "text": "Склад с ограниченным доступом. Страховка до 30 000 ₽ включена."},
+        {"icon": "core/img/icon-delivery.png", "title": "Доставка по адресу",
+         "text": "Привозим точно к сроку — аэропорт, вокзал, дом или офис."},
+    ]
+
+    scenarios = [
+        {"title": "Хранение багажа на сутки", "text": "Для гостей столицы или между пересадками."},
+        {"title": "До заселения в отель", "text": "Оставьте чемоданы у нас, пока ждёте check-in."},
+        {"title": "Аэропорты и вокзалы", "text": "SVO, VKO, DME; Курский, Павелецкий и др. — доставка ко времени."},
+        {"title": "Переезд или ремонт", "text": "Временно храним вещи, пока дома идёт обновление."},
+    ]
+
+    advantages = [
+        {"title": "От двери до двери", "text": "Без очередей и поездок по городу."},
+        {"title": "Безопасность", "text": "Пломбы, фото, страхование и прозрачные условия."},
+        {"title": "Удобная оплата", "text": "Наличными или онлайн — как удобно."},
+        {"title": "Поддержка 7 дней", "text": "Подстраиваемся под рейсы и график клиента."},
+    ]
 
     return render(request, "core/concept.html", {
-        "CANONICAL_PATH": request.path,
         "SITE_URL": base_url,
+        "CANONICAL_PATH": request.path,
+        "steps": steps,
+        "scenarios": scenarios,
+        "advantages": advantages,
     })
