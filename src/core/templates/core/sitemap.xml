@@ -5,18 +5,28 @@
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
   <url>
     <loc>https://www.drop-delivery.ru/faq/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
     <loc>https://www.drop-delivery.ru/benefits/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://www.drop-delivery.ru/hranenie-bagazha-moskva/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Концепция -->
+  <url>
+    <loc>https://www.drop-delivery.ru/concept/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
