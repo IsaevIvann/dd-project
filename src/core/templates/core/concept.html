@@ -1,82 +1,165 @@
 {% extends "core/base.html" %}
 {% load static %}
 
-{% block title %}Концепция сервиса Drop & Delivery — хранение и доставка багажа по Москве{% endblock %}
+{% block title %}Концепция сервиса Drop & Delivery — хранение и доставка багажа от двери до двери{% endblock %}
 
 {% block extra_head %}
-  <meta name="description" content="Drop & Delivery — сервис хранения и доставки багажа от двери до двери. Узнайте, как мы работаем, и почему это удобно и безопасно.">
-  {% if SITE_URL and CANONICAL_PATH %}<link rel="canonical" href="{{ SITE_URL }}{{ CANONICAL_PATH }}">{% endif %}
+  <meta name="description" content="Drop & Delivery — сервис хранения и доставки багажа по Москве и области. Узнайте, как работает концепция: забор, упаковка, хранение и доставка ко времени.">
+  <meta property="og:title" content="Концепция Drop & Delivery — хранение и доставка багажа">
+  <meta property="og:description" content="Бережно упакуем и сохраним ваш багаж, доставим ко времени — в аэропорт, на вокзал или по адресу.">
+  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
 {% endblock %}
 
 {% block content %}
-<section class="py-5" style="background:#f9fbfd;">
-  <div class="container" style="max-width:1100px;">
 
-    <!-- Hero -->
-    <div class="row align-items-center justify-content-between mb-5">
-      <div class="col-lg-6">
-        <h1 class="fw-bold mb-3">Наша концепция: <span style="color:#007bff;">простота и забота о каждой вещи</span></h1>
-        <p class="lead mb-4">
-          Заберём у двери, аккуратно упакуем и сохраним на охраняемом складе, затем доставим туда, где вы будете —
-          в аэропорт, на вокзал или по адресу. Быстро, прозрачно и удобно.
-        </p>
-        <div class="d-flex gap-3">
-          <a href="/order/" class="btn btn-primary btn-lg px-4">Оставить заявку</a>
-          <a href="/faq/" class="btn btn-outline-primary btn-lg px-4">Частые вопросы</a>
-        </div>
-      </div>
-      <div class="col-lg-5 text-center mt-4 mt-lg-0">
-        <img src="{% static 'core/img/luggage-blue.png' %}" alt="Drop & Delivery" class="img-fluid rounded-4 shadow-sm">
-        <p class="mt-2 text-muted">Ваш багаж — под защитой и уже в пути ✈️</p>
+<style>
+  :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
+  .hero-clean{border-radius:32px;padding:3rem 2rem;background:#fff;box-shadow:0 20px 50px rgba(16,24,40,.06)}
+  .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
+  .pill{border-radius:999px}
+  .icon-badge{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#eef5ff;box-shadow:0 8px 20px rgba(16,24,40,.06);font-size:26px}
+  .lead-muted{color:var(--muted)}
+  .timeline-dot{width:12px;height:12px;border-radius:999px;background:#0d6efd;box-shadow:0 0 0 4px rgba(13,110,253,.15)}
+</style>
+
+<!-- HERO -->
+<section class="hero-clean mb-4">
+  <div class="row align-items-center gy-4">
+    <div class="col-lg-7">
+      <h1 class="fw-bold display-6" style="color:var(--ink)">Drop & Delivery — <span class="text-primary">новый формат хранения и доставки багажа</span></h1>
+      <p class="lead lead-muted mb-3">
+        Мы создали сервис, который решает повседневные задачи путешественников и жителей города: куда деть чемоданы перед заселением, как сохранить вещи во время пересадки или передать багаж без лишних поездок.
+      </p>
+      <p class="lead lead-muted mb-3">
+        Заберём у двери, аккуратно упакуем, опечатаем, сохраним и доставим точно ко времени — на вокзал, в аэропорт или по адресу. Всё под контролем и с фотофиксацией.
+      </p>
+      <div class="mt-3 d-flex gap-2 flex-wrap">
+        <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
+        <a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">Частые вопросы</a>
       </div>
     </div>
-
-    <!-- Как это работает -->
-    <h2 class="fw-semibold mb-4 text-center">Как это работает</h2>
-    <div class="row g-4">
-      {% for step in steps %}
-      <div class="col-md-6 col-lg-3">
-        <div class="card border-0 shadow-sm h-100 rounded-4 p-4 text-center">
-          <img src="{% static step.icon %}" width="60" class="mb-3" alt="">
-          <h5 class="fw-semibold mb-2">{{ step.title }}</h5>
-          <p class="text-muted mb-0">{{ step.text }}</p>
-        </div>
+    <div class="col-lg-5">
+      <div class="card-dd p-4 text-center">
+        <img src="{% static 'core/img/dnd-hero.png' %}" class="img-fluid rounded-4" alt="Drop & Delivery — хранение и доставка багажа" loading="lazy">
+        <div class="small text-muted mt-2">Ваш багаж — под защитой и уже в пути ✈️</div>
       </div>
-      {% endfor %}
     </div>
-
-    <!-- Сценарии -->
-    <h2 class="fw-semibold mt-5 mb-4 text-center">Решаем реальные ситуации</h2>
-    <div class="row g-4">
-      {% for s in scenarios %}
-      <div class="col-md-6 col-lg-3">
-        <div class="card border-0 bg-light h-100 rounded-4 p-4">
-          <h6 class="fw-semibold mb-2">{{ s.title }}</h6>
-          <p class="text-muted mb-0">{{ s.text }}</p>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-    <!-- Преимущества -->
-    <h2 class="fw-semibold mt-5 mb-4 text-center">Наши сильные стороны</h2>
-    <div class="row g-4">
-      {% for a in advantages %}
-      <div class="col-md-6 col-lg-3">
-        <div class="card border-0 shadow-sm h-100 rounded-4 p-4">
-          <h6 class="fw-semibold mb-2">{{ a.title }}</h6>
-          <p class="text-muted mb-0">{{ a.text }}</p>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-    <!-- CTA -->
-    <div class="text-center mt-5">
-      <a href="/order/" class="btn btn-primary btn-lg px-4">Оставить заявку</a>
-      <p class="mt-3 text-muted">Представитель может приехать уже сегодня 🚗</p>
-    </div>
-
   </div>
 </section>
+
+<!-- Сценарии -->
+<section class="mb-5">
+  <h2 class="h4 fw-bold mb-3">Где помогает Drop & Delivery</h2>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">🧳</div>
+        <h5 class="mb-1">Хранение багажа на сутки</h5>
+        <div class="text-muted">Прилетели на день, между пересадками или ждёте поезд — оставьте чемоданы у нас.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">🏨</div>
+        <h5 class="mb-1">До заселения в отель</h5>
+        <div class="text-muted">Сдали квартиру или ждёте check-in? Заберём чемоданы и вернём, когда заселитесь.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">✈️</div>
+        <h5 class="mb-1">Аэропорты и вокзалы</h5>
+        <div class="text-muted">Доставим багаж в Шереметьево, Внуково, Домодедово или на любой вокзал — точно ко времени.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">🚛</div>
+        <h5 class="mb-1">Переезд или ремонт</h5>
+        <div class="text-muted">Безопасно сохраним вещи на несколько дней, пока дома идёт ремонт или переезд.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">🤝</div>
+        <h5 class="mb-1">Передача багажа</h5>
+        <div class="text-muted">Нужно передать вещи друзьям или коллеге — мы всё упакуем, перевезём и передадим лично в руки.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Как это работает -->
+<section class="mb-5">
+  <h2 class="h4 fw-bold mb-3">Как это работает</h2>
+  <div class="card-dd p-4">
+    <div class="row g-4">
+      <div class="col-md-6 d-flex align-items-start gap-3">
+        <div class="timeline-dot mt-2"></div>
+        <div>
+          <h6 class="mb-1">1. Оставляете заявку</h6>
+          <div class="text-muted">Согласуем время, адреса и количество мест. Всё онлайн или по телефону.</div>
+        </div>
+      </div>
+      <div class="col-md-6 d-flex align-items-start gap-3">
+        <div class="timeline-dot mt-2"></div>
+        <div>
+          <h6 class="mb-1">2. Приезжает представитель</h6>
+          <div class="text-muted">Привозит упаковку, оформляет акт, делает фотофиксацию и пломбирует багаж.</div>
+        </div>
+      </div>
+      <div class="col-md-6 d-flex align-items-start gap-3">
+        <div class="timeline-dot mt-2"></div>
+        <div>
+          <h6 class="mb-1">3. Хранение и безопасность</h6>
+          <div class="text-muted">Ваши вещи находятся в охраняемом складе. Страхование до 30 000 ₽ включено.</div>
+        </div>
+      </div>
+      <div class="col-md-6 d-flex align-items-start gap-3">
+        <div class="timeline-dot mt-2"></div>
+        <div>
+          <h6 class="mb-1">4. Доставка обратно</h6>
+          <div class="text-muted">Возвращаем багаж ко времени — домой, на вокзал, в аэропорт или отель.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Преимущества -->
+<section class="mb-5">
+  <h2 class="h4 fw-bold mb-3">Почему выбирают нас</h2>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">🛡️</div>
+        <h5 class="mb-1">Безопасность</h5>
+        <div class="text-muted">Пломбы, фото, документы, страхование — полный контроль над вещами.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">⚡</div>
+        <h5 class="mb-1">Скорость</h5>
+        <div class="text-muted">Экспресс-доставка за 1–2 часа. Удобно при пересадках и срочных вылетах.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card-dd p-4 h-100">
+        <div class="icon-badge mb-3">💬</div>
+        <h5 class="mb-1">Поддержка</h5>
+        <div class="text-muted">Связь 7 дней в неделю, отслеживание рейсов и гибкость по времени.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="card-dd p-4 p-md-5 mb-4 text-center">
+  <h4 class="fw-bold mb-2">Путешествуйте налегке</h4>
+  <div class="text-muted mb-3">Заберём багаж сегодня — доставим точно ко времени.</div>
+  <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4"><i class="bi bi-bag"></i> Оставить заявку</a>
+</section>
+
 {% endblock %}
