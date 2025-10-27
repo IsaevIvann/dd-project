@@ -8,17 +8,16 @@
   <meta property="og:title" content="Как работает Drop & Delivery — хранение и доставка багажа">
   <meta property="og:description" content="Забор, упаковка, хранение и доставка багажа ко времени. Аэропорты Москвы: Шереметьево, Домодедово, Внуково, Жуковский. Страхование включено.">
   <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
-  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/og-concept.jpg' %}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
   <meta name="twitter:card" content="summary_large_image">
 
-  {# LCP image preload (важно для скорости) #}
+  {# LCP: используем существующий PNG #}
   <link rel="preload" as="image"
-        href="{% static 'core/img/dnd-hero.webp' %}"
-        imagesrcset="{% static 'core/img/dnd-hero-640.webp' %} 640w, {% static 'core/img/dnd-hero-1280.webp' %} 1280w, {% static 'core/img/dnd-hero-1920.webp' %} 1920w"
+        href="{% static 'core/img/dnd-hero.png' %}"
         imagesizes="100vw"
         fetchpriority="high">
 
-  {# FAQPage (ускоряет появление расширенного сниппета) #}
+  {# FAQPage #}
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -43,7 +42,7 @@
   }
   </script>
 
-  {# Service + LocalBusiness (локальная релевантность) #}
+  {# Service + LocalBusiness #}
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -62,7 +61,7 @@
   }
   </script>
 
-  {# Хлебные крошки #}
+  {# Breadcrumbs #}
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -105,8 +104,7 @@
     <div class="col-lg-5">
       <div class="card-dd p-4 text-center">
         <img
-          src="{% static 'core/img/dnd-hero.webp' %}"
-          srcset="{% static 'core/img/dnd-hero-640.webp' %} 640w, {% static 'core/img/dnd-hero-1280.webp' %} 1280w, {% static 'core/img/dnd-hero-1920.webp' %} 1920w"
+          src="{% static 'core/img/dnd-hero.png' %}"
           sizes="100vw"
           width="1280" height="800"
           class="img-fluid rounded-4"
@@ -197,7 +195,7 @@
   </div>
 </section>
 
-<!-- Кейсы (улучшает поведение/LSI) -->
+<!-- Кейсы -->
 <section class="mb-5">
   <h2 class="h4 fw-bold mb-3">Короткие кейсы</h2>
   <div class="row g-3">
@@ -216,7 +214,7 @@
   </div>
 </section>
 
-<!-- Внутренние ссылки (перелинковка) -->
+<!-- Перелинковка -->
 <section class="mb-5">
   <h2 class="h4 fw-bold mb-3">Популярные направления</h2>
   <ul class="list-unstyled d-flex flex-wrap gap-3">
