@@ -271,18 +271,7 @@
   </p>
 </section>
 
-{# СМОТРИТЕ ТАКЖЕ #}
-<section class="surface p-4 p-md-5 mb-5">
-  <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
-  <div class="d-flex flex-wrap gap-2">
-    <a class="btn btn-light border pill" href="{% url 'storage_moscow' %}">Хранение багажа в Москве</a>
-    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Почему мы — от двери до двери</a>
-    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ: ответы на частые вопросы</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Доставка в Внуково</a>
-  </div>
-</section>
+
 
 {% include "core/partials/_faq_block.html" %}
 
@@ -303,6 +292,19 @@
   </div>
 </section>
 {% endblock %}
+
+{# СМОТРИТЕ ТАКЖЕ #}
+<section class="surface p-4 p-md-5 mb-5">
+  <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-light border pill" href="{% url 'storage_moscow' %}">Хранение багажа в Москве</a>
+    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Почему мы — от двери до двери</a>
+    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ: ответы на частые вопросы</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Доставка в Внуково</a>
+  </div>
+</section>
 
 {% block extra_scripts %}
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
