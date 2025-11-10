@@ -1,11 +1,291 @@
 {% extends "core/base.html" %}
-{% block title %}FAQ — D&D (Drop & Delivery){% endblock %}
-{% block content %}
-<section class="hero-clean mb-4">
-  <h1 class="fw-bold display-6" style="color:var(--ink)">Часто задаваемые вопросы</h1>
-  <p class="text-muted mb-0">Все ответы про забор, хранение и доставку багажа.</p>
-</section>
+{% load static %}
 
-{% include "core/partials/_faq_block.html" %}
-{% include "core/partials/_faq_jsonld.html" %}
+{% block title %}Частые вопросы о хранении и доставке багажа — Drop & Delivery{% endblock %}
+
+{% block extra_head %}
+  <link rel="canonical" href="https://www.drop-delivery.ru/faq/">
+
+  <meta name="description" content="Ответы на популярные вопросы о хранении, доставке и оплате багажа по Москве и области. Узнайте, как проходит услуга, что можно передавать, как обеспечивается сохранность и как связаться с Drop & Delivery.">
+
+  <meta property="og:title" content="Частые вопросы о хранении и доставке багажа — Drop & Delivery">
+  <meta property="og:description" content="Все ответы про забор, хранение и доставку багажа: условия, оплата, сохранность, задержки рейсов и география работы сервиса Drop & Delivery.">
+  <meta property="og:url" content="https://www.drop-delivery.ru/faq/">
+  <meta property="og:image" content="https://www.drop-delivery.ru/static/core/img/logo-512.png">
+
+  <style>
+    .hero-clean{
+      background:#fff;
+      border-radius:32px;
+      box-shadow:0 24px 48px rgba(15,23,42,.08);
+      padding:2rem 1.75rem;
+      margin-bottom:1.5rem;
+    }
+    @media (min-width:992px){
+      .hero-clean{padding:2.5rem 2.75rem;}
+    }
+
+    .faq{
+      background:transparent;
+    }
+
+    .faq .acc-trigger{
+      width:100%;
+      text-align:left;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      padding:16px 20px;
+      margin-bottom:10px;
+      background:#fff;
+      font-size:18px;
+      line-height:1.3;
+      font-weight:600;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:background .2s,border-color .2s;
+      cursor:pointer;
+    }
+    .faq .acc-trigger::after{
+      content:"+";
+      font-size:22px;
+      line-height:1;
+      margin-left:16px;
+      flex-shrink:0;
+    }
+    .faq .acc-trigger[aria-expanded="true"]{
+      background:#f8fafc;
+      border-color:#cbd5e1;
+    }
+    .faq .acc-trigger[aria-expanded="true"]::after{
+      content:"–";
+    }
+    .faq .acc-panel{
+      overflow:hidden;
+      max-height:0;
+      transition:max-height .25s ease;
+      padding:0 4px;
+      margin:-5px 0 10px 0;
+    }
+    .faq .acc-panel p{
+      padding:8px 4px 6px;
+      margin:0;
+      color:#4b5563;
+    }
+  </style>
+
+  {# JSON-LD: FAQPage #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Как проходит услуга по шагам?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Заявка, подтверждение заказа, приезд представителя, упаковка и пломбирование, оформление акта, хранение и доставка, встреча и проверка, оплата."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Что я получу при передаче багажа?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Вы получаете акт приёма-передачи с количеством мест, состоянием, номерами пломб, временем и адресами. Возврат выполняется строго по акту."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как происходит оплата?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Оплата безналично и после возврата багажа. Доступны QR-код, СБП и платёжная ссылка."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Что происходит в случае задержки или отмены рейса?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Мы отслеживаем рейсы и согласуем с вами изменения времени доставки или забора."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Где вы работаете?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Работаем по Москве и Московской области. Доставляем багаж в аэропорты Шереметьево, Домодедово, Внуково, Жуковский, на вокзалы и по адресам."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Что нельзя сдавать в багаж?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Запрещены оружие, боеприпасы, скоропортящиеся продукты, наличные деньги, документы, драгоценности, техника без согласования и иные предметы, ограниченные по закону."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как обеспечивается сохранность?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Профессиональная упаковка, пломбирование с уникальным номером и фотофиксация. Номер пломбы указан в акте приёма-передачи."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Можно ли изменить время или адрес?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да, по возможности расписания. Просим предупредить минимум за 1 час до выбранного слота."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как связаться с вами?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Через телефон, WhatsApp, Telegram или email. Актуальные контакты указаны на странице «Контакты»."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Если я не смогу получить багаж лично?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Мы можем организовать передачу доверенному лицу или доставку через курьера/ПВЗ по согласованию. Условия уточняются заранее."
+        }
+      }
+    ]
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <section class="hero-clean mb-4">
+    <h1 class="fw-bold display-6" style="color:var(--ink)">
+      Частые вопросы о хранении и доставке багажа
+    </h1>
+    <p class="text-muted mb-0">
+      Все ответы про забор, хранение, доставку и оплату багажа в сервисе Drop &amp; Delivery.
+    </p>
+  </section>
+
+  <section id="faq" class="faq max-w-3xl mx-auto px-0 py-3">
+    <h2 class="h5 fw-bold mb-3">FAQ</h2>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">
+      Как проходит услуга по шагам?
+    </button>
+    <div class="acc-panel" id="faq4" role="region" aria-labelledby="faq4-trigger">
+      <p>Заявка → подтверждение заказа → приезд представителя → упаковка и пломбирование → оформление акта → хранение и доставка → встреча и проверка → оплата.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq1" id="faq1-trigger">
+      Что я получу при передаче багажа?
+    </button>
+    <div class="acc-panel" id="faq1" role="region" aria-labelledby="faq1-trigger">
+      <p>Акт приёма-передачи с количеством мест, состоянием, номерами пломб, временем и адресами. Возврат багажа — строго по акту.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq2" id="faq2-trigger">
+      Как происходит оплата?
+    </button>
+    <div class="acc-panel" id="faq2" role="region" aria-labelledby="faq2-trigger">
+      <p>Оплата безналично и после возврата багажа. Доступны QR-код, СБП и платёжная ссылка.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq5" id="faq5-trigger">
+      Что происходит в случае задержки или отмены рейса?
+    </button>
+    <div class="acc-panel" id="faq5" role="region" aria-labelledby="faq5-trigger">
+      <p>Мы отслеживаем рейсы и согласуем с вами изменение времени забора или доставки багажа.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq6" id="faq6-trigger">
+      Где вы работаете?
+    </button>
+    <div class="acc-panel" id="faq6" role="region" aria-labelledby="faq6-trigger">
+      <p>Работаем по Москве и Московской области. Доставляем багаж в аэропорты (Шереметьево, Домодедово, Внуково, Жуковский), на вокзалы и по адресам.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq7" id="faq7-trigger">
+      Что нельзя сдавать в багаж?
+    </button>
+    <div class="acc-panel" id="faq7" role="region" aria-labelledby="faq7-trigger">
+      <p>Запрещены оружие и боеприпасы, скоропортящиеся продукты, наличные деньги, ценные документы, украшения, техника без согласования и иные предметы, ограниченные законодательством.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq8" id="faq8-trigger">
+      Как обеспечивается сохранность?
+    </button>
+    <div class="acc-panel" id="faq8" role="region" aria-labelledby="faq8-trigger">
+      <p>Профессиональная упаковка, пломбы с уникальными номерами, фотофиксация и акт приёма-передачи. Хранение на охраняемом складе.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq9" id="faq9-trigger">
+      Можно ли изменить время или адрес?
+    </button>
+    <div class="acc-panel" id="faq9" role="region" aria-labelledby="faq9-trigger">
+      <p>Да, если позволяет график. Сообщите нам минимум за 1 час до выбранного слота — подстроим доставку.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq10" id="faq10-trigger">
+      Как связаться с вами?
+    </button>
+    <div class="acc-panel" id="faq10" role="region" aria-labelledby="faq10-trigger">
+      <p>Телефон, WhatsApp, Telegram и email указаны в разделе «Контакты». Выберите удобный способ и напишите нам.</p>
+    </div>
+
+    <button class="acc-trigger" aria-expanded="false" aria-controls="faq11" id="faq11-trigger">
+      Если я не смогу получить багаж лично?
+    </button>
+    <div class="acc-panel" id="faq11" role="region" aria-labelledby="faq11-trigger">
+      <p>Возможна передача доверенному лицу или отправка другими способами по согласованию. Условия фиксируются заранее.</p>
+    </div>
+  </section>
+
+  <p class="text-center text-muted mt-4 mb-0">
+    Хотите понять механику пошагово? Посмотрите страницу
+    <a href="{% url 'concept' %}" class="text-primary text-decoration-none">«Как работает Drop &amp; Delivery»</a>.
+  </p>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script>
+    (function(){
+      const triggers = document.querySelectorAll('.acc-trigger');
+      if (!triggers.length) return;
+
+      function closeAll(){
+        triggers.forEach(btn => {
+          btn.setAttribute('aria-expanded','false');
+          const panel = btn.nextElementSibling;
+          if (panel) panel.style.maxHeight = null;
+        });
+      }
+
+      triggers.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          closeAll();
+          if (!isOpen) {
+            btn.setAttribute('aria-expanded','true');
+            const panel = btn.nextElementSibling;
+            if (panel) {
+              panel.style.maxHeight = panel.scrollHeight + 'px';
+            }
+          }
+        });
+      });
+    })();
+  </script>
 {% endblock %}

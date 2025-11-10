@@ -1,136 +1,538 @@
-{% extends "core/base.html" %}
-{% load static %}
-{% block title %}Хранение багажа в Москве — Drop & Delivery{% endblock %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Хранение багажа в Москве — с доставкой от двери до двери | Drop & Delivery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://www.drop-delivery.ru/hranenie-bagazha-moskva/">
 
-{% block extra_head %}
-  {# Hreflang alternates RU/EN #}
-  <link rel="alternate" hreflang="ru" href="{{ SITE_URL }}/hranenie-bagazha-moskva/">
-  <link rel="alternate" hreflang="en" href="{{ SITE_URL }}/luggage-storage-moscow/">
-  <link rel="alternate" hreflang="x-default" href="{{ SITE_URL }}/">
+  <meta name="description" content="Хранение багажа в Москве с выездом к двери и доставкой чемоданов в аэропорт, на вокзал или по адресу. Пломбы, акт приёма-передачи, охраняемый склад, первые сутки хранения включены. Удобная альтернатива камерам хранения.">
+  <meta property="og:title" content="Хранение багажа в Москве — с доставкой от двери до двери | Drop & Delivery">
+  <meta property="og:description" content="Заберём багаж у двери, опечатаем и сохраним на складе, а затем доставим ко времени в аэропорт, на вокзал или по адресу. Хранение багажа без очередей и лишних поездок по Москве и области.">
+  <meta property="og:url" content="https://www.drop-delivery.ru/hranenie-bagazha-moskva/">
+  <meta property="og:image" content="https://www.drop-delivery.ru/static/core/img/logo-512.png">
+  <meta property="og:site_name" content="Drop & Delivery">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
 
-  {# JSON-LD: WebPage (RU) + ссылка на EN #}
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104157204','ym');
+    ym(104157204, 'init', { ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true });
+  </script>
+  <!-- /Yandex.Metrika -->
+
+  <!-- Favicon & Icons -->
+  <link rel="icon" href="/static/core/img/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="48x48" href="/static/core/img/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/core/img/logo-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/static/core/img/logo-512.png">
+  <link rel="apple-touch-icon" href="/static/core/img/logo-192.png">
+
+  <!-- Шрифт/Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+                 Arial, "Noto Sans", sans-serif;
+      --dd-radius: 24px;
+      --dd-radius-lg: 32px;
+      --dd-shadow: 0 24px 48px rgba(13,110,253,.10);
+      --dd-shadow-sm: 0 12px 30px rgba(13,110,253,.08);
+      --ink:#0f172a;
+      --muted:#64748b;
+    }
+    html, body{
+      font-family: var(--dd-font);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(120deg,#f8fbff 0%,#e7faff 100%);
+      min-height: 100vh;
+    }
+    @media (min-width:1200px){ .container{ max-width:1140px; } }
+    h1,h2,h3,h4,h5,h6,
+    .navbar, .navbar-brand, .nav-link, .btn, .badge, .accordion-button{
+      font-family: var(--dd-font);
+    }
+    .navbar-brand{ font-weight:700; }
+    .navbar-nav .nav-link{
+      transition: color .2s, background .2s;
+      font-weight:400;
+      letter-spacing:.01em;
+    }
+    .navbar-nav .nav-link.btn{
+      color:#fff !important;
+      font-weight:600;
+    }
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus{
+      color:#0d6efd !important;
+    }
+    .btn{ border-radius:9999px; font-weight:600; }
+    .btn-lg{ padding:.85rem 1.25rem; }
+    .surface{
+      background:#fff;
+      border:0;
+      border-radius:var(--dd-radius);
+      box-shadow:var(--dd-shadow-sm);
+    }
+    .hero-clean{
+      background:#fff;
+      border-radius:var(--dd-radius-lg);
+      box-shadow:var(--dd-shadow);
+      padding:2rem;
+    }
+    @media (min-width:992px){
+      .hero-clean{ padding:2.5rem 2.75rem; }
+    }
+    h1.display-4{
+      font-weight:800;
+      line-height:1.1;
+      font-size:clamp(32px,4.0vw,52px);
+      color:var(--ink);
+    }
+    .hero-ill{ max-width:520px; margin-left:auto; }
+    .hero-ill img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:16px;
+    }
+    .pill{ border-radius:999px; }
+  </style>
+
+  <link rel="alternate" hreflang="ru" href="https://www.drop-delivery.ru/hranenie-bagazha-moskva/">
+  <link rel="alternate" hreflang="en" href="https://www.drop-delivery.ru/luggage-storage-moscow/">
+  <link rel="alternate" hreflang="x-default" href="https://www.drop-delivery.ru/">
+
+  <!-- JSON-LD: WebPage -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"WebPage",
-    "@id":"{{ SITE_URL }}/hranenie-bagazha-moskva/#webpage",
-    "url":"{{ SITE_URL }}/hranenie-bagazha-moskva/",
-    "name":"Хранение багажа в Москве — Drop & Delivery",
+    "@id":"https://www.drop-delivery.ru/hranenie-bagazha-moskva/#webpage",
+    "url":"https://www.drop-delivery.ru/hranenie-bagazha-moskva/",
+    "name":"Хранение багажа в Москве — с доставкой от двери до двери",
     "inLanguage":"ru",
-    "isPartOf":{"@id":"{{ SITE_URL }}/#website"},
-    "about":{"@id":"{{ SITE_URL }}/#organization"},
-    "workTranslation":{"@type":"WebPage","@id":"{{ SITE_URL }}/luggage-storage-moscow/#webpage","inLanguage":"en","url":"{{ SITE_URL }}/luggage-storage-moscow/"}
+    "isPartOf":{"@id":"https://www.drop-delivery.ru/#website"},
+    "about":{"@id":"https://www.drop-delivery.ru/#organization"},
+    "workTranslation":{
+      "@type":"WebPage",
+      "@id":"https://www.drop-delivery.ru/luggage-storage-moscow/#webpage",
+      "inLanguage":"en",
+      "url":"https://www.drop-delivery.ru/luggage-storage-moscow/"
+    }
   }
   </script>
 
-  {# JSON-LD: HowTo — шаги этой страницы #}
+  <!-- JSON-LD: HowTo — хранение с доставкой -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"HowTo",
-    "name":"Как оформить хранение багажа с доставкой",
+    "name":"Как оформить хранение багажа с доставкой по Москве",
     "step":[
-      {"@type":"HowToStep","name":"Заявка","text":"Оставляете заявку — согласуем время и адреса."},
-      {"@type":"HowToStep","name":"Встреча","text":"Приезжает представитель, пломбируем чемоданы."},
-      {"@type":"HowToStep","name":"Хранение","text":"Охраняемый склад, 1 сутки включены."},
-      {"@type":"HowToStep","name":"Доставка","text":"Привезём к аэропорту/вокзалу или по адресу ко времени."}
+      {"@type":"HowToStep","name":"Заявка","text":"Оставляете заявку на сайте или в мессенджере — согласуем время и адрес забора багажа."},
+      {"@type":"HowToStep","name":"Забор багажа","text":"Представитель приезжает по адресу, упаковывает, пломбирует и оформляет акт приёма-передачи."},
+      {"@type":"HowToStep","name":"Хранение","text":"Чемоданы хранятся на охраняемом складе. Первые сутки хранения включены в услугу."},
+      {"@type":"HowToStep","name":"Доставка","text":"В выбранное время привозим багаж в аэропорт, на вокзал или по адресу в Москве и области."}
     ]
   }
   </script>
-{% endblock %}
 
-{% block content %}
-<section class="hero-clean mb-5">
-  <div class="row align-items-center gy-4">
-    <div class="col-lg-7">
-      <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2">
-        <i class="bi bi-bag me-1"></i> Хранение с доставкой
-      </span>
-      <h1 class="display-4 fw-bold mt-3">Хранение багажа в Москве — <span class="text-primary">без очередей и поездок</span></h1>
-      <p class="lead text-secondary mt-3">
-        Заберём чемоданы у двери, опечатаем и бережно сохраним на складе.
-        В нужное время привезём в аэропорт, на вокзал или по адресу — точно в срок.
-      </p>
-      <div class="d-flex gap-3 mt-3">
-        <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-send me-1"></i>Оставить заявку</a>
-        <a href="{% url 'index' %}#tariffs" class="btn btn-lg btn-outline-primary px-4"><i class="bi bi-tag me-1"></i>Тарифы</a>
+  <!-- JSON-LD: Organization + WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"Organization",
+        "@id":"https://www.drop-delivery.ru/#organization",
+        "name":"Drop & Delivery",
+        "url":"https://www.drop-delivery.ru/",
+        "logo":"https://www.drop-delivery.ru/static/core/img/logo-512.png",
+        "description":"Drop & Delivery — сервис по забору, хранению и доставке багажа по Москве и Московской области.",
+        "contactPoint":[{
+          "@type":"ContactPoint",
+          "telephone":"+7-915-383-55-35",
+          "contactType":"customer support",
+          "areaServed":"RU",
+          "availableLanguage":["ru","en"]
+        }],
+        "sameAs":[
+          "https://t.me/dropdeliv",
+          "https://wa.me/79153835535"
+        ]
+      },
+      {
+        "@type":"WebSite",
+        "@id":"https://www.drop-delivery.ru/#website",
+        "url":"https://www.drop-delivery.ru/",
+        "name":"Drop & Delivery",
+        "inLanguage":["ru","en"],
+        "publisher":{"@id":"https://www.drop-delivery.ru/#organization"},
+        "potentialAction":{
+          "@type":"SearchAction",
+          "target":"https://www.drop-delivery.ru/?q={search_term_string}",
+          "query-input":"required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: Service — хранение багажа -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Хранение багажа в Москве с доставкой — Drop & Delivery",
+    "serviceType":"Luggage storage with door-to-door delivery",
+    "areaServed":["Москва","Московская область"],
+    "url":"https://www.drop-delivery.ru/hranenie-bagazha-moskva/",
+    "provider":{"@id":"https://www.drop-delivery.ru/#organization"},
+    "description":"Хранение багажа в Москве с выездом к двери, пломбами, актом и доставкой в аэропорт, на вокзал или по адресу. Удобная альтернатива камерам хранения."
+  }
+  </script>
+
+</head>
+<body>
+<noscript>
+  <div><img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/></div>
+</noscript>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">Drop & Delivery</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="/concept/">Концепция</a></li>
+        <li class="nav-item"><a class="nav-link" href="/#tariffs">Тарифы</a></li>
+        <li class="nav-item"><a class="nav-link" href="/faq/">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" href="/offer/">Оферта</a></li>
+        <li class="nav-item"><a class="nav-link" href="/benefits/">Преимущества</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/hranenie-bagazha-moskva/">Хранение багажа</a></li>
+        <li class="nav-item"><a class="nav-link" href="/luggage-storage-moscow/">Luggage Storage</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contacts/">Контакты</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero-clean mb-5">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-7">
+        <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2">
+          <i class="bi bi-bag me-1"></i> Хранение багажа с доставкой
+        </span>
+        <h1 class="display-4 fw-bold mt-3">
+          Хранение багажа в Москве — <span class="text-primary">без очередей и поездок</span>
+        </h1>
+        <p class="lead text-secondary mt-3">
+          Заберём багаж у двери, опечатаем и бережно сохраним на складе.
+          В нужное время доставим в аэропорт, на вокзал или по адресу в Москве и области — без поездок в камеры хранения.
+        </p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="/order/" class="btn btn-lg btn-primary px-4">
+            <i class="bi bi-send me-1"></i>Оставить заявку
+          </a>
+          <a href="/#tariffs" class="btn btn-lg btn-outline-primary px-4">
+            <i class="bi bi-tag me-1"></i>Тарифы
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-ill p-4 text-center surface">
+          <img src="/static/core/img/dnd_storage.png"
+               alt="Drop & Delivery — хранение багажа с доставкой по Москве"
+               loading="lazy" decoding="async">
+          <div class="small text-muted mt-2">
+            Пломбы, акт и охраняемый склад — ваш багаж под контролем.
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-lg-5">
-      <div class="hero-ill p-4 text-center surface">
-        <img src="{% static 'core/img/dnd_storage.png' %}" alt="Drop & Delivery — хранение багажа с доставкой по Москве" loading="lazy" decoding="async">
-        <div class="small text-muted mt-2">Ваш багаж — под присмотром и уже в пути ✈️</div>
+  </section>
+
+  <!-- Почему это удобно (фокус на хранении) -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Почему такой формат хранения удобнее</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-truck fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Не нужно никуда везти</h3>
+          <p class="text-secondary mb-0">
+            Забираем чемоданы у двери — вместо поездок в камеру хранения и обратно.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-clock-history fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Экономия времени</h3>
+          <p class="text-secondary mb-0">
+            Гибкие слоты забора и доставки, без очередей и ожиданий.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-shield-check fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Защита багажа</h3>
+          <p class="text-secondary mb-0">
+            Упаковка, пломбы с номерами, фотофиксация и акт приёма-передачи.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-calendar2-week fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Гибкий срок хранения</h3>
+          <p class="text-secondary mb-0">
+            От суток до длительного хранения. Первые сутки включены.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="mb-5">
-  <h2 class="h3 mb-3">Почему это удобно</h2>
-  <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-truck fs-4"></i></div><h3 class="h5 mt-3 mb-2">От двери до двери</h3><p class="text-secondary mb-0">Не нужно ехать в камеру хранения и обратно.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-clock-history fs-4"></i></div><h3 class="h5 mt-3 mb-2">Экономия времени</h3><p class="text-secondary mb-0">Без очередей — согласуем удобные окна.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-shield-check fs-4"></i></div><h3 class="h5 mt-3 mb-2">Надёжно</h3><p class="text-secondary mb-0">Пломбы и фотофиксация при передаче.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-calendar2-week fs-4"></i></div><h3 class="h5 mt-3 mb-2">Гибко</h3><p class="text-secondary mb-0">Короткое и длительное хранение, Москва и область.</p></div></div>
-  </div>
-</section>
-
-<section class="mb-5">
-  <h2 class="h3 mb-3">Как это работает</h2>
-  <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-chat-dots"></i></div><span class="badge text-bg-primary rounded-pill">1</span></div><h3 class="h6 mt-3 mb-1">Заявка</h3><p class="text-secondary mb-0">Оставляете на сайте или пишете в мессенджер.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div><span class="badge text-bg-primary rounded-pill">2</span></div><h3 class="h6 mt-3 mb-1">Встреча</h3><p class="text-secondary mb-0">Представитель приезжает по адресу, пломбирует багаж.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div><span class="badge text-bg-primary rounded-pill">3</span></div><h3 class="h6 mt-3 mb-1">Хранение</h3><p class="text-secondary mb-0">Сохраняем чемоданы на складе до нужного времени.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div><span class="badge text-bg-primary rounded-pill">4</span></div><h3 class="h6 mt-3 mb-1">Доставка</h3><p class="text-secondary mb-0">Привозим по адресу/в аэропорт/на вокзал — вовремя.</p></div></div>
-  </div>
-</section>
-
-{# ДЛИННЫЙ SEO-ТЕКСТ НА ЛЕНДИНГЕ #}
-<section class="surface p-4 p-md-5 mb-5">
-  <h2 class="h4 fw-bold mb-3">Где оставить багаж в Москве — простой способ без очередей</h2>
-  <p class="text-secondary mb-2">Drop & Delivery забирает багаж у двери, оформляет передачу с фото и пломбами, хранит на складе и доставляет ко времени в нужную точку. Это удобная альтернатива камерам хранения в аэропорту или на вокзале: не нужно тратить время на поездки и ожидание.</p>
-  <p class="text-secondary mb-2">Сервис подходит туристам с пересадкой, семьям с детьми, гостям столицы и жителям города при переезде. Первые 1 сутки хранения включены в тарифы, далее — единая ставка. Мы отслеживаем рейсы и оперативно корректируем время встречи при изменениях расписания.</p>
-  <p class="text-secondary mb-0">Работаем по Москве и области, доставляем в Шереметьево, Домодедово, Внуково, Жуковский и по адресам в городе. Оплата — после проверки целостности багажа.</p>
-</section>
-
-{# СМОТРИТЕ ТАКЖЕ #}
-<section class="surface p-4 p-md-5 mb-5">
-  <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
-  <div class="d-flex flex-wrap gap-2">
-    <a class="btn btn-light border pill" href="{% url 'index' %}#tariffs">Тарифы и калькулятор</a>
-    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Почему мы — от двери до двери</a>
-    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ: ответы на частые вопросы</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
-  </div>
-</section>
-
-<section class="mb-5">
-  <div class="surface p-4 d-lg-flex align-items-center justify-content-between">
-    <div>
-      <h2 class="h4 mb-1">Готовы забрать багаж сегодня</h2>
-      <p class="text-secondary mb-0">Согласуем время и адрес в пару сообщений.</p>
+  <!-- Как это работает -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Как оформить хранение багажа</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-chat-dots"></i></div>
+            <span class="badge text-bg-primary rounded-pill">1</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Заявка</h3>
+          <p class="text-secondary mb-0">
+            Оставляете заявку на сайте или пишете в мессенджер. Подтверждаем время и адрес.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div>
+            <span class="badge text-bg-primary rounded-pill">2</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Забор багажа</h3>
+          <p class="text-secondary mb-0">
+            Представитель приезжает, упаковывает, пломбирует, оформляет акт с номерами пломб.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div>
+            <span class="badge text-bg-primary rounded-pill">3</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Хранение</h3>
+          <p class="text-secondary mb-0">
+            Чемоданы хранятся на охраняемом складе до согласованной даты.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div>
+            <span class="badge text-bg-primary rounded-pill">4</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Доставка</h3>
+          <p class="text-secondary mb-0">
+            В выбранное время доставляем багаж в аэропорт, на вокзал или по адресу.
+          </p>
+        </div>
+      </div>
     </div>
-    <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4 mt-3 mt-lg-0"><i class="bi bi-lightning-charge me-1"></i>Оставить заявку</a>
-  </div>
-</section>
+  </section>
 
-<section class="mb-5">
-  <h2 class="h3 mb-3">FAQ</h2>
-  <div class="accordion" id="faqStorage">
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s1">Можно на несколько дней?</button></h2><div id="s1" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Да, срок не ограничен — согласуем при оформлении.</div></div></div>
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s2">Работаете по области?</button></h2><div id="s2" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Да, Москва и Московская область.</div></div></div>
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s3">Срочно за 1–2 часа?</button></h2><div id="s3" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Возможна ускоренная доставка по согласованию.</div></div></div>
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s4">Как изменить время или адрес?</button></h2><div id="s4" class="accordion-collapse collapse" data-bs-parent="#faqStorage"><div class="accordion-body text-secondary">Напишите нам — оперативно перестроим слот.</div></div></div>
-  </div>
-</section>
+  <!-- SEO-текст под кластер "где оставить багаж" -->
+  <section class="surface p-4 p-md-5 mb-5">
+    <h2 class="h4 fw-bold mb-3">
+      Где оставить багаж в Москве — простой способ вместо камер хранения
+    </h2>
+    <p class="text-secondary mb-2">
+      Если вы прилетаете рано, выезжаете поздно, делаете пересадку или меняете отель, вопрос
+      «где оставить багаж в Москве» решается без поездок в камеры хранения. Сервис
+      <b>Drop &amp; Delivery</b> забирает чемоданы у двери, оформляет передачу с пломбами и фото,
+      хранит на охраняемом складе и привозит ко времени в нужную точку.
+    </p>
+    <p class="text-secondary mb-2">
+      Такой формат удобен туристам, семьям с детьми, участникам мероприятий и тем, кто переезжает внутри города.
+      Первые <b>1 сутки хранения включены</b>, далее действует единый прозрачный тариф. Мы отслеживаем рейсы и при
+      необходимости корректируем время встречи.
+    </p>
+    <p class="text-secondary mb-0">
+      Работаем по Москве и Московской области, доставляем в Шереметьево, Домодедово, Внуково, Жуковский,
+      на вокзалы и по адресам. Оплата — после проверки целостности и комплектности багажа.
+    </p>
+  </section>
 
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-  {"@type":"Question","name":"Можно на несколько дней?","acceptedAnswer":{"@type":"Answer","text":"Да, срок не ограничен — согласуем при оформлении."}},
-  {"@type":"Question","name":"Работаете по области?","acceptedAnswer":{"@type":"Answer","text":"Да, Москва и Московская область."}},
-  {"@type":"Question","name":"Срочно за 1–2 часа?","acceptedAnswer":{"@type":"Answer","text":"Возможна ускоренная доставка по согласованию."}},
-  {"@type":"Question","name":"Как изменить время или адрес?","acceptedAnswer":{"@type":"Answer","text":"Напишите нам — оперативно перестроим слот."}}
-]}
-</script>
-{% endblock %}
+  <!-- Смотрите также -->
+  <section class="surface p-4 p-md-5 mb-5">
+    <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-light border pill" href="/#tariffs">Тарифы и калькулятор</a>
+      <a class="btn btn-light border pill" href="/benefits/">Преимущества сервиса</a>
+      <a class="btn btn-light border pill" href="/concept/">Как работает Drop &amp; Delivery</a>
+      <a class="btn btn-light border pill" href="/faq/">FAQ: ответы на частые вопросы</a>
+      <a class="btn btn-light border pill" href="/aero/svo/">Доставка багажа в Шереметьево</a>
+      <a class="btn btn-light border pill" href="/aero/dme/">Доставка багажа в Домодедово</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mb-5">
+    <div class="surface p-4 d-lg-flex align-items-center justify-content-between">
+      <div>
+        <h2 class="h4 mb-1">Нужно хранение багажа в Москве?</h2>
+        <p class="text-secondary mb-0">
+          Согласуем забор и доставку в пару сообщений в мессенджере.
+        </p>
+      </div>
+      <a href="/order/" class="btn btn-lg btn-primary px-4 mt-3 mt-lg-0">
+        <i class="bi bi-lightning-charge me-1"></i>Оставить заявку
+      </a>
+    </div>
+  </section>
+
+  <!-- Локальный FAQ по хранению (не дублирует общий /faq/) -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">FAQ по хранению багажа</h2>
+    <div class="accordion" id="faqStorage">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s1">
+            На какой срок можно сдать багаж на хранение?
+          </button>
+        </h2>
+        <div id="s1" class="accordion-collapse collapse" data-bs-parent="#faqStorage">
+          <div class="accordion-body text-secondary">
+            Срок почти не ограничен: от нескольких часов до длительного хранения. Конкретные даты согласуем при оформлении заявки.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s2">
+            Работаете ли вы по Московской области?
+          </button>
+        </h2>
+        <div id="s2" class="accordion-collapse collapse" data-bs-parent="#faqStorage">
+          <div class="accordion-body text-secondary">
+            Да, мы забираем и доставляем багаж по Москве и Московской области, в том числе в аэропорты и за город.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s3">
+            Можно ли срочно организовать забор багажа?
+          </button>
+        </h2>
+        <div id="s3" class="accordion-collapse collapse" data-bs-parent="#faqStorage">
+          <div class="accordion-body text-secondary">
+            В ряде случаев возможно. Напишите нам — подтвердим ближайшее доступное окно курьера.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s4">
+            Что входит в услугу хранения?
+          </button>
+        </h2>
+        <div id="s4" class="accordion-collapse collapse" data-bs-parent="#faqStorage">
+          <div class="accordion-body text-secondary">
+            Забор багажа, упаковка при необходимости, пломбирование, акт приёма-передачи, хранение на складе и последующая доставка в согласованное место.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQPage JSON-LD для локального FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"На какой срок можно сдать багаж на хранение?",
+        "acceptedAnswer":{"@type":"Answer","text":"От нескольких часов до длительного хранения. Конкретный срок согласуется при оформлении заявки."}
+      },
+      {
+        "@type":"Question",
+        "name":"Работаете ли вы по Московской области?",
+        "acceptedAnswer":{"@type":"Answer","text":"Да, работаем по Москве и Московской области, включая доставку в аэропорты и за город."}
+      },
+      {
+        "@type":"Question",
+        "name":"Можно ли срочно организовать забор багажа?",
+        "acceptedAnswer":{"@type":"Answer","text":"Возможна ускоренная организация забора по согласованию. Напишите нам для уточнения ближайших слотов."}
+      },
+      {
+        "@type":"Question",
+        "name":"Что входит в услугу хранения?",
+        "acceptedAnswer":{"@type":"Answer","text":"Забор багажа, упаковка при необходимости, пломбирование, оформление акта, хранение на складе и доставка в согласованное место."}
+      }
+    ]
+  }
+  </script>
+
+</div>
+
+<footer class="text-center mt-5 py-3 border-top">
+  <div class="container">
+    <small class="d-block mb-1">
+      © 2025 Drop &amp; Delivery. Все права защищены.
+      | <a href="/offer/" class="text-decoration-none text-primary">Публичная оферта</a>
+      | <a href="/contacts/" class="text-decoration-none text-primary">Контакты</a>
+      | <a href="/privacy/" class="text-decoration-none text-primary">Политика конфиденциальности</a>
+    </small>
+    <small class="text-muted d-block">
+      Drop &amp; Delivery — хранение и доставка багажа в Москве и области: чемоданы в аэропорт, на вокзал и по адресу — точно ко времени.
+    </small>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

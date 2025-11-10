@@ -1,29 +1,155 @@
-{% extends "core/base.html" %}
-{% load static %}
-{% block title %}Luggage storage Moscow — Drop & Delivery{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Luggage storage in Moscow — door-to-door service | Drop & Delivery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://www.drop-delivery.ru/luggage-storage-moscow/">
 
-{% block extra_head %}
-  {# Hreflang alternates EN/RU #}
-  <link rel="alternate" hreflang="en" href="{{ SITE_URL }}/luggage-storage-moscow/">
-  <link rel="alternate" hreflang="ru" href="{{ SITE_URL }}/hranenie-bagazha-moskva/">
-  <link rel="alternate" hreflang="x-default" href="{{ SITE_URL }}/">
+  <meta name="description" content="Luggage storage in Moscow with door-to-door pick-up and delivery. We collect your bags at the hotel or apartment, seal and store them safely, then deliver to the airport, train station or any address on time. A convenient alternative to lockers.">
 
-  {# JSON-LD: WebPage (EN) + link to RU #}
+  <meta property="og:site_name" content="Drop & Delivery">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Luggage storage in Moscow — door-to-door service | Drop & Delivery">
+  <meta property="og:description" content="Door-to-door luggage storage in Moscow: pick-up, sealed storage and delivery to airport, station or any address. Travel light and skip lockers.">
+  <meta property="og:url" content="https://www.drop-delivery.ru/luggage-storage-moscow/">
+  <meta property="og:image" content="https://www.drop-delivery.ru/static/core/img/logo-512.703e99d5bf0e.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104157204','ym');
+    ym(104157204, 'init', { ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true });
+  </script>
+  <!-- /Yandex.Metrika -->
+
+  <!-- Favicon & Icons -->
+  <link rel="icon" href="/static/core/img/favicon.14a2d4d37202.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="48x48" href="/static/core/img/favicon-48.8e06d9c17287.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/core/img/logo-192.8690cd5e3c61.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/static/core/img/logo-512.703e99d5bf0e.png">
+  <link rel="apple-touch-icon" href="/static/core/img/logo-192.8690cd5e3c61.png">
+
+  <!-- Fonts / Bootstrap / Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+                 Arial, "Noto Sans", sans-serif;
+      --dd-radius: 24px;
+      --dd-radius-lg: 32px;
+      --dd-shadow: 0 24px 48px rgba(13,110,253,.10);
+      --dd-shadow-sm: 0 12px 30px rgba(13,110,253,.08);
+    }
+    html, body{
+      font-family: var(--dd-font);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(120deg,#f8fbff 0%,#e7faff 100%);
+      min-height: 100vh;
+    }
+    @media (min-width:1200px){
+      .container{ max-width:1140px; }
+    }
+    h1,h2,h3,h4,h5,h6,
+    .navbar, .navbar-brand, .nav-link, .btn, .badge, .accordion-button{
+      font-family: var(--dd-font);
+    }
+    .navbar-brand{ font-weight:700; }
+    .navbar-nav .nav-link{
+      transition: color .2s, background .2s;
+      font-weight:400;
+      letter-spacing:.01em;
+    }
+    .navbar-nav .nav-link.btn{
+      color:#fff !important;
+      font-weight:600;
+    }
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus{
+      color:#0d6efd !important;
+    }
+    .btn{
+      border-radius:9999px;
+      font-weight:600;
+    }
+    .btn-lg{
+      padding:.85rem 1.25rem;
+    }
+    .surface{
+      background:#fff;
+      border:0;
+      border-radius:var(--dd-radius);
+      box-shadow:var(--dd-shadow-sm);
+    }
+    .hero-clean{
+      background:#fff;
+      border-radius:var(--dd-radius-lg);
+      box-shadow:var(--dd-shadow);
+      padding:2rem;
+    }
+    @media (min-width:992px){
+      .hero-clean{ padding:2.5rem 2.75rem; }
+    }
+    h1.display-4{
+      font-weight:800;
+      line-height:1.1;
+      font-size:clamp(32px,4.0vw,52px);
+    }
+    .hero-ill{
+      max-width:520px;
+      margin-left:auto;
+    }
+    .hero-ill img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:16px;
+    }
+    .pill{
+      border-radius:999px;
+    }
+  </style>
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://www.drop-delivery.ru/luggage-storage-moscow/">
+  <link rel="alternate" hreflang="ru" href="https://www.drop-delivery.ru/hranenie-bagazha-moskva/">
+  <link rel="alternate" hreflang="x-default" href="https://www.drop-delivery.ru/">
+
+  <!-- JSON-LD: WebPage (EN translation of RU storage page) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"WebPage",
-    "@id":"{{ SITE_URL }}/luggage-storage-moscow/#webpage",
-    "url":"{{ SITE_URL }}/luggage-storage-moscow/",
-    "name":"Luggage storage in Moscow — Drop & Delivery",
+    "@id":"https://www.drop-delivery.ru/luggage-storage-moscow/#webpage",
+    "url":"https://www.drop-delivery.ru/luggage-storage-moscow/",
+    "name":"Luggage storage in Moscow — door-to-door service",
     "inLanguage":"en",
-    "isPartOf":{"@id":"{{ SITE_URL }}/#website"},
-    "about":{"@id":"{{ SITE_URL }}/#organization"},
-    "translationOfWork":{"@type":"WebPage","@id":"{{ SITE_URL }}/hranenie-bagazha-moskva/#webpage","inLanguage":"ru","url":"{{ SITE_URL }}/hranenie-bagazha-moskva/"}
+    "isPartOf":{"@id":"https://www.drop-delivery.ru/#website"},
+    "about":{"@id":"https://www.drop-delivery.ru/#organization"},
+    "translationOfWork":{
+      "@type":"WebPage",
+      "@id":"https://www.drop-delivery.ru/hranenie-bagazha-moskva/#webpage",
+      "inLanguage":"ru",
+      "url":"https://www.drop-delivery.ru/hranenie-bagazha-moskva/"
+    }
   }
   </script>
 
-  {# JSON-LD: HowTo EN #}
+  <!-- JSON-LD: HowTo -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -31,106 +157,393 @@
     "name":"How to book luggage storage with delivery in Moscow",
     "step":[
       {"@type":"HowToStep","name":"Request","text":"Book on the website or via messenger — we will confirm addresses and time."},
-      {"@type":"HowToStep","name":"Pick-up","text":"Our representative seals and photographs your luggage."},
-      {"@type":"HowToStep","name":"Storage","text":"Secure facility, first day included in the plan."},
-      {"@type":"HowToStep","name":"Delivery","text":"We deliver to airport/station/address right on time."}
+      {"@type":"HowToStep","name":"Pick-up","text":"Our representative arrives at your address, seals and documents your luggage."},
+      {"@type":"HowToStep","name":"Storage","text":"We store your luggage at a secure facility. The first day of storage is included."},
+      {"@type":"HowToStep","name":"Delivery","text":"We deliver to the airport, train station or any address in Moscow and the region right on time."}
     ]
   }
   </script>
-{% endblock %}
 
-{% block content %}
-<section class="hero-clean mb-5">
-  <div class="row align-items-center gy-4">
-    <div class="col-lg-7">
-      <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2">
-        <i class="bi bi-bag me-1"></i> Luggage storage with delivery
-      </span>
-      <h1 class="display-4 fw-bold mt-3">Luggage storage in Moscow — <span class="text-primary">door-to-door</span></h1>
-      <p class="lead text-secondary mt-3">
-        We pick up your luggage at the hotel or apartment, seal it and store safely.
-        Then deliver to the airport, train station or any address — right on time.
-      </p>
-      <div class="d-flex gap-3 mt-3">
-        <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4"><i class="bi bi-send me-1"></i>Book now</a>
-        <a href="{% url 'index' %}#tariffs" class="btn btn-lg btn-outline-primary px-4"><i class="bi bi-tag me-1"></i>Prices</a>
+  <!-- JSON-LD: Organization + WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.drop-delivery.ru/#organization",
+        "name": "Drop & Delivery",
+        "url": "https://www.drop-delivery.ru/",
+        "logo": "https://www.drop-delivery.ru/static/core/img/logo-512.703e99d5bf0e.png",
+        "description": "Drop & Delivery provides luggage pick-up, storage and delivery services across Moscow and the Moscow region.",
+        "contactPoint": [{
+          "@type": "ContactPoint",
+          "telephone": "+7-915-383-55-35",
+          "contactType": "customer support",
+          "areaServed": "RU",
+          "availableLanguage": ["ru","en"]
+        }],
+        "sameAs": [
+          "https://t.me/dropdeliv",
+          "https://wa.me/79153835535"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.drop-delivery.ru/#website",
+        "url": "https://www.drop-delivery.ru/",
+        "name": "Drop & Delivery",
+        "inLanguage": ["ru","en"],
+        "publisher": { "@id": "https://www.drop-delivery.ru/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.drop-delivery.ru/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: Service (EN) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Luggage storage in Moscow with door-to-door delivery",
+    "serviceType":"Luggage storage and delivery",
+    "areaServed":["Moscow","Moscow region"],
+    "url":"https://www.drop-delivery.ru/luggage-storage-moscow/",
+    "provider":{"@id":"https://www.drop-delivery.ru/#organization"},
+    "description":"Door-to-door luggage storage in Moscow: pick-up at your address, sealed and documented storage, and on-time delivery to airports, stations or any address."
+  }
+  </script>
+</head>
+
+<body>
+<noscript>
+  <div><img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/></div>
+</noscript>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">Drop & Delivery</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="/concept/">Концепция</a></li>
+        <li class="nav-item"><a class="nav-link" href="/#tariffs">Тарифы</a></li>
+        <li class="nav-item"><a class="nav-link" href="/faq/">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" href="/offer/">Оферта</a></li>
+        <li class="nav-item"><a class="nav-link" href="/benefits/">Преимущества</a></li>
+        <li class="nav-item"><a class="nav-link" href="/hranenie-bagazha-moskva/">Хранение багажа</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/luggage-storage-moscow/">Luggage Storage</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contacts/">Контакты</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero-clean mb-5">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-7">
+        <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2">
+          <i class="bi bi-bag me-1"></i> Luggage storage with delivery
+        </span>
+        <h1 class="display-4 fw-bold mt-3">
+          Luggage storage in Moscow — <span class="text-primary">door-to-door</span>
+        </h1>
+        <p class="lead text-secondary mt-3">
+          We pick up your luggage at the hotel or apartment, seal and document it, store it safely,
+          then deliver to the airport, train station or any address in Moscow — right on time.
+        </p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="/order/" class="btn btn-lg btn-primary px-4">
+            <i class="bi bi-send me-1"></i>Book now
+          </a>
+          <a href="/#tariffs" class="btn btn-lg btn-outline-primary px-4">
+            <i class="bi bi-tag me-1"></i>Prices
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-ill p-4 text-center surface">
+          <img src="/static/core/img/dnd_storage.c96f74e0da4b.png"
+               alt="Drop & Delivery — luggage storage and delivery in Moscow"
+               loading="lazy"
+               decoding="async">
+          <div class="small text-muted mt-2">
+            Travel light and enjoy Moscow 🧳
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-lg-5">
-      <div class="hero-ill p-4 text-center surface">
-        <img src="{% static 'core/img/dnd_storage.png' %}" alt="Drop & Delivery — luggage storage and delivery in Moscow" loading="lazy" decoding="async">
-        <div class="small text-muted mt-2">Travel light — enjoy Moscow 🧳</div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Why choose Drop &amp; Delivery</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-taxi-front fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Door-to-door</h3>
+          <p class="text-secondary mb-0">
+            No searching for lockers or carrying bags across the city.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-clock-history fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Time-saving</h3>
+          <p class="text-secondary mb-0">
+            Flexible pick-up and delivery slots. No queues, no detours.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-shield-check fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Secure storage</h3>
+          <p class="text-secondary mb-0">
+            Sealed luggage, documented handover and a secure facility.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
+            <i class="bi bi-calendar2-week fs-4"></i>
+          </div>
+          <h3 class="h5 mt-3 mb-2">Flexible terms</h3>
+          <p class="text-secondary mb-0">
+            From a few hours to long-term storage. First day included.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="mb-5">
-  <h2 class="h3 mb-3">Why choose us</h2>
-  <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-taxi-front fs-4"></i></div><h3 class="h5 mt-3 mb-2">Door-to-door</h3><p class="text-secondary mb-0">No need to search for lockers.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-clock-history fs-4"></i></div><h3 class="h5 mt-3 mb-2">Time-saving</h3><p class="text-secondary mb-0">No queues or extra trips.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-shield-check fs-4"></i></div><h3 class="h5 mt-3 mb-2">Secure</h3><p class="text-secondary mb-0">Sealed luggage kept at a facility.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3"><i class="bi bi-calendar2-week fs-4"></i></div><h3 class="h5 mt-3 mb-2">Flexible</h3><p class="text-secondary mb-0">Pick-up and delivery time windows.</p></div></div>
-  </div>
-</section>
-
-<section class="mb-5">
-  <h2 class="h3 mb-3">How it works</h2>
-  <div class="row g-3">
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-chat-left-dots"></i></div><span class="badge text-bg-primary rounded-pill">1</span></div><h3 class="h6 mt-3 mb-1">Request</h3><p class="text-secondary mb-0">Book on the website or via messenger.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div><span class="badge text-bg-primary rounded-pill">2</span></div><h3 class="h6 mt-3 mb-1">Pick-up</h3><p class="text-secondary mb-0">Our representative seals and takes your luggage.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div><span class="badge text-bg-primary rounded-pill">3</span></div><h3 class="h6 mt-3 mb-1">Storage</h3><p class="text-secondary mb-0">We keep it safely until the requested time.</p></div></div>
-    <div class="col-md-6 col-lg-3"><div class="surface p-3 h-100"><div class="d-flex align-items-center gap-2"><div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div><span class="badge text-bg-primary rounded-pill">4</span></div><h3 class="h6 mt-3 mb-1">Delivery</h3><p class="text-secondary mb-0">We deliver to airport/station/any address on time.</p></div></div>
-  </div>
-</section>
-
-{# LONG SEO TEXT (EN) #}
-<section class="surface p-4 p-md-5 mb-5">
-  <h2 class="h4 fw-bold mb-3">Luggage storage in Moscow — simple and convenient</h2>
-  <p class="text-secondary mb-2">Drop & Delivery picks up luggage at your door, seals and documents it, stores at a secure facility and delivers right on time to the airport, train station or any address. It’s an easy alternative to lockers: no queues or extra trips.</p>
-  <p class="text-secondary mb-2">Perfect for tourists on layovers, families, business trips or moving within the city. The first day of storage is included in our plans; afterwards there’s a flat daily rate. We track flights and adjust the meeting time if schedules change.</p>
-  <p class="text-secondary mb-0">We operate across Moscow and the region, delivering to Sheremetyevo, Domodedovo, Vnukovo, Zhukovsky and city addresses. Payment is after you check your luggage.</p>
-</section>
-
-{# SEE ALSO #}
-<section class="surface p-4 p-md-5 mb-5">
-  <h2 class="h5 fw-bold mb-3">See also</h2>
-  <div class="d-flex flex-wrap gap-2">
-    <a class="btn btn-light border pill" href="{% url 'index' %}#tariffs">Prices & calculator</a>
-    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Why door-to-door</a>
-    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">To Sheremetyevo</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">To Domodedovo</a>
-  </div>
-</section>
-
-<section class="mb-5">
-  <div class="surface p-4 d-lg-flex align-items-center justify-content-between">
-    <div>
-      <h2 class="h4 mb-1">Ready to help today</h2>
-      <p class="text-secondary mb-0">We’ll confirm address and time in a couple of messages.</p>
+  <!-- HOW IT WORKS -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">How it works</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-chat-left-dots"></i></div>
+            <span class="badge text-bg-primary rounded-pill">1</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Request</h3>
+          <p class="text-secondary mb-0">
+            Send a request via website or messenger with pick-up details.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div>
+            <span class="badge text-bg-primary rounded-pill">2</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Pick-up</h3>
+          <p class="text-secondary mb-0">
+            Our representative arrives, seals and documents each item.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div>
+            <span class="badge text-bg-primary rounded-pill">3</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Storage</h3>
+          <p class="text-secondary mb-0">
+            We store your luggage at a secure facility until the agreed date.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div>
+            <span class="badge text-bg-primary rounded-pill">4</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Delivery</h3>
+          <p class="text-secondary mb-0">
+            We deliver to the airport, station or any address in Moscow on time.
+          </p>
+        </div>
+      </div>
     </div>
-    <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4 mt-3 mt-lg-0"><i class="bi bi-lightning-charge me-1"></i>Book now</a>
-  </div>
-</section>
+  </section>
 
-<section class="mb-5">
-  <h2 class="h3 mb-3">FAQ</h2>
-  <div class="accordion" id="faqEn">
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e1">Do you operate in Moscow region?</button></h2><div id="e1" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, we cover Moscow and the region.</div></div></div>
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e2">Is urgent 1–2h delivery possible?</button></h2><div id="e2" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Yes, upon request and availability.</div></div></div>
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e3">How long can I store luggage?</button></h2><div id="e3" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">No strict limit — we’ll arrange a suitable option.</div></div></div>
-    <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e4">How to reschedule time/address?</button></h2><div id="e4" class="accordion-collapse collapse" data-bs-parent="#faqEn"><div class="accordion-body text-secondary">Message us — we will adjust quickly.</div></div></div>
-  </div>
-</section>
+  <!-- SEO TEXT -->
+  <section class="surface p-4 p-md-5 mb-5">
+    <h2 class="h4 fw-bold mb-3">
+      Luggage storage in Moscow — simple and convenient
+    </h2>
+    <p class="text-secondary mb-2">
+      Drop &amp; Delivery is a convenient alternative to traditional lockers in Moscow.
+      We pick up your luggage at your door, seal and document it, store it at a secure facility
+      and bring it back exactly when and where you need it — airport, train station or city address.
+    </p>
+    <p class="text-secondary mb-2">
+      It’s ideal for layovers, early check-out, late departures, conferences or city breaks.
+      The first day of storage is included, with a clear daily rate afterwards. We track flights and
+      can adjust the meeting time if your schedule changes.
+    </p>
+    <p class="text-secondary mb-0">
+      We operate in Moscow and the Moscow region, including Sheremetyevo, Domodedovo, Vnukovo and Zhukovsky.
+      Payment is made after you check your luggage.
+    </p>
+  </section>
 
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-  {"@type":"Question","name":"Do you operate in Moscow region?","acceptedAnswer":{"@type":"Answer","text":"Yes, we cover Moscow and the region."}},
-  {"@type":"Question","name":"Is urgent 1–2h delivery possible?","acceptedAnswer":{"@type":"Answer","text":"Yes, upon request and availability."}},
-  {"@type":"Question","name":"How long can I store luggage?","acceptedAnswer":{"@type":"Answer","text":"No strict limit — we’ll arrange a suitable option."}},
-  {"@type":"Question","name":"How to reschedule time/address?","acceptedAnswer":{"@type":"Answer","text":"Message us — we will adjust quickly."}}
-]}
-</script>
-{% endblock %}
+  <!-- SEE ALSO -->
+  <section class="surface p-4 p-md-5 mb-5">
+    <h2 class="h5 fw-bold mb-3">See also</h2>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-light border pill" href="/#tariffs">Prices &amp; calculator</a>
+      <a class="btn btn-light border pill" href="/benefits/">Why door-to-door</a>
+      <a class="btn btn-light border pill" href="/concept/">How it works</a>
+      <a class="btn btn-light border pill" href="/faq/">FAQ</a>
+      <a class="btn btn-light border pill" href="/aero/svo/">To Sheremetyevo</a>
+      <a class="btn btn-light border pill" href="/aero/dme/">To Domodedovo</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mb-5">
+    <div class="surface p-4 d-lg-flex align-items-center justify-content-between">
+      <div>
+        <h2 class="h4 mb-1">Ready to store your luggage in Moscow?</h2>
+        <p class="text-secondary mb-0">
+          Share your address and time — we’ll confirm details in a few messages.
+        </p>
+      </div>
+      <a href="/order/" class="btn btn-lg btn-primary px-4 mt-3 mt-lg-0">
+        <i class="bi bi-lightning-charge me-1"></i>Book now
+      </a>
+    </div>
+  </section>
+
+  <!-- Local FAQ (EN) -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">FAQ</h2>
+    <div class="accordion" id="faqEn">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e1">
+            Do you operate in Moscow region?
+          </button>
+        </h2>
+        <div id="e1" class="accordion-collapse collapse" data-bs-parent="#faqEn">
+          <div class="accordion-body text-secondary">
+            Yes, we cover Moscow and the Moscow region, including major airports.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e2">
+            Is urgent same-day pick-up possible?
+          </button>
+        </h2>
+        <div id="e2" class="accordion-collapse collapse" data-bs-parent="#faqEn">
+          <div class="accordion-body text-secondary">
+            In many cases yes, depending on availability. Contact us to check the nearest slot.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e3">
+            How long can I store my luggage?
+          </button>
+        </h2>
+        <div id="e3" class="accordion-collapse collapse" data-bs-parent="#faqEn">
+          <div class="accordion-body text-secondary">
+            There is no strict limit — from a few hours to long-term storage. We will arrange a suitable option.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e4">
+            How can I reschedule time or address?
+          </button>
+        </h2>
+        <div id="e4" class="accordion-collapse collapse" data-bs-parent="#faqEn">
+          <div class="accordion-body text-secondary">
+            Just message us — we’ll adjust pick-up or delivery if possible.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"Do you operate in Moscow region?",
+        "acceptedAnswer":{"@type":"Answer","text":"Yes, we cover Moscow and the Moscow region, including major airports."}
+      },
+      {
+        "@type":"Question",
+        "name":"Is urgent same-day pick-up possible?",
+        "acceptedAnswer":{"@type":"Answer","text":"In many cases yes, depending on availability. Contact us to check the nearest slot."}
+      },
+      {
+        "@type":"Question",
+        "name":"How long can I store my luggage?",
+        "acceptedAnswer":{"@type":"Answer","text":"From a few hours to long-term storage. We will help you choose a suitable option."}
+      },
+      {
+        "@type":"Question",
+        "name":"How can I reschedule time or address?",
+        "acceptedAnswer":{"@type":"Answer","text":"Contact us via messenger or phone, and we will adjust your booking if possible."}
+      }
+    ]
+  }
+  </script>
+
+</div>
+
+<footer class="text-center mt-5 py-3 border-top">
+  <div class="container">
+    <small class="d-block mb-1">
+      © 2025 Drop &amp; Delivery. Все права защищены.
+      | <a href="/offer/" class="text-decoration-none text-primary">Публичная оферта</a>
+      | <a href="/contacts/" class="text-decoration-none text-primary">Контакты</a>
+      | <a href="/privacy/" class="text-decoration-none text-primary">Политика конфиденциальности</a>
+    </small>
+    <small class="text-muted d-block">
+      Drop &amp; Delivery — luggage pick-up, storage and delivery service in Moscow and the Moscow region.
+    </small>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
