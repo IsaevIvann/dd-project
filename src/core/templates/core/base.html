@@ -15,24 +15,24 @@
       for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104157204','ym');
-    ym(104157204, 'init', { ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true });
+    ym(104157204, 'init', { ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer",
+      accurateTrackBounce:true, trackLinks:true });
   </script>
-  <!-- /Yandex.Metrika -->
 
-  <!-- Favicon & Icons -->
+  <!-- Favicons -->
   <link rel="icon" href="{% static 'core/img/favicon.ico' %}" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="48x48" href="{% static 'core/img/favicon-48.png' %}">
   <link rel="icon" type="image/png" sizes="192x192" href="{% static 'core/img/logo-192.png' %}">
   <link rel="icon" type="image/png" sizes="512x512" href="{% static 'core/img/logo-512.png' %}">
   <link rel="apple-touch-icon" href="{% static 'core/img/logo-192.png' %}">
 
-  <!-- Базовый Open Graph (страничные og:title/description/url/image задаём в child-шаблонах) -->
+  <!-- Open Graph -->
   <meta property="og:site_name" content="Drop & Delivery">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Шрифт/Bootstrap -->
+  <!-- Fonts & Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,63 +52,26 @@
       font-family: var(--dd-font);
       font-size: 16px;
       line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       background: linear-gradient(120deg,#f8fbff 0%,#e7faff 100%);
       min-height: 100vh;
     }
     @media (min-width:1200px){ .container{ max-width:1140px; } }
-    h1,h2,h3,h4,h5,h6, .navbar, .navbar-brand, .nav-link, .btn, .badge, .accordion-button{
-      font-family: var(--dd-font);
-    }
+
     .navbar-brand{ font-weight: 700; }
     .navbar-nav .nav-link{
-      transition: color .2s, background .2s;
+      transition: color .2s;
       font-weight: 400;
       letter-spacing: .01em;
     }
-    .navbar-nav .nav-link.btn{ color:#fff !important; font-weight:600; }
-    .navbar-nav .nav-link:hover,
-    .navbar-nav .nav-link:focus{
+    .navbar-nav .nav-link:hover{
       color:#0d6efd !important;
     }
     .btn{ border-radius:9999px; font-weight:600; }
-    .btn-lg{ padding:.85rem 1.25rem; }
-    .surface{
-      background:#fff;
-      border:0;
-      border-radius:var(--dd-radius);
-      box-shadow:var(--dd-shadow-sm);
-    }
-    .hero-clean{
-      background:#fff;
-      border-radius:var(--dd-radius-lg);
-      box-shadow:var(--dd-shadow);
-      padding:2rem;
-    }
-    @media (min-width:992px){
-      .hero-clean{ padding:2.5rem 2.75rem; }
-    }
-    h1.display-4{
-      font-weight:800;
-      line-height:1.1;
-      font-size: clamp(32px, 4.0vw, 52px);
-    }
-    .hero-ill{
-      max-width:520px;
-      margin-left:auto;
-    }
-    .hero-ill img{
-      display:block;
-      width:100%;
-      height:auto;
-      border-radius:16px;
-    }
   </style>
 
   {% block extra_head %}{% endblock %}
 
-  <!-- JSON-LD: Organization + WebSite (единый источник правды) -->
+  <!-- JSON LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -119,7 +82,7 @@
         "name": "Drop & Delivery",
         "url": "{{ SITE_URL }}/",
         "logo": "{{ SITE_URL }}{% static 'core/img/logo-512.png' %}",
-        "description": "Drop & Delivery — сервис по забору, хранению и доставке багажа по Москве и Московской области. Забираем чемоданы у двери, храним на складе и привозим в аэропорт, на вокзал или по адресу.",
+        "description": "Drop & Delivery — сервис по забору, хранению и доставке багажа по Москве и Московской области.",
         "contactPoint": [{
           "@type": "ContactPoint",
           "telephone": "+7-915-383-55-35",
@@ -138,12 +101,7 @@
         "url": "{{ SITE_URL }}/",
         "name": "Drop & Delivery",
         "inLanguage": ["ru","en"],
-        "publisher": { "@id": "{{ SITE_URL }}/#organization" },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "{{ SITE_URL }}/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
+        "publisher": { "@id": "{{ SITE_URL }}/#organization" }
       }
     ]
   }
@@ -151,23 +109,28 @@
 
 </head>
 <body>
-<noscript><div><img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/></div></noscript>
+<noscript>
+  <div><img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/></div>
+</noscript>
 
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
   <div class="container">
     <a class="navbar-brand fw-bold" href="{% url 'index' %}">Drop & Delivery</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Переключить навигацию">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-lg-center">
 
-        <!-- Услуги: доставка, хранение, аэропорты -->
+        <!-- УСЛУГИ -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown"
+             role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Услуги
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="servicesDropdown">
@@ -181,90 +144,59 @@
                 Хранение багажа
               </a>
             </li>
+
             <li><hr class="dropdown-divider"></li>
             <li class="dropdown-header">Доставка в аэропорты</li>
-            <li>
-              <a class="dropdown-item" href="/aero/sheremetyevo/">
-                Шереметьево
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="/aero/domodedovo/">
-                Домодедово
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="/aero/vnukovo/">
-                Внуково
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="/aero/zhukovsky/">
-                Жуковский
-              </a>
-            </li>
+
+            <li><a class="dropdown-item" href="/aero/sheremetyevo/">Шереметьево</a></li>
+            <li><a class="dropdown-item" href="/aero/domodedovo/">Домодедово</a></li>
+            <li><a class="dropdown-item" href="/aero/vnukovo/">Внуково</a></li>
+            <li><a class="dropdown-item" href="/aero/zhukovsky/">Жуковский</a></li>
           </ul>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'concept' %}">Концепция</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'index' %}#tariffs">Тарифы</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'offer' %}">Оферта</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'benefits' %}">Преимущества</a>
-        </li>
+        <!-- Остальные разделы -->
+        <li class="nav-item"><a class="nav-link" href="{% url 'concept' %}">Концепция</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#tariffs">Тарифы</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'offer' %}">Оферта</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'benefits' %}">Преимущества</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'luggage_storage_moscow' %}">Luggage Storage</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
 
-        <!-- Отдельный пункт для англоязычной страницы -->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'luggage_storage_moscow' %}">Luggage Storage</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'contacts' %}">Контакты</a>
-        </li>
-
-        <!-- Кнопка оформления заказа можно вынести в шапку, если захочешь -->
-        <!--
-        <li class="nav-item ms-lg-2">
-          <a class="btn btn-primary btn-sm" href="{% url 'order' %}">
+        <!-- Кнопка оформления заказа -->
+        <li class="nav-item ms-lg-3">
+          <a class="btn btn-primary btn-sm" href="{% url 'order_create' %}">
             Оформить заказ
           </a>
         </li>
-        -->
+
       </ul>
     </div>
   </div>
 </nav>
 
+<!-- CONTENT -->
 <div class="container">
   {% block content %}{% endblock %}
 </div>
 
+<!-- FOOTER -->
 <footer class="text-center mt-5 py-3 border-top">
   <div class="container">
     <small class="d-block mb-1">
       © 2025 Drop & Delivery. Все права защищены.
-      | <a href="{% url 'offer' %}" class="text-decoration-none text-primary">Публичная оферта</a>
-      | <a href="{% url 'contacts' %}" class="text-decoration-none text-primary">Контакты</a>
-      | <a href="{% url 'privacy' %}" class="text-decoration-none text-primary">Политика конфиденциальности</a>
+      | <a href="{% url 'offer' %}" class="text-primary text-decoration-none">Публичная оферта</a>
+      | <a href="{% url 'contacts' %}" class="text-primary text-decoration-none">Контакты</a>
+      | <a href="{% url 'privacy' %}" class="text-primary text-decoration-none">Политика конфиденциальности</a>
     </small>
-    <small class="text-muted d-block">
-      Drop & Delivery — сервис по забору, хранению и доставке багажа в Москве и области: чемоданы в аэропорт, на вокзал и по адресу — точно ко времени.
+    <small class="text-muted">
+      Drop & Delivery — забор, хранение и доставка багажа по Москве и области.
     </small>
   </div>
 </footer>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 {% block extra_scripts %}{% endblock %}
 </body>
 </html>
