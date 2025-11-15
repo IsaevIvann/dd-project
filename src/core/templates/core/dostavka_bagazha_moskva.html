@@ -42,14 +42,10 @@
       <a href="{% url 'order_create' %}" class="btn btn-primary me-2">
         Оформить доставку багажа
       </a>
-      <a href="{{ request.build_absolute_uri('/') }}#tariffs" class="btn btn-outline-secondary">
+      <a href="{% url 'index' %}#tariffs" class="btn btn-outline-secondary">
         Тарифы
       </a>
     </div>
-
-    {# если есть подходящая картинка — можно подключить её сюда, как на главной #}
-    {# <img src="{% static 'core/img/hero-luggage.jpg' %}" alt="Drop & Delivery — доставка багажа"
-           class="img-fluid rounded-3 mt-2"> #}
   </section>
 
   <!-- КАК РАБОТАЕТ УСЛУГА -->
