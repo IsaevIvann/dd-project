@@ -29,10 +29,10 @@
             <li>• 1 ночь хранения включена, далее по фиксированной цене</li>
             <li>• Страхование багажа до 30 000 ₽ включено</li>
           </ul>
-          <a href="{% url 'order' %}" class="btn btn-primary btn-lg me-2">
+          <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg me-2">
             Оформить доставку багажа
           </a>
-          <a href="{% url 'hranenie_bagazha' %}" class="btn btn-outline-secondary btn-lg">
+          <a href="{% url 'storage_moscow' %}" class="btn btn-outline-secondary btn-lg">
             Хранение багажа
           </a>
         </div>
@@ -41,8 +41,9 @@
             <div class="card-body">
               <h2 class="h5 mb-3">Калькулятор доставки багажа</h2>
               <p class="mb-3">Укажите примерное количество единиц багажа и направление, чтобы узнать ориентировочную стоимость.</p>
-              <!-- Если у тебя уже есть форма/калькулятор на главной — сюда можно вставить тот же include -->
-              {% include "core/partials/calculator_form.html" %}
+              {% comment %}Если есть общий калькулятор — подключи include{% endcomment %}
+              {# {% include "core/partials/calculator_form.html" %} #}
+              <p class="text-muted mb-0">Здесь может быть форма расчёта, пока стоит технический блок-заглушка.</p>
             </div>
           </div>
         </div>
@@ -212,7 +213,7 @@
         <div class="col-md-6">
           <p>
             В услугу включено страхование содержимого багажа до 30 000 ₽. Полный перечень условий и ограничений описан
-            в <a href="/offer/" target="_blank" rel="noopener">публичной оферте</a>.
+            в <a href="{% url 'offer' %}" target="_blank" rel="noopener">публичной оферте</a>.
           </p>
           <p class="mb-0">
             Наш представитель работает не как обычный курьер, а как личный ассистент: помогает с упаковкой, отвечает на вопросы,
@@ -299,7 +300,7 @@
       </div>
 
       <div class="mt-4">
-        <a href="{% url 'order' %}" class="btn btn-primary btn-lg">
+        <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg">
           Оформить доставку багажа
         </a>
       </div>
