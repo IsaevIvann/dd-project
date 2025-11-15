@@ -62,17 +62,48 @@
       font-family: var(--dd-font);
     }
     .navbar-brand{ font-weight: 700; }
-    .navbar-nav .nav-link{ transition: color .2s, background .2s; font-weight: 400; letter-spacing: .01em; }
+    .navbar-nav .nav-link{
+      transition: color .2s, background .2s;
+      font-weight: 400;
+      letter-spacing: .01em;
+    }
     .navbar-nav .nav-link.btn{ color:#fff !important; font-weight:600; }
-    .navbar-nav .nav-link:hover, .navbar-nav .nav-link:focus{ color:#0d6efd !important; }
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus{
+      color:#0d6efd !important;
+    }
     .btn{ border-radius:9999px; font-weight:600; }
     .btn-lg{ padding:.85rem 1.25rem; }
-    .surface{ background:#fff; border:0; border-radius:var(--dd-radius); box-shadow:var(--dd-shadow-sm); }
-    .hero-clean{ background:#fff; border-radius:var(--dd-radius-lg); box-shadow:var(--dd-shadow); padding:2rem; }
-    @media (min-width:992px){ .hero-clean{ padding:2.5rem 2.75rem; } }
-    h1.display-4{ font-weight:800; line-height:1.1; font-size: clamp(32px, 4.0vw, 52px); }
-    .hero-ill{ max-width:520px; margin-left:auto; }
-    .hero-ill img{ display:block; width:100%; height:auto; border-radius:16px; }
+    .surface{
+      background:#fff;
+      border:0;
+      border-radius:var(--dd-radius);
+      box-shadow:var(--dd-shadow-sm);
+    }
+    .hero-clean{
+      background:#fff;
+      border-radius:var(--dd-radius-lg);
+      box-shadow:var(--dd-shadow);
+      padding:2rem;
+    }
+    @media (min-width:992px){
+      .hero-clean{ padding:2.5rem 2.75rem; }
+    }
+    h1.display-4{
+      font-weight:800;
+      line-height:1.1;
+      font-size: clamp(32px, 4.0vw, 52px);
+    }
+    .hero-ill{
+      max-width:520px;
+      margin-left:auto;
+    }
+    .hero-ill img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:16px;
+    }
   </style>
 
   {% block extra_head %}{% endblock %}
@@ -125,20 +156,89 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
   <div class="container">
     <a class="navbar-brand fw-bold" href="{% url 'index' %}">Drop & Delivery</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item"><a class="nav-link" href="{% url 'concept' %}">Концепция</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#tariffs">Тарифы</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}">FAQ</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'offer' %}">Оферта</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'benefits' %}">Преимущества</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'storage_moscow' %}">Хранение багажа</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'luggage_storage_moscow' %}">Luggage Storage</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
-        <li class="nav-item"></li>
+
+        <!-- Услуги: доставка, хранение, аэропорты -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            Услуги
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="servicesDropdown">
+            <li>
+              <a class="dropdown-item" href="/dostavka-bagazha-moskva/">
+                Доставка багажа
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'storage_moscow' %}">
+                Хранение багажа
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="dropdown-header">Доставка в аэропорты</li>
+            <li>
+              <a class="dropdown-item" href="/aero/sheremetyevo/">
+                Шереметьево
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/aero/domodedovo/">
+                Домодедово
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/aero/vnukovo/">
+                Внуково
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/aero/zhukovsky/">
+                Жуковский
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'concept' %}">Концепция</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'index' %}#tariffs">Тарифы</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'offer' %}">Оферта</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'benefits' %}">Преимущества</a>
+        </li>
+
+        <!-- Отдельный пункт для англоязычной страницы -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'luggage_storage_moscow' %}">Luggage Storage</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'contacts' %}">Контакты</a>
+        </li>
+
+        <!-- Кнопка оформления заказа можно вынести в шапку, если захочешь -->
+        <!--
+        <li class="nav-item ms-lg-2">
+          <a class="btn btn-primary btn-sm" href="{% url 'order' %}">
+            Оформить заказ
+          </a>
+        </li>
+        -->
       </ul>
     </div>
   </div>
