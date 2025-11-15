@@ -1,309 +1,336 @@
 {% extends "core/base.html" %}
 {% load static %}
 
-{% block title %}Доставка багажа в Москве — от двери до двери, от 1200 ₽ | Drop & Delivery{% endblock %}
+{% block title %}
+Доставка багажа в Москве и области — от двери до двери | Drop & Delivery
+{% endblock %}
 
 {% block extra_head %}
-  <meta name="description" content="Доставка багажа по Москве и области от двери до двери. Заберём чемоданы у порога, аккуратно упакуем, сохраним и доставим ко времени — в аэропорт, на вокзал или по адресу. Стоимость от 1200 ₽.">
-  <meta property="og:title" content="Доставка багажа в Москве — от двери до двери | Drop & Delivery">
-  <meta property="og:description" content="Курьерская доставка багажа в Москве и области: заберём, упакуем, сохраним и привезём ко времени. Аэропорты, вокзалы, отели и квартиры.">
+  <meta name="description"
+        content="Доставка багажа по Москве и области от двери до двери. Забираем чемоданы у порога, при необходимости храним на складе и доставляем ко времени — в аэропорт, на вокзал, в отель или по адресу.">
+  <meta property="og:title"
+        content="Доставка багажа в Москве — от двери до двери | Drop & Delivery">
+  <meta property="og:description"
+        content="Курьерская доставка багажа: заберём чемоданы у двери, опечатаем, сохраним и привезём в аэропорт, на вокзал или по адресу по Москве и области.">
   <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
-  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+  <meta property="og:image"
+        content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
 {% endblock %}
 
 {% block content %}
-  <section class="py-5 bg-light">
-    <div class="container">
-      <div class="row align-items-center">
+
+  <!-- HERO -->
+  <section class="mb-4">
+    <div class="hero-clean">
+      <div class="row align-items-center g-4">
         <div class="col-lg-7">
-          <h1 class="mb-3">
-            Доставка багажа по Москве и области от двери до двери
+          <p class="text-uppercase small text-muted mb-2">
+            Сервис забор–хранение–доставка багажа
+          </p>
+          <h1 class="display-4 mb-3">
+            Доставка багажа по Москве и области<br>от двери до двери
           </h1>
           <p class="lead mb-4">
-            Заберём ваши чемоданы у двери, аккуратно упакуем и пломбируем, при необходимости сохраним на складе
+            Заберём ваш багаж у двери, аккуратно упакуем и опечатаем, при необходимости сохраним на складе
             и доставим ко времени — в аэропорт, на вокзал, в отель или по адресу по Москве и области.
           </p>
-          <ul class="list-unstyled mb-4">
-            <li>• Стоимость от <strong>1200 ₽</strong> за до 3 единиц багажа</li>
-            <li>• Работаем с аэропортами: Шереметьево, Домодедово, Внуково, Жуковский</li>
-            <li>• 1 ночь хранения включена, далее по фиксированной цене</li>
-            <li>• Страхование багажа до 30 000 ₽ включено</li>
-          </ul>
-          <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg me-2">
-            Оформить доставку багажа
-          </a>
-          <a href="{% url 'storage_moscow' %}" class="btn btn-outline-secondary btn-lg">
-            Хранение багажа
-          </a>
+
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <span class="badge bg-primary-subtle text-primary rounded-pill py-2 px-3">
+              До 3 единиц багажа от 1200 ₽
+            </span>
+            <span class="badge bg-light text-muted rounded-pill py-2 px-3">
+              Страхование до 30 000 ₽ включено
+            </span>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg">
+              Оформить доставку багажа
+            </a>
+            <a href="{% url 'index' %}#tariffs" class="btn btn-outline-secondary btn-lg">
+              Посмотреть тарифы
+            </a>
+          </div>
+
+          <p class="text-muted small mt-3 mb-0">
+            Работаем по Москве, в пределах МКАД и по ближайшему Подмосковью. Аэропорты: Шереметьево, Домодедово,
+            Внуково, Жуковский.
+          </p>
         </div>
-        <div class="col-lg-5 mt-4 mt-lg-0">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h2 class="h5 mb-3">Калькулятор доставки багажа</h2>
-              <p class="mb-3">Укажите примерное количество единиц багажа и направление, чтобы узнать ориентировочную стоимость.</p>
-              {% comment %}Если есть общий калькулятор — подключи include{% endcomment %}
-              {# {% include "core/partials/calculator_form.html" %} #}
-              <p class="text-muted mb-0">Здесь может быть форма расчёта, пока стоит технический блок-заглушка.</p>
-            </div>
+
+        <div class="col-lg-5">
+          <div class="surface p-3 p-md-4">
+            <h2 class="h5 mb-3">Кому удобна доставка багажа</h2>
+            <ul class="mb-3">
+              <li>путешественникам и туристам, у которых «дырка» между выездом и вылетом;</li>
+              <li>семьям с детьми и большим количеством чемоданов;</li>
+              <li>гостям Москвы в командировке;</li>
+              <li>тем, кто не хочет ехать в аэропорт с тяжёлым багажом.</li>
+            </ul>
+            <p class="mb-0 text-muted small">
+              Не нужно придумывать, где оставить чемоданы и как их везти — всё берём на себя:
+              забираем, храним и доставляем точно ко времени.
+            </p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-5">
-    <div class="container">
-      <h2 class="mb-4">Как работает услуга доставки багажа</h2>
-      <div class="row g-4">
-        <div class="col-md-3">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h3 class="h6">1. Оформление заявки</h3>
-              <p class="mb-0">
-                Вы оставляете заявку через сайт или мессенджер: указываете адрес забора багажа, дату, время и адрес доставки
-                (аэропорт, вокзал, отель или квартира).
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h3 class="h6">2. Приезд представителя</h3>
-              <p class="mb-0">
-                Представитель приезжает в согласованное окно, фотографирует багаж, помогает с упаковкой, пломбирует и оформляет документы.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h3 class="h6">3. Хранение при необходимости</h3>
-              <p class="mb-0">
-                Если между забором и доставкой есть пауза, багаж хранится на складе с ограниченным доступом. 1 ночь хранения включена,
-                далее — по тарифу.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h3 class="h6">4. Доставка ко времени</h3>
-              <p class="mb-0">
-                В назначенное время багаж доставляется по адресу: в аэропорт, на вокзал, в отель или к вам домой.
-                Вы получаете его по квитанции и пломбе.
-              </p>
-            </div>
-          </div>
-        </div>
+  <!-- КАК РАБОТАЕТ -->
+  <section class="mb-4">
+    <div class="row g-4">
+      <div class="col-12">
+        <h2 class="h3 mb-3">Как работает доставка багажа Drop &amp; Delivery</h2>
       </div>
-    </div>
-  </section>
 
-  <section class="py-5 bg-light">
-    <div class="container">
-      <h2 class="mb-4">Тарифы на доставку багажа</h2>
-      <div class="table-responsive mb-3">
-        <table class="table table-bordered align-middle">
-          <thead class="table-light">
-            <tr>
-              <th>Направление</th>
-              <th>Что входит</th>
-              <th>Стоимость</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>По Москве (в пределах МКАД)</td>
-              <td>Забор багажа у двери, доставка по адресу, до 3 единиц багажа</td>
-              <td>от 1200 ₽</td>
-            </tr>
-            <tr>
-              <td>Москва ↔ аэропорт (Шереметьево, Домодедово, Внуково, Жуковский)</td>
-              <td>Забор у двери, доставка в аэропорт или обратно, до 3 единиц багажа</td>
-              <td>от 1500 ₽</td>
-            </tr>
-            <tr>
-              <td>Москва ↔ Подмосковье</td>
-              <td>Забор в Москве, доставка в Подмосковье (или наоборот), до 3 единиц багажа</td>
-              <td>рассчитывается индивидуально</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-muted mb-0">
-        * Точная стоимость зависит от расстояния, срочности и количества единиц багажа.
-        1 ночь хранения включена, каждые последующие сутки — по отдельному тарифу.
-      </p>
-    </div>
-  </section>
-
-  <section class="py-5">
-    <div class="container">
-      <h2 class="mb-4">Кому подходит доставка багажа от Drop &amp; Delivery</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <h3 class="h6">Путешественники и туристы</h3>
-          <p>
-            Если рейс утром или поздно ночью, а заселение в отель только днём, вам
-            не нужно таскать чемоданы по городу. Мы заберём и привезём их к нужному времени.
-          </p>
-        </div>
-        <div class="col-md-4">
-          <h3 class="h6">Семьи с детьми</h3>
-          <p>
-            Чемоданы, коляски, детские вещи — всё это удобно передать нашему представителю
-            и спокойно добраться до аэропорта или отеля налегке.
-          </p>
-        </div>
-        <div class="col-md-4">
-          <h3 class="h6">Гости Москвы и командировки</h3>
-          <p>
-            Прилетаете в Москву по работе или на мероприятие? Мы доставим багаж в офис, гостиницу
-            или апартаменты, пока вы решаете свои задачи.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-5 bg-light">
-    <div class="container">
-      <h2 class="mb-4">Доставка багажа в аэропорты Москвы</h2>
-      <p class="mb-4">
-        Мы работаем со всеми крупными аэропортами Москвы и области. Для каждого направления есть отдельная страница
-        с подробным описанием маршрутов и особенностей.
-      </p>
-      <div class="row g-3">
-        <div class="col-md-3 col-6">
-          <a href="/aero/sheremetyevo/" class="btn btn-outline-secondary w-100 mb-2">Шереметьево</a>
-        </div>
-        <div class="col-md-3 col-6">
-          <a href="/aero/domodedovo/" class="btn btn-outline-secondary w-100 mb-2">Домодедово</a>
-        </div>
-        <div class="col-md-3 col-6">
-          <a href="/aero/vnukovo/" class="btn btn-outline-secondary w-100 mb-2">Внуково</a>
-        </div>
-        <div class="col-md-3 col-6">
-          <a href="/aero/zhukovsky/" class="btn btn-outline-secondary w-100 mb-2">Жуковский</a>
-        </div>
-      </div>
-      <p class="mt-3 mb-0">
-        Если вам нужна доставка в другой аэропорт или по нестандартному маршруту — напишите нам, подберём решение.
-      </p>
-    </div>
-  </section>
-
-  <section class="py-5">
-    <div class="container">
-      <h2 class="mb-4">Безопасность и хранение багажа</h2>
-      <div class="row g-4">
-        <div class="col-md-6">
-          <p>
-            Каждый чемодан или сумка проходит фотофиксацию при приёме: мы фиксируем внешний вид, количество мест и состояние
-            багажа, после чего он опечатывается индивидуальной пломбой.
-          </p>
-          <p>
-            На время хранения багаж находится на складе с ограниченным доступом. 1 ночь хранения включена в стоимость услуги,
-            при необходимости срок можно продлить.
-          </p>
-        </div>
-        <div class="col-md-6">
-          <p>
-            В услугу включено страхование содержимого багажа до 30 000 ₽. Полный перечень условий и ограничений описан
-            в <a href="{% url 'offer' %}" target="_blank" rel="noopener">публичной оферте</a>.
-          </p>
+      <div class="col-md-3">
+        <div class="surface h-100 p-3">
+          <h3 class="h6">1. Заявка на сайте или в мессенджере</h3>
           <p class="mb-0">
-            Наш представитель работает не как обычный курьер, а как личный ассистент: помогает с упаковкой, отвечает на вопросы,
-            выдаёт квитанцию и остаётся на связи до момента доставки.
+            Вы оставляете заявку: адрес забора багажа, количество мест, дата и желаемое время, адрес доставки
+            (аэропорт, вокзал, отель или квартира).
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="surface h-100 p-3">
+          <h3 class="h6">2. Приезд представителя</h3>
+          <p class="mb-0">
+            Представитель приезжает в оговорённое окно, фотографирует багаж, помогает при необходимости с упаковкой,
+            опечатывает пломбами и оформляет квитанцию.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="surface h-100 p-3">
+          <h3 class="h6">3. Хранение при необходимости</h3>
+          <p class="mb-0">
+            Если между забором и поездкой есть пауза, багаж хранится на складе с ограниченным доступом.
+            Одна ночь хранения включена в базовый тариф, далее — по фиксированной цене.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="surface h-100 p-3">
+          <h3 class="h6">4. Доставка ко времени</h3>
+          <p class="mb-0">
+            В назначенное время мы привозим багаж по адресу: в терминал аэропорта, на вокзал, в отель или к вам домой.
+            Вы получаете его по квитанции и номеру пломбы.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-5 bg-light">
-    <div class="container">
-      <h2 class="mb-4">Частые вопросы о доставке багажа</h2>
-      <div class="accordion" id="faqDelivery">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="q1">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true" aria-controls="a1">
-              За сколько времени до вылета лучше заказывать доставку багажа?
-            </button>
-          </h2>
-          <div id="a1" class="accordion-collapse collapse show" aria-labelledby="q1" data-bs-parent="#faqDelivery">
-            <div class="accordion-body">
-              Рекомендуем оформлять заявку минимум за 24 часа до вылета, чтобы выбрать удобное время забора.
-              В некоторых случаях возможно оформление в день выезда — уточните доступные слоты у оператора.
+  <!-- ДОСТАВКА В АЭРОПОРТЫ -->
+  <section class="mb-4">
+    <div class="surface p-3 p-md-4">
+      <div class="row g-3 align-items-center">
+        <div class="col-lg-6">
+          <h2 class="h3 mb-3">Доставка багажа в аэропорты Москвы</h2>
+          <p class="mb-3">
+            Часто мы работаем по маршруту «квартира / отель → аэропорт» или в обратную сторону.
+            Доставим ваш багаж в любой из крупных аэропортов Москвы и области.
+          </p>
+          <div class="row g-2 mb-3">
+            <div class="col-sm-6 col-md-3">
+              <a href="/aero/sheremetyevo/" class="btn btn-outline-primary w-100 mb-2">
+                Шереметьево
+              </a>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <a href="/aero/domodedovo/" class="btn btn-outline-primary w-100 mb-2">
+                Домодедово
+              </a>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <a href="/aero/vnukovo/" class="btn btn-outline-primary w-100 mb-2">
+                Внуково
+              </a>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <a href="/aero/zhukovsky/" class="btn btn-outline-primary w-100 mb-2">
+                Жуковский
+              </a>
             </div>
           </div>
+          <p class="text-muted small mb-0">
+            Если нужен нестандартный маршрут (например, из одного аэропорта в другой или в область) — напишите,
+            подберём решение под ваш сценарий.
+          </p>
         </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="q2">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
-              Сколько единиц багажа можно передать за один раз?
-            </button>
-          </h2>
-          <div id="a2" class="accordion-collapse collapse" aria-labelledby="q2" data-bs-parent="#faqDelivery">
-            <div class="accordion-body">
-              Базовый тариф рассчитан на до 3 единиц багажа. Дополнительные чемоданы и сумки можно добавить за отдельную
-              доплату. Точный расчёт вы увидите при оформлении заявки.
-            </div>
+        <div class="col-lg-6">
+          <div class="border rounded-3 p-3 bg-light">
+            <h3 class="h6 mb-2">Примеры сценариев</h3>
+            <ul class="mb-0">
+              <li>Утренний рейс, а вы выезжаете из квартиры вечером — забираем багаж накануне и привозим ко времени вылета.</li>
+              <li>Прилетаете ночью, а заселение в отель днём — сначала доставим багаж на хранение, потом в отель.</li>
+              <li>Командировка: багаж едет в офис или отель, а вы — налегке на встречу.</li>
+            </ul>
           </div>
         </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="q3">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
-              Можно ли передать в багаже ценности или документы?
-            </button>
-          </h2>
-          <div id="a3" class="accordion-collapse collapse" aria-labelledby="q3" data-bs-parent="#faqDelivery">
-            <div class="accordion-body">
-              Нет, в соответствии с публичной офертой мы не принимаем к перевозке наличные деньги, ценные бумаги, ювелирные изделия,
-              важные документы, оружие, опасные вещества и другие предметы, запрещённые законом РФ.
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="q4">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
-              Как я получу багаж в аэропорту?
-            </button>
-          </h2>
-          <div id="a4" class="accordion-collapse collapse" aria-labelledby="q4" data-bs-parent="#faqDelivery">
-            <div class="accordion-body">
-              Мы заранее согласуем место встречи с представителем в аэропорту (терминал, вход, зона вылета или прилёта).
-              Для получения багажа достаточно предъявить квитанцию и назвать номер пломбы.
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="q5">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a5" aria-expanded="false" aria-controls="a5">
-              Что делать, если рейс задержали или перенесли?
-            </button>
-          </h2>
-          <div id="a5" class="accordion-collapse collapse" aria-labelledby="q5" data-bs-parent="#faqDelivery">
-            <div class="accordion-body">
-              Свяжитесь с нами как можно скорее любым удобным способом. Мы скорректируем время доставки багажа.
-              При значительной перенастройке может потребоваться доплата за дополнительное хранение или подачу.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <a href="{% url 'order_create' %}" class="btn btn-primary btn-lg">
-          Оформить доставку багажа
-        </a>
       </div>
     </div>
   </section>
+
+  <!-- БЕЗОПАСНОСТЬ И ХРАНЕНИЕ -->
+  <section class="mb-4">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="surface h-100 p-3 p-md-4">
+          <h2 class="h4 mb-3">Безопасность багажа</h2>
+          <p>
+            Каждый чемодан или сумка проходят фотофиксацию при приёме: мы фиксируем внешний вид, количество мест
+            и состояние багажа, а затем опечатываем его индивидуальными пломбами.
+          </p>
+          <p>
+            Страхование багажа до <strong>30 000 ₽</strong> включено в стоимость услуг. Подробные условия и ограничения
+            описаны в <a href="{% url 'offer' %}" target="_blank" rel="noopener">публичной оферте</a>.
+          </p>
+          <p class="mb-0 text-muted small">
+            Представитель работает не как безликий курьер, а как ответственный ассистент: приезжает с документами,
+            пломбами, при необходимости помогает с упаковкой и остаётся на связи до момента передачи багажа вам.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="surface h-100 p-3 p-md-4">
+          <h2 class="h4 mb-3">Хранение багажа</h2>
+          <p>
+            Если между забором и доставкой есть пауза, багаж хранится на нашем складе с ограниченным доступом.
+            Одна ночь хранения уже включена в базовый тариф, далее можно продлить хранение по фиксированной цене.
+          </p>
+          <p>
+            Подробнее о хранении багажа в Москве можно почитать на отдельной странице:
+          </p>
+          <p>
+            <a href="{% url 'storage_moscow' %}" class="btn btn-outline-primary btn-sm">
+              Хранение багажа в Москве
+            </a>
+          </p>
+          <p class="text-muted small mb-0">
+            Мы не принимаем к перевозке и хранению наличные деньги, драгоценности, ценные бумаги, важные документы,
+            оружие, опасные вещества и другие предметы, запрещённые законодательством РФ.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ / ВОПРОСЫ -->
+  <section class="mb-5">
+    <div class="surface p-3 p-md-4">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <h2 class="h3 mb-3">Частые вопросы о доставке багажа</h2>
+          <p>
+            Здесь — краткие ответы на самые частые вопросы. Полный список можно посмотреть в разделе
+            <a href="{% url 'faq' %}">FAQ</a> или задать свой вопрос напрямую.
+          </p>
+          <p class="mb-1">
+            Написать нам можно в&nbsp;WhatsApp или Telegram:
+          </p>
+          <p class="mb-3">
+            <a href="https://wa.me/79153835535" class="btn btn-outline-success btn-sm me-2" target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+            <a href="https://t.me/dropdeliv" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">
+              Telegram
+            </a>
+          </p>
+          <p class="text-muted small mb-0">
+            Если вы планируете поездку заранее, лучше бронировать доставку багажа за 1–2 дня до выезда —
+            так проще подобрать идеальное окно по времени.
+          </p>
+        </div>
+        <div class="col-lg-7">
+          <div class="accordion" id="deliveryFaq">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q1">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#a1" aria-expanded="true" aria-controls="a1">
+                  За сколько времени до вылета лучше заказывать доставку багажа?
+                </button>
+              </h2>
+              <div id="a1" class="accordion-collapse collapse show" aria-labelledby="q1" data-bs-parent="#deliveryFaq">
+                <div class="accordion-body">
+                  Оптимально — за 24 часа и более. В некоторых случаях мы можем принять заявку день в день,
+                  но доступность слотов зависит от расписания на дату. Чем раньше бронирование, тем больше выбор по времени.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
+                  Сколько чемоданов можно передать за один раз?
+                </button>
+              </h2>
+              <div id="a2" class="accordion-collapse collapse" aria-labelledby="q2" data-bs-parent="#deliveryFaq">
+                <div class="accordion-body">
+                  Базовый тариф включает до 3 единиц багажа (чемоданы, сумки, рюкзаки). Дополнительные места
+                  можно добавить за доплату — финальная стоимость всегда согласуется с вами перед подтверждением заказа.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q3">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
+                  Можно ли передать в багаже ценности или документы?
+                </button>
+              </h2>
+              <div id="a3" class="accordion-collapse collapse" aria-labelledby="q3" data-bs-parent="#deliveryFaq">
+                <div class="accordion-body">
+                  Нет, в соответствии с публичной офертой мы не принимаем к перевозке наличные деньги, ювелирные изделия,
+                  драгоценные металлы, важные документы и другие ценные вещи. Их лучше везти с собой в ручной клади.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q4">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
+                  Что делать, если рейс задержали или перенесли?
+                </button>
+              </h2>
+              <div id="a4" class="accordion-collapse collapse" aria-labelledby="q4" data-bs-parent="#deliveryFaq">
+                <div class="accordion-body">
+                  Как только узнаете об изменении времени вылета — свяжитесь с нами. Мы скорректируем время доставки багажа.
+                  При значительном переносе может потребоваться дополнительное хранение или новая подача — условия всегда
+                  обсуждаем заранее.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q5">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#a5" aria-expanded="false" aria-controls="a5">
+                  Как оплатить доставку багажа?
+                </button>
+              </h2>
+              <div id="a5" class="accordion-collapse collapse" aria-labelledby="q5" data-bs-parent="#deliveryFaq">
+                <div class="accordion-body">
+                  Оплата возможна наличными, переводом по ссылке или другим удобным способом — в соответствии
+                  с условиями <a href="{% url 'offer' %}" target="_blank" rel="noopener">публичной оферты</a>.
+                  Детали оплаты вы получите после подтверждения заявки.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 {% endblock %}
