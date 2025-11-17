@@ -23,6 +23,12 @@
   </url>
 
   <url>
+    <loc>https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://www.drop-delivery.ru/luggage-storage-moscow/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -72,24 +78,24 @@
     <priority>0.3</priority>
   </url>
 
-  <!-- Аэропорты -->
+  <!-- Аэропорты (реальные работающие урлы) -->
   <url>
-    <loc>https://www.drop-delivery.ru/aero/sheremetyevo/</loc>
+    <loc>https://www.drop-delivery.ru/aero/svo/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.drop-delivery.ru/aero/domodedovo/</loc>
+    <loc>https://www.drop-delivery.ru/aero/dme/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.drop-delivery.ru/aero/vnukovo/</loc>
+    <loc>https://www.drop-delivery.ru/aero/vko/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.drop-delivery.ru/aero/zhukovsky/</loc>
+    <loc>https://www.drop-delivery.ru/aero/zia/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -100,11 +106,5 @@
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
-
-  <url>
-  <loc>https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/</loc>
-  <changefreq>weekly</changefreq>
-  <priority>0.7</priority>
-</url>
 
 </urlset>
