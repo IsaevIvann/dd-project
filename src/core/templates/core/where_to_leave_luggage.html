@@ -1,0 +1,355 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Где оставить багаж в Москве — простой способ вместо камер хранения | Drop & Delivery{% endblock %}
+
+{% block extra_head %}
+  <link rel="canonical" href="https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/"/>
+
+  <meta name="description" content="Где оставить багаж в Москве, если рано прилёт или поздний вылет? Вместо камер хранения — сервис Drop & Delivery: заберём чемоданы у двери, при необходимости сохраним на складе и доставим ко времени в аэропорт, на вокзал или по адресу.">
+  <meta property="og:title" content="Где оставить багаж в Москве — Drop & Delivery">
+  <meta property="og:description" content="Удобная альтернатива камерой хранения: заберём багаж у двери, сохраним на складе и привезём в нужное место и ко времени.">
+  <meta property="og:url" content="https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+  <meta property="og:site_name" content="Drop & Delivery">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    :root{
+      --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+                 Arial, "Noto Sans", sans-serif;
+      --dd-radius: 24px;
+      --dd-radius-lg: 32px;
+      --dd-shadow: 0 24px 48px rgba(13,110,253,.10);
+      --dd-shadow-sm: 0 12px 30px rgba(13,110,253,.08);
+      --ink:#0f172a;
+      --muted:#64748b;
+    }
+    .hero-clean{
+      background:#fff;
+      border-radius:var(--dd-radius-lg);
+      box-shadow:var(--dd-shadow);
+      padding:2rem;
+    }
+    @media (min-width:992px){
+      .hero-clean{ padding:2.5rem 2.75rem; }
+    }
+    .surface{
+      background:#fff;
+      border-radius:var(--dd-radius);
+      box-shadow:var(--dd-shadow-sm);
+      border:0;
+    }
+    .pill{ border-radius:999px; }
+    .hero-title{
+      font-family:var(--dd-font);
+      font-weight:800;
+      line-height:1.1;
+      font-size:clamp(32px,4.0vw,52px);
+      color:var(--ink);
+    }
+  </style>
+
+  <!-- JSON-LD: WebPage -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "@id":"https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/#webpage",
+    "url":"https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/",
+    "name":"Где оставить багаж в Москве — альтернатива камерам хранения",
+    "inLanguage":"ru",
+    "isPartOf":{"@id":"https://www.drop-delivery.ru/#website"},
+    "about":{"@id":"https://www.drop-delivery.ru/#organization"}
+  }
+  </script>
+
+  <!-- JSON-LD: Service кратко про услугу -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Хранение и доставка багажа по Москве — Drop & Delivery",
+    "serviceType":"Luggage storage and delivery",
+    "areaServed":["Москва","Московская область"],
+    "url":"https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/",
+    "provider":{"@id":"https://www.drop-delivery.ru/#organization"},
+    "description":"Забор багажа у двери с последующим хранением и доставкой в аэропорт, на вокзал или по адресу. Альтернатива камерам хранения в Москве."
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container my-4 my-md-5">
+
+  <!-- HERO -->
+  <section class="hero-clean mb-5">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-7">
+        <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2">
+          <i class="bi bi-bag me-1"></i> Где оставить багаж в Москве
+        </span>
+        <h1 class="hero-title mt-3">
+          Где оставить багаж в Москве — <span class="text-primary">без очередей и поездок в камеры хранения</span>
+        </h1>
+        <p class="lead text-secondary mt-3">
+          Если у вас ранний прилёт, поздний вылет, пересадка или смена отеля, необязательно везти чемоданы в камеру
+          хранения. Сервис <b>Drop &amp; Delivery</b> забирает багаж у двери, при необходимости хранит его на складе и
+          привозит точно ко времени — в аэропорт, на вокзал или по адресу в Москве и области.
+        </p>
+        <div class="d-flex flex-wrap gap-3 mt-3">
+          <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4">
+            <i class="bi bi-send me-1"></i>Оставить заявку
+          </a>
+          <a href="/#tariffs" class="btn btn-lg btn-outline-primary px-4">
+            <i class="bi bi-tag me-1"></i>Тарифы и калькулятор
+          </a>
+        </div>
+        <p class="text-secondary mt-3 mb-0">
+          Работаем по Москве и ближайшему Подмосковью. Первые <b>1 сутки хранения включены</b>, страхование багажа до
+          <b>30&nbsp;000 ₽</b> — в базовой услуге.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="surface p-4 text-center">
+          <img src="{% static 'core/img/dnd_storage.png' %}"
+               alt="Удобная альтернатива камерам хранения в Москве"
+               loading="lazy" decoding="async" class="img-fluid rounded-4">
+          <div class="small text-muted mt-2">
+            Забор у двери, пломбы, акт и охраняемый склад — ваш багаж под контролем.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Сценарии: когда нужен сервис вместо камеры хранения -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Когда особенно актуален вопрос «где оставить багаж в Москве»</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Ранний прилёт / поздний вылет</h3>
+          <p class="text-secondary mb-0">
+            Приезжаете в город задолго до заселения или улетаете вечером. Чемоданы можно сдать нам и спокойно
+            гулять по городу налегке.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Пересадка в Москве</h3>
+          <p class="text-secondary mb-0">
+            Перелёт с пересадкой и несколько часов/день между рейсами. Мы заберём багаж в одном аэропорту и
+            привезём в другой или по адресу.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Смена отеля или квартиры</h3>
+          <p class="text-secondary mb-0">
+            Выселение в полдень, заселение вечером — привычная история. Чемоданы можно отдать нам, а самим сходить
+            на прогулку или встречу.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Мероприятия и деловые поездки</h3>
+          <p class="text-secondary mb-0">
+            Конференции, выставки, командировки. Вы приезжаете на площадку без багажа, а чемоданы ждут вас уже дома
+            или в аэропорту.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Как работает сервис как альтернатива камерам хранения -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Как работает Drop &amp; Delivery вместо камеры хранения</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-chat-dots"></i></div>
+            <span class="badge text-bg-primary rounded-pill">1</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Заявка</h3>
+          <p class="text-secondary mb-0">
+            Оставляете заявку на сайте или пишете в мессенджер. Согласуем время и адрес забора, обсудим формат доставки.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-person-check"></i></div>
+            <span class="badge text-bg-primary rounded-pill">2</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Забор багажа</h3>
+          <p class="text-secondary mb-0">
+            Представитель приезжает по адресу, при необходимости помогает с упаковкой, пломбирует багаж и оформляет акт
+            приёма-передачи.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-box-seam"></i></div>
+            <span class="badge text-bg-primary rounded-pill">3</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Хранение на складе</h3>
+          <p class="text-secondary mb-0">
+            Чемоданы хранятся на охраняемом складе. Первые сутки включены, далее — прозрачный тариф, без скрытых платежей.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 bg-light p-3"><i class="bi bi-geo-alt"></i></div>
+            <span class="badge text-bg-primary rounded-pill">4</span>
+          </div>
+          <h3 class="h6 mt-3 mb-1">Доставка ко времени</h3>
+          <p class="text-secondary mb-0">
+            В выбранное время привозим багаж в аэропорт, на вокзал или по адресу. Вы проверяете пломбы и содержимое —
+            после этого происходит оплата.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO-блок -->
+  <section class="surface p-4 p-md-5 mb-5">
+    <h2 class="h4 fw-bold mb-3">
+      Где оставить багаж в Москве вместо камеры хранения: кратко о формате
+    </h2>
+    <p class="text-secondary mb-2">
+      Классический сценарий — искать камеру хранения на вокзале или в аэропорту, стоять в очереди, а потом снова ехать
+      за чемоданами. В большом городе это забирает время и силы. Формат <b>“забор — хранение — доставка”</b> позволяет
+      решить задачу по-другому: багаж забирают у двери, хранят на складе и привозят туда, где вы будете в нужный момент.
+    </p>
+    <p class="text-secondary mb-2">
+      Это удобно, если вы путешествуете с детьми, у вас несколько чемоданов, нестандартный багаж или плотный график
+      встреч. Вам не нужно думать, как совмещать логистику по городу и поиск камеры хранения — этим занимается сервис.
+    </p>
+    <p class="text-secondary mb-0">
+      Drop &amp; Delivery работает по Москве и Московской области, доставляет багаж в аэропорты Шереметьево, Домодедово,
+      Внуково, Жуковский, а также на вокзалы и по адресам. Все условия прозрачны заранее, оплата — после проверки багажа.
+    </p>
+  </section>
+
+  <!-- Перелинковка -->
+  <section class="surface p-4 p-md-5 mb-5">
+    <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-light border pill" href="/hranenie-bagazha-moskva/">Хранение багажа в Москве</a>
+      <a class="btn btn-light border pill" href="/dostavka-bagazha-moskva/">Доставка багажа по Москве и области</a>
+      <a class="btn btn-light border pill" href="/aero/svo/">Доставка багажа в Шереметьево</a>
+      <a class="btn btn-light border pill" href="/aero/dme/">Доставка багажа в Домодедово</a>
+      <a class="btn btn-light border pill" href="/benefits/">Преимущества сервиса</a>
+      <a class="btn btn-light border pill" href="/faq/">FAQ: частые вопросы</a>
+    </div>
+  </section>
+
+  <!-- Локальный FAQ -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">FAQ: где оставить багаж в Москве</h2>
+    <div class="accordion" id="faqWhere">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#w1">
+            На сколько времени можно оставить багаж?
+          </button>
+        </h2>
+        <div id="w1" class="accordion-collapse collapse" data-bs-parent="#faqWhere">
+          <div class="accordion-body text-secondary">
+            Можно оставить багаж как на несколько часов, так и на несколько дней и дольше. Первые сутки хранения
+            включены в базовый тариф, далее действует единая ставка за сутки.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#w2">
+            Чем ваш сервис отличается от камеры хранения?
+          </button>
+        </h2>
+        <div id="w2" class="accordion-collapse collapse" data-bs-parent="#faqWhere">
+          <div class="accordion-body text-secondary">
+            Вам не нужно везти чемоданы в камеру хранения и потом возвращаться за ними. Мы забираем багаж у двери,
+            храним его на складе и доставляем ко времени в удобное место — в аэропорт, на вокзал или по адресу.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#w3">
+            Насколько это безопасно?
+          </button>
+        </h2>
+        <div id="w3" class="accordion-collapse collapse" data-bs-parent="#faqWhere">
+          <div class="accordion-body text-secondary">
+            При передаче багажа мы пломбируем чемоданы, фиксируем номера пломб и состояние в акте, делаем фото.
+            Багаж хранится на охраняемом складе, включено страхование до 30&nbsp;000 ₽.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#w4">
+            Как происходит оплата услуги?
+          </button>
+        </h2>
+        <div id="w4" class="accordion-collapse collapse" data-bs-parent="#faqWhere">
+          <div class="accordion-body text-secondary">
+            Оплата производится после того, как вы получили багаж, проверили пломбы и содержимое. Доступны
+            безналичные способы оплаты: СБП, QR или платёжная ссылка.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQPage JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"На сколько времени можно оставить багаж в Москве?",
+        "acceptedAnswer":{"@type":"Answer","text":"Можно оставить багаж как на несколько часов, так и на длительный срок. Первые сутки хранения включены, дальше действует единый тариф за сутки."}
+      },
+      {
+        "@type":"Question",
+        "name":"Чем Drop & Delivery отличается от обычной камеры хранения?",
+        "acceptedAnswer":{"@type":"Answer","text":"Вам не нужно везти багаж в камеру хранения и потом возвращаться за ним. Мы забираем чемоданы у двери, храним на складе и доставляем в аэропорт, на вокзал или по адресу ко времени."}
+      },
+      {
+        "@type":"Question",
+        "name":"Насколько безопасно оставлять багаж в сервисе Drop & Delivery?",
+        "acceptedAnswer":{"@type":"Answer","text":"Багаж пломбируется, фиксируется в акте с номерами пломб и фотографиями, хранится на охраняемом складе. Включено страхование до 30 000 ₽."}
+      },
+      {
+        "@type":"Question",
+        "name":"Как происходит оплата услуги хранения и доставки багажа?",
+        "acceptedAnswer":{"@type":"Answer","text":"Оплата производится после получения багажа и проверки пломб. Доступны безналичные способы оплаты: СБП, QR-код или платёжная ссылка."}
+      }
+    ]
+  }
+  </script>
+
+</div>
+{% endblock %}

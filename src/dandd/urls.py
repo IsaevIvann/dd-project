@@ -26,6 +26,7 @@ urlpatterns = [
     path("aero/<slug:code>/", views.aero, name="aero"),
     path("concept/", views.concept, name="concept"),
     path("dostavka-bagazha-moskva/", TemplateView.as_view(template_name="core/dostavka_bagazha_moskva.html"),name="delivery_moscow",),
+    path("gde-ostavit-bagazh-v-moskve/",TemplateView.as_view(template_name="core/where_to_leave_luggage.html"),name="where_to_leave_luggage",),
 
 ]
 

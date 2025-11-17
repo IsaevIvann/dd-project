@@ -101,4 +101,10 @@
     <priority>0.4</priority>
   </url>
 
+  <url>
+  <loc>https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/</loc>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+</url>
+
 </urlset>
