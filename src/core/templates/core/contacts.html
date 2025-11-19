@@ -7,16 +7,21 @@
 <style>
   .yandex-rating-wrapper {
     display: inline-block;
+    /* высота 50px * 1.6 = 80px */
+    height: 80px;
     transform: scale(1.6);
     transform-origin: top center;
   }
 
   @media (max-width: 576px) {
     .yandex-rating-wrapper {
+      /* высота 50px * 1.3 = 65px */
+      height: 65px;
       transform: scale(1.3);
     }
   }
 </style>
+
 
 <div class="container py-5" style="max-width: 700px;">
   <h1 class="mb-4 text-center">Контакты</h1>
