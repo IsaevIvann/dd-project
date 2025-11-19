@@ -1,8 +1,26 @@
 {% extends "core/base.html" %}
+
 {% block title %}Контакты — Drop & Delivery{% endblock %}
+
 {% block content %}
+
+<style>
+  .yandex-rating-wrapper {
+    display: inline-block;
+    transform: scale(1.6);
+    transform-origin: top center;
+  }
+
+  @media (max-width: 576px) {
+    .yandex-rating-wrapper {
+      transform: scale(1.3);
+    }
+  }
+</style>
+
 <div class="container py-5" style="max-width: 700px;">
   <h1 class="mb-4 text-center">Контакты</h1>
+
   <div class="row g-4">
     <div class="col-12 text-center">
       <a href="tel:+79936000879" class="btn btn-outline-secondary mb-2">
@@ -27,28 +45,17 @@
       <div>Работаем круглосуточно</div>
     </div>
 
-<style>
-  .yandex-rating-wrapper {
-    display: inline-block;
-    transform: scale(1.6);
-    transform-origin: top center;
-  }
-
-  @media (max-width: 576px) {
-    .yandex-rating-wrapper {
-      transform: scale(1.3);
-    }
-  }
-</style>
-
-<div class="col-12 text-center mt-4">
-  <div class="yandex-rating-wrapper">
-    <iframe src="https://yandex.ru/sprav/widget/rating-badge/138558427780?type=rating"
-            width="150"
-            height="50"
-            frameborder="0">
-    </iframe>
+    <div class="col-12 text-center mt-4">
+      <div class="yandex-rating-wrapper">
+        <iframe src="https://yandex.ru/sprav/widget/rating-badge/138558427780?type=rating"
+                width="150"
+                height="50"
+                frameborder="0">
+        </iframe>
+      </div>
+      <div class="text-muted small mt-2">Оставьте отзыв о нас на Яндексе</div>
+    </div>
   </div>
-  <div class="text-muted small mt-2">Оставьте отзыв о нас на Яндексе</div>
 </div>
 
+{% endblock %}
