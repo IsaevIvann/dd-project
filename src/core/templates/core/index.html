@@ -7,7 +7,9 @@
   <meta name="description" content="Заберём чемоданы у двери, опечатаем и сохраним, привезём ко времени — в аэропорт, на вокзал или по адресу в Москве и области. Прозрачные условия и аккуратная работа представителя.">
   <meta property="og:title" content="D&D — доставка и хранение багажа в Москве и области">
   <meta property="og:description" content="Забор, хранение и доставка багажа от двери до двери — ко времени и без лишних поездок.">
-  <meta property="og:url" content="{{ SITE_URL }}{{ CANONICAL_PATH }}">
+
+  {# OG URL = канонический URL текущей страницы #}
+  <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
   <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
 
   {# JSON-LD: HowTo #}
@@ -34,7 +36,7 @@
    "@type":"Service",
    "name":"Доставка и хранение багажа — Москва и область",
    "serviceType":"Door-to-door luggage delivery & storage",
-   "provider":{"@id":"https://www.drop-delivery.ru/#organization"},
+   "provider":{"@id":"{{ SITE_URL }}/#organization"},
    "areaServed":["Москва","Московская область"],
    "url":"{{ SITE_URL }}/",
    "offers":{
@@ -98,7 +100,7 @@
 
 {% block content %}
 
-{# HERO: один H1, без слайдера #}
+{# HERO #}
 <section class="mb-5">
   <article class="hero-wrap">
     <div class="left">
@@ -256,7 +258,7 @@
   </p>
 </section>
 
-{# ТИЗЕР FAQ вместо тяжёлого include #}
+{# ТИЗЕР FAQ #}
 <section class="card-dd p-4 p-md-5 mb-4 text-center">
   <h2 class="h5 fw-bold mb-2">Ответы на частые вопросы</h2>
   <div class="text-muted mb-3">

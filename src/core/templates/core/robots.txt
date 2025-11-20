@@ -1,26 +1,33 @@
 # robots.txt for drop-delivery.ru
 
-# --- Crawl control ---
+# --- Main rules (all search engines) ---
 User-agent: *
-Disallow:
+Disallow: /admin/
 
 # --- Yandex-specific ---
 User-agent: Yandex
+Disallow: /admin/
 Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&utm_referrer&yclid&gclid&fbclid /
 
 # --- Optional: block selected AI/extended crawlers (doesn't affect SEO) ---
 User-agent: GPTBot
 Disallow: /
+
 User-agent: Google-Extended
 Disallow: /
+
 User-agent: CCBot
 Disallow: /
+
 User-agent: Amazonbot
 Disallow: /
+
 User-agent: Applebot-Extended
 Disallow: /
+
 User-agent: Bytespider
 Disallow: /
+
 User-agent: meta-externalagent
 Disallow: /
 
