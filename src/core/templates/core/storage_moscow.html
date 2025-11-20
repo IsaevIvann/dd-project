@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -21,19 +22,28 @@
     (function(m,e,t,r,i,k,a){
       m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
       m[i].l=1*new Date();
-      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
-      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      for (var j = 0; j < document.scripts.length; j++) {
+        if (document.scripts[j].src === r) { return; }
+      }
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a);
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104157204','ym');
-    ym(104157204, 'init', { ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true });
+    ym(104157204, 'init', {
+      ssr:true,
+      webvisor:true,
+      clickmap:true,
+      ecommerce:"dataLayer",
+      accurateTrackBounce:true,
+      trackLinks:true
+    });
   </script>
   <!-- /Yandex.Metrika -->
 
   <!-- Favicon & Icons -->
-  <link rel="icon" href="/static/core/img/favicon.ico" type="image/x-icon">
-  <link rel="icon" type="image/png" sizes="48x48" href="/static/core/img/favicon-48.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/static/core/img/logo-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/static/core/img/logo-512.png">
-  <link rel="apple-touch-icon" href="/static/core/img/logo-192.png">
+  <link rel="icon" href="{% static 'core/img/favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="48x48" href="{% static 'core/img/favicon-48.png' %}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'core/img/logo-192.png' %}">
+  <link rel="icon" type="image/png" sizes="512x512" href="{% static 'core/img/logo-512.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'core/img/logo-192.png' %}">
 
   <!-- Шрифт/Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -62,7 +72,9 @@
       background: linear-gradient(120deg,#f8fbff 0%,#e7faff 100%);
       min-height: 100vh;
     }
-    @media (min-width:1200px){ .container{ max-width:1140px; } }
+    @media (min-width:1200px){
+      .container{ max-width:1140px; }
+    }
     h1,h2,h3,h4,h5,h6,
     .navbar, .navbar-brand, .nav-link, .btn, .badge, .accordion-button{
       font-family: var(--dd-font);
@@ -211,7 +223,9 @@
 </head>
 <body>
 <noscript>
-  <div><img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/></div>
+  <div>
+    <img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/>
+  </div>
 </noscript>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
@@ -261,18 +275,18 @@
         </div>
       </div>
       <div class="col-lg-5">
-<div class="hero-ill p-4 text-center surface">
-  <picture>
-    <source srcset="{% static 'core/img/dnd_storage.webp' %}" type="image/webp">
-    <img src="{% static 'core/img/dnd_storage.png' %}"
-         alt="Drop & Delivery — хранение багажа с Доставкой по Москве"
-         loading="eager"
-         decoding="async">
-  </picture>
-  <div class="small text-muted mt-2">
-    Пломбы, акт и охраняемый склад — ваш багаж под контролем.
-  </div>
-</div>
+        <div class="hero-ill p-4 text-center surface">
+          <picture>
+            <source srcset="{% static 'core/img/dnd_storage.webp' %}" type="image/webp">
+            <img src="{% static 'core/img/dnd_storage.png' %}"
+                 alt="Drop & Delivery — хранение багажа с доставкой по Москве"
+                 loading="eager"
+                 decoding="async">
+          </picture>
+          <div class="small text-muted mt-2">
+            Пломбы, акт и охраняемый склад — ваш багаж под контролем.
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -433,7 +447,7 @@
     </div>
   </section>
 
-  <!-- Локальный FAQ по хранению (не дублирует общий /faq/) -->
+  <!-- Локальный FAQ по хранению -->
   <section class="mb-5">
     <h2 class="h3 mb-3">FAQ по хранению багажа</h2>
     <div class="accordion" id="faqStorage">
@@ -491,7 +505,7 @@
     </div>
   </section>
 
-  <!-- FAQPage JSON-LD для локального FAQ -->
+  <!-- FAQPage JSON-LD -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -500,22 +514,34 @@
       {
         "@type":"Question",
         "name":"На какой срок можно сдать багаж на хранение?",
-        "acceptedAnswer":{"@type":"Answer","text":"От нескольких часов до длительного хранения. Конкретный срок согласуется при оформлении заявки."}
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"От нескольких часов до длительного хранения. Конкретный срок согласуется при оформлении заявки."
+        }
       },
       {
         "@type":"Question",
         "name":"Работаете ли вы по Московской области?",
-        "acceptedAnswer":{"@type":"Answer","text":"Да, работаем по Москве и Московской области, включая доставку в аэропорты и за город."}
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"Да, работаем по Москве и Московской области, включая доставку в аэропорты и за город."
+        }
       },
       {
         "@type":"Question",
         "name":"Можно ли срочно организовать забор багажа?",
-        "acceptedAnswer":{"@type":"Answer","text":"Возможна ускоренная организация забора по согласованию. Напишите нам для уточнения ближайших слотов."}
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"Возможна ускоренная организация забора по согласованию. Напишите нам для уточнения ближайших слотов."
+        }
       },
       {
         "@type":"Question",
         "name":"Что входит в услугу хранения?",
-        "acceptedAnswer":{"@type":"Answer","text":"Забор багажа, упаковка при необходимости, пломбирование, оформление акта, хранение на складе и доставка в согласованное место."}
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"Забор багажа, упаковка при необходимости, пломбирование, оформление акта, хранение на складе и доставка в согласованное место."
+        }
       }
     ]
   }
