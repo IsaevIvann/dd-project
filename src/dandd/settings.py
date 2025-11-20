@@ -1,4 +1,3 @@
-# src/dandd/settings.py
 import os
 from pathlib import Path
 import dj_database_url
@@ -64,6 +63,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+APPEND_SLASH = True
 
 ROOT_URLCONF = "dandd.urls"
 
