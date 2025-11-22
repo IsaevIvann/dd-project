@@ -161,6 +161,39 @@
   </div>
 </section>
 
+{# 🔵 БЛОК — СВЯЗАТЬСЯ С НАМИ (СРАЗУ ПОСЛЕ ШАГОВ) #}
+<section class="card-dd p-4 p-md-5 mb-5">
+  <div class="row g-3 align-items-center">
+    <div class="col-md-5">
+      <h2 class="h5 fw-bold mb-1">Связаться с нами</h2>
+      <div class="text-muted small mb-2">
+        Согласуем время, маршрут и объём багажа. Работаем круглосуточно.
+      </div>
+      <a href="{% url 'contacts' %}" class="small text-decoration-none">
+        Все контакты и отзывы →
+      </a>
+    </div>
+    <div class="col-md-7">
+      <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+        <a href="tel:+79936000879" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-telephone"></i> +7 993 600-08-79
+        </a>
+        <a href="mailto:dropdeliv@ya.ru" class="btn btn-outline-dark btn-sm">
+          <i class="bi bi-envelope"></i> Email
+        </a>
+        <a href="https://t.me/dropdeliv" target="_blank" rel="noopener noreferrer"
+           class="btn btn-outline-primary btn-sm">
+          <i class="bi bi-telegram"></i> Telegram
+        </a>
+        <a href="https://wa.me/79936000879" target="_blank" rel="noopener noreferrer"
+           class="btn btn-outline-success btn-sm">
+          <i class="bi bi-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 {# ТАРИФЫ #}
 <section id="tariffs" class="mb-5">
   <h2 class="fw-bold text-center mb-4">Тарифы на доставку багажа</h2>
@@ -200,50 +233,6 @@
   </div>
 </section>
 
-
-{# 🔵 НОВЫЙ БЛОК — СВЯЗАТЬСЯ С НАМИ #}
-<section class="card-dd p-4 p-md-5 mb-4">
-  <div class="row g-3 align-items-center">
-
-    <div class="col-md-5">
-      <h2 class="h5 fw-bold mb-1">Связаться с нами</h2>
-      <div class="text-muted small mb-2">
-        Согласуем время, маршрут и объём багажа. Работаем круглосуточно.
-      </div>
-
-      <a href="{% url 'contacts' %}" class="small text-decoration-none">
-        Все контакты и отзывы →
-      </a>
-    </div>
-
-    <div class="col-md-7">
-      <div class="d-flex flex-wrap gap-2 justify-content-md-end">
-
-        <a href="tel:+79936000879" class="btn btn-outline-secondary btn-sm">
-          <i class="bi bi-telephone"></i> +7 993 600-08-79
-        </a>
-
-        <a href="mailto:dropdeliv@ya.ru" class="btn btn-outline-dark btn-sm">
-          <i class="bi bi-envelope"></i> Email
-        </a>
-
-        <a href="https://t.me/dropdeliv" target="_blank"
-           class="btn btn-outline-primary btn-sm">
-          <i class="bi bi-telegram"></i> Telegram
-        </a>
-
-        <a href="https://wa.me/79936000879" target="_blank"
-           class="btn btn-outline-success btn-sm">
-          <i class="bi bi-whatsapp"></i> WhatsApp
-        </a>
-
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
 {# КАЛЬКУЛЯТОР #}
 <section class="mb-5 mt-4 mt-lg-5">
   <div class="card-dd p-4 dd-calc">
@@ -282,7 +271,6 @@
   </div>
 </section>
 
-
 {# SEO-ТЕКСТ #}
 <section id="about-service" class="card-dd p-4 p-md-5 mb-5">
   <h2 class="h5 fw-bold mb-3">Доставка и хранение багажа в Москве — удобно и вовремя</h2>
@@ -301,7 +289,6 @@
     Для крупных заказов и нестандартных маршрутов предлагаются индивидуальные решения.
   </p>
 </section>
-
 
 {# ТИЗЕР FAQ #}
 <section class="card-dd p-4 p-md-5 mb-4 text-center">
