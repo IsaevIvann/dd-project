@@ -5,7 +5,7 @@
   <title>{% block title %}D&D — забор, хранение и доставка багажа{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  {# Канонический URL: без параметров, на основе реального хоста #}
+  {# Канонический URL: без параметров, корректный #}
   <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 
   {% load static %}
@@ -15,11 +15,15 @@
     (function(m,e,t,r,i,k,a){
       m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
       m[i].l=1*new Date();
-      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      for (var j = 0; j < document.scripts.length; j++) {
+        if (document.scripts[j].src === r) { return; }
+      }
       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104157204','ym');
-    ym(104157204, 'init', { ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer",
-      accurateTrackBounce:true, trackLinks:true });
+    ym(104157204, 'init', {
+      ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer",
+      accurateTrackBounce:true, trackLinks:true
+    });
   </script>
 
   <!-- Favicons -->
@@ -44,31 +48,28 @@
 
   <style>
     :root{
-      --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-                 Arial, "Noto Sans", sans-serif;
-      --dd-radius: 24px;
-      --dd-radius-lg: 32px;
-      --dd-shadow: 0 24px 48px rgba(13,110,253,.10);
-      --dd-shadow-sm: 0 12px 30px rgba(13,110,253,.08);
+      --dd-font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",
+                Arial,"Noto Sans",sans-serif;
+      --dd-radius:24px;
+      --dd-radius-lg:32px;
+      --dd-shadow:0 24px 48px rgba(13,110,253,.10);
+      --dd-shadow-sm:0 12px 30px rgba(13,110,253,.08);
     }
     html, body{
-      font-family: var(--dd-font);
-      font-size: 16px;
-      line-height: 1.55;
-      background: linear-gradient(120deg,#f8fbff 0%,#e7faff 100%);
-      min-height: 100vh;
+      font-family:var(--dd-font);
+      font-size:16px;
+      line-height:1.55;
+      background:linear-gradient(120deg,#f8fbff 0%,#e7faff 100%);
+      min-height:100vh;
     }
     @media (min-width:1200px){ .container{ max-width:1140px; } }
-
-    .navbar-brand{ font-weight: 700; }
+    .navbar-brand{ font-weight:700; }
     .navbar-nav .nav-link{
-      transition: color .2s;
-      font-weight: 400;
-      letter-spacing: .01em;
+      transition:color .2s;
+      font-weight:400;
+      letter-spacing:.01em;
     }
-    .navbar-nav .nav-link:hover{
-      color:#0d6efd !important;
-    }
+    .navbar-nav .nav-link:hover{ color:#0d6efd !important; }
     .btn{ border-radius:9999px; font-weight:600; }
   </style>
 
@@ -77,36 +78,52 @@
   <!-- JSON LD: Organization + WebSite -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@graph": [
+    "@context":"https://schema.org",
+    "@graph":[
       {
-        "@type": "Organization",
-        "@id": "{{ SITE_URL }}/#organization",
-        "name": "Drop & Delivery",
-        "url": "{{ SITE_URL }}/",
-        "logo": "{{ SITE_URL }}{% static 'core/img/logo-512.png' %}",
-        "description": "Drop & Delivery — сервис по забору, хранению и доставке багажа по Москве и Московской области.",
-        "contactPoint": [{
-          "@type": "ContactPoint",
-          "telephone": "+7-915-383-55-35",
-          "contactType": "customer support",
-          "areaServed": "RU",
-          "availableLanguage": ["ru","en"]
+        "@type":"Organization",
+        "@id":"{{ SITE_URL }}/#organization",
+        "name":"Drop & Delivery",
+        "url":"{{ SITE_URL }}/",
+        "logo":"{{ SITE_URL }}{% static 'core/img/logo-512.png' %}",
+        "description":"Drop & Delivery — сервис по забору, хранению и доставке багажа по Москве и Московской области.",
+        "contactPoint":[{
+          "@type":"ContactPoint",
+          "telephone":"+7-915-383-55-35",
+          "contactType":"customer support",
+          "areaServed":"RU",
+          "availableLanguage":["ru","en"]
         }],
-        "sameAs": [
+        "sameAs":[
           "https://t.me/dropdeliv",
           "https://wa.me/79153835535"
         ]
       },
       {
-        "@type": "WebSite",
-        "@id": "{{ SITE_URL }}/#website",
-        "url": "{{ SITE_URL }}/",
-        "name": "Drop & Delivery",
-        "inLanguage": ["ru","en"],
-        "publisher": { "@id": "{{ SITE_URL }}/#organization" }
+        "@type":"WebSite",
+        "@id":"{{ SITE_URL }}/#website",
+        "url":"{{ SITE_URL }}/",
+        "name":"Drop & Delivery",
+        "inLanguage":["ru","en"],
+        "publisher":{"@id":"{{ SITE_URL }}/#organization"}
       }
     ]
+  }
+  </script>
+
+  <!-- ⭐ BreadcrumbList (Глобально для всех страниц) -->
+  <script type="application/ld+json">
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+     {
+       "@type": "ListItem",
+       "position": 1,
+       "name": "Главная",
+       "item": "https://www.drop-delivery.ru/"
+     }
+   ]
   }
   </script>
 
@@ -136,19 +153,10 @@
              role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Услуги
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="servicesDropdown">
-            <li>
-              <a class="dropdown-item" href="/dostavka-bagazha-moskva/">
-                Доставка багажа
-              </a>
-            </li>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="/dostavka-bagazha-moskva/">Доставка багажа</a></li>
             <li><a class="dropdown-item" href="/gde-ostavit-bagazh-v-moskve/">Где оставить багаж в Москве</a></li>
-
-            <li>
-              <a class="dropdown-item" href="{% url 'storage_moscow' %}">
-                Хранение багажа
-              </a>
-            </li>
+            <li><a class="dropdown-item" href="{% url 'storage_moscow' %}">Хранение багажа</a></li>
 
             <li><hr class="dropdown-divider"></li>
             <li class="dropdown-header">Доставка в аэропорты</li>
@@ -160,7 +168,6 @@
           </ul>
         </li>
 
-        <!-- Остальные разделы -->
         <li class="nav-item"><a class="nav-link" href="{% url 'concept' %}">Концепция</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#tariffs">Тарифы</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}">FAQ</a></li>
@@ -169,13 +176,9 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'luggage_storage_moscow' %}">Luggage Storage</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
 
-        <!-- Кнопка оформления заказа -->
         <li class="nav-item ms-lg-3">
-          <a class="btn btn-primary btn-sm" href="{% url 'order_create' %}">
-            Оформить заказ
-          </a>
+          <a class="btn btn-primary btn-sm" href="{% url 'order_create' %}">Оформить заказ</a>
         </li>
-
       </ul>
     </div>
   </div>
