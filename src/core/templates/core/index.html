@@ -4,28 +4,41 @@
 {% block title %}D&D — доставка и хранение багажа в Москве и области{% endblock %}
 
 {% block extra_head %}
-  <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
-
-  <meta name="description" content="Заберём чемоданы у двери, опечатаем, сохраним и доставим ко времени — в аэропорт, на вокзал или по адресу в Москве и области. Первые сутки хранения включены.">
+  <meta name="description" content="Заберём чемоданы у двери, опечатаем и сохраним, привезём ко времени — в аэропорт, на вокзал или по адресу в Москве и области. Прозрачные условия и аккуратная работа представителя.">
   <meta property="og:title" content="D&D — доставка и хранение багажа в Москве и области">
-  <meta property="og:description" content="Забор, хранение и доставка багажа от двери до двери — ко времени и без лишних поездок. Первые сутки хранения включены.">
+  <meta property="og:description" content="Забор, хранение и доставка багажа от двери до двери — ко времени и без лишних поездок.">
   <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
   <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
-  <meta property="og:type" content="website">
+
+  <!-- JSON-LD: Breadcrumbs -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {
+        "@type":"ListItem",
+        "position":1,
+        "name":"Главная",
+        "item":"{{ SITE_URL }}/"
+      }
+    ]
+  }
+  </script>
 
   <!-- JSON-LD: HowTo -->
   <script type="application/ld+json">
   {
-   "@context": "https://schema.org",
-   "@type": "HowTo",
-   "name": "Как оформить доставку багажа в Москве",
-   "description": "Пошаговый процесс доставки багажа от заявки до получения.",
-   "step": [
-      {"@type":"HowToStep","name":"Заявка","text":"Оставьте заявку на сайте или в мессенджере — согласуем адрес и время."},
-      {"@type":"HowToStep","name":"Встреча","text":"Представитель приедет с документами и упаковкой, пломбируем и сфотографируем багаж."},
-      {"@type":"HowToStep","name":"Опечатывание","text":"Каждая единица багажа пломбируется с уникальным номером и фиксируется в акте."},
-      {"@type":"HowToStep","name":"Доставка","text":"Привозим в аэропорт, на вокзал или по адресу строго ко времени."},
-      {"@type":"HowToStep","name":"Оплата","text":"Проверяете целостность и пломбы — затем оплачиваете удобным способом."}
+   "@context":"https://schema.org",
+   "@type":"HowTo",
+   "name":"Как оформить доставку и хранение багажа в Москве",
+   "description":"Пошаговая инструкция: от заявки до доставки ко времени.",
+   "step":[
+    {"@type":"HowToStep","name":"Заявка","text":"Оставьте заявку на сайте или в мессенджере — согласуем адреса и время."},
+    {"@type":"HowToStep","name":"Встреча","text":"Представитель приедет с документами и упаковкой, пломбируем и сфотографируем багаж."},
+    {"@type":"HowToStep","name":"Опечатываем","text":"Каждая единица багажа пломбируется с уникальным номером и фиксируется в акте."},
+    {"@type":"HowToStep","name":"Доставка","text":"Привозим в аэропорт, на вокзал или по адресу строго к вашему времени."},
+    {"@type":"HowToStep","name":"Оплата","text":"Проверяете целостность — затем оплачиваете удобным способом."}
    ]
   }
   </script>
@@ -33,63 +46,32 @@
   <!-- JSON-LD: Service -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Доставка и хранение багажа — Москва и область",
-    "serviceType": "Door-to-door luggage delivery & storage",
-    "provider": {"@id": "{{ SITE_URL }}/#organization"},
-    "areaServed": ["Москва", "Московская область"],
-    "url": "{{ SITE_URL }}/",
-    "offers": {
-      "@type": "AggregateOffer",
-      "lowPrice": "3500",
-      "priceCurrency": "RUB",
-      "availability": "https://schema.org/InStock",
-      "offerCount": 3,
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "1–3 единицы",
-          "price": "3500",
-          "priceCurrency": "RUB",
-          "url": "{{ SITE_URL }}#tariffs"
-        },
-        {
-          "@type": "Offer",
-          "name": "4–6 единиц",
-          "price": "4000",
-          "priceCurrency": "RUB",
-          "url": "{{ SITE_URL }}#tariffs"
-        },
-        {
-          "@type": "Offer",
-          "name": "7+ единиц",
-          "price": "4500",
-          "priceCurrency": "RUB",
-          "url": "{{ SITE_URL }}#tariffs"
-        }
-      ]
-    }
-  }
-  </script>
-
-  <!-- BreadcrumbList (главная) -->
-  <script type="application/ld+json">
-  {
-   "@context": "https://schema.org",
-   "@type": "BreadcrumbList",
-   "itemListElement": [{
-     "@type": "ListItem",
-     "position": 1,
-     "name": "Главная",
-     "item": "https://www.drop-delivery.ru/"
-   }]
+   "@context":"https://schema.org",
+   "@type":"Service",
+   "name":"Доставка и хранение багажа — Москва и область",
+   "serviceType":"Door-to-door luggage delivery & storage",
+   "provider":{"@id":"{{ SITE_URL }}/#organization"},
+   "areaServed":["Москва","Московская область"],
+   "url":"{{ SITE_URL }}/",
+   "offers":{
+     "@type":"AggregateOffer",
+     "priceCurrency":"RUB",
+     "lowPrice":"1200",
+     "priceSpecification":[
+       {"@type":"UnitPriceSpecification","name":"1–3 единицы","price":"3500","priceCurrency":"RUB"},
+       {"@type":"UnitPriceSpecification","name":"4–6 единиц","price":"4000","priceCurrency":"RUB"},
+       {"@type":"UnitPriceSpecification","name":"7+ единиц","price":"4500","priceCurrency":"RUB"}
+     ],
+     "availability":"https://schema.org/InStock"
+   }
   }
   </script>
 
   <style>
     :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
     body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;}
+    h1,h2,h3,h4{letter-spacing:-0.01em;}
     .pill{border-radius:999px}
     .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
 
@@ -100,12 +82,19 @@
       padding:3.5rem 2rem;
       margin-bottom:3rem;
       display:grid;
-      grid-template-columns:1.15fr .85fr;
+      grid-template-columns:1.12fr .88fr;
       gap:32px;
       align-items:center;
     }
     .hero-title{font-weight:800;font-size:clamp(32px,3.8vw,48px);line-height:1.1;color:var(--ink);margin:0 0 12px}
+    .hero-sub{font-size:1.125rem;color:var(--muted);margin:0 0 24px}
     .accent{color:#0d6efd}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+
+    @media (max-width:992px){
+      .hero-wrap{grid-template-columns:1fr;padding:2rem;}
+      .hero-title{font-size:clamp(26px,6vw,36px)}
+    }
   </style>
 {% endblock %}
 
@@ -114,16 +103,16 @@
 <!-- HERO -->
 <section class="mb-5">
   <article class="hero-wrap">
+
+    <!-- LEFT -->
     <div class="left">
       <h1 class="hero-title">
         Доставка багажа в Москве — путешествуйте <span class="accent">налегке</span>
       </h1>
-
       <p class="hero-sub">
         Представитель приедет, упакует и заберет чемоданы. Мы сохраним их на складе и привезём
-        в удобное место — аэропорт, вокзал или отель. Первые сутки хранения включены.
+        в удобное место: аэропорт, вокзал или отель — точно в срок. 1 сутки хранения включены.
       </p>
-
       <div class="hero-actions">
         <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4">
           <i class="bi bi-bag-check"></i> Оставить заявку
@@ -134,18 +123,21 @@
       </div>
     </div>
 
+    <!-- RIGHT (изображение в рамке, как на внутренних страницах) -->
     <div class="right">
-      <div class="hero-ill text-center">
+      <div class="surface p-4 text-center"
+           style="border-radius:24px; box-shadow:0 12px 30px rgba(16,24,40,.08); background:#fff;">
         <img src="{% static 'core/img/dnd-hero.png' %}"
-             alt="Drop & Delivery — доставка багажа: забор, хранение и доставка"
-             class="img-fluid" loading="eager" fetchpriority="high" decoding="async">
+             alt="Drop & Delivery — доставка багажа"
+             class="img-fluid rounded-4"
+             style="max-width:420px; width:100%; height:auto; object-fit:contain;">
       </div>
     </div>
+
   </article>
 </section>
 
-
-<!-- ШАГИ -->
+<!-- STEPS -->
 <section class="p-4 p-md-5 mb-5" style="border-radius:28px;background:#f7fbff">
   <h2 class="fw-bold text-center mb-4">Как работает услуга доставки багажа</h2>
   <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
@@ -158,52 +150,59 @@
     <div class="col text-center">
       <div class="icon-wrap icon-green mx-auto mb-3"><i class="bi bi-person-check fs-3"></i></div>
       <h6 class="mb-1">2. Встреча</h6>
-      <div class="text-muted small">Приезжает представитель с документами и упаковкой.</div>
+      <div class="text-muted small">Приезжает представитель с документами.</div>
     </div>
 
     <div class="col text-center">
       <div class="icon-wrap icon-cyan mx-auto mb-3"><i class="bi bi-lock fs-3"></i></div>
       <h6 class="mb-1">3. Опечатываем</h6>
-      <div class="text-muted small">Пломбируем, фотографируем, выдаём квитанцию.</div>
+      <div class="text-muted small">Пломбы, акт и фотофиксация багажа.</div>
     </div>
 
     <div class="col text-center">
       <div class="icon-wrap icon-amber mx-auto mb-3"><i class="bi bi-geo-alt fs-3"></i></div>
       <h6 class="mb-1">4. Доставка</h6>
-      <div class="text-muted small">Привозим по адресу, в аэропорт или на вокзал.</div>
+      <div class="text-muted small">Привозим в аэропорт или по адресу.</div>
     </div>
 
     <div class="col text-center">
       <div class="icon-wrap icon-blue mx-auto mb-3"><i class="bi bi-credit-card fs-3"></i></div>
       <h6 class="mb-1">5. Оплата</h6>
-      <div class="text-muted small">После проверки целостности багажа.</div>
+      <div class="text-muted small">После проверки целостности.</div>
     </div>
   </div>
 </section>
 
-
-<!-- БЛОК "Связаться с нами" -->
+<!-- CONTACT US -->
 <section class="card-dd p-4 p-md-5 mb-5">
   <div class="row g-3 align-items-center">
     <div class="col-md-5">
       <h2 class="h5 fw-bold mb-1">Связаться с нами</h2>
-      <div class="text-muted small mb-2">Согласуем время, маршрут и объём багажа. Работаем круглосуточно.</div>
-      <a href="{% url 'contacts' %}" class="small text-decoration-none">Все контакты и отзывы →</a>
+      <div class="text-muted small mb-2">
+        Согласуем время, маршрут и объём багажа. Работаем круглосуточно.
+      </div>
+      <a href="{% url 'contacts' %}" class="small text-decoration-none">Все контакты →</a>
     </div>
-
     <div class="col-md-7">
       <div class="d-flex flex-wrap gap-2 justify-content-md-end">
-        <a href="tel:+79936000879" class="btn btn-outline-secondary btn-sm"><i class="bi bi-telephone"></i> +7 993 600-08-79</a>
-        <a href="mailto:dropdeliv@ya.ru" class="btn btn-outline-dark btn-sm"><i class="bi bi-envelope"></i> Email</a>
-        <a href="https://t.me/dropdeliv" class="btn btn-outline-primary btn-sm" target="_blank"><i class="bi bi-telegram"></i> Telegram</a>
-        <a href="https://wa.me/79936000879" class="btn btn-outline-success btn-sm" target="_blank"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+        <a href="tel:+79936000879" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-telephone"></i> +7 993 600-08-79
+        </a>
+        <a href="mailto:dropdeliv@ya.ru" class="btn btn-outline-dark btn-sm">
+          <i class="bi bi-envelope"></i> Email
+        </a>
+        <a href="https://t.me/dropdeliv" class="btn btn-outline-primary btn-sm" target="_blank">
+          <i class="bi bi-telegram"></i> Telegram
+        </a>
+        <a href="https://wa.me/79936000879" class="btn btn-outline-success btn-sm" target="_blank">
+          <i class="bi bi-whatsapp"></i> WhatsApp
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ТАРИФЫ -->
+<!-- TARIFFS -->
 <section id="tariffs" class="mb-5">
   <h2 class="fw-bold text-center mb-4">Тарифы на доставку багажа</h2>
 
@@ -214,9 +213,7 @@
         <div class="tariff-price mb-2">от 3 500 ₽</div>
         <div class="dd-divider"></div>
         <div class="text-muted small">Забор → хранение → доставка</div>
-        <div class="mt-2">
-          <span class="dd-chip">1 сутки хранения включены</span>
-        </div>
+        <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
       </div>
     </div>
 
@@ -226,28 +223,23 @@
         <div class="tariff-price mb-2">от 4 000 ₽</div>
         <div class="dd-divider"></div>
         <div class="text-muted small">Забор → хранение → доставка</div>
-        <div class="mt-2">
-          <span class="dd-chip">1 сутки хранения включены</span>
-        </div>
+        <div class="mt-2"><span class="dd-chip">1 сутки хранения включены</span></div>
       </div>
     </div>
 
     <div class="col-md-4">
       <div class="card-dd p-4 h-100 text-center">
         <div class="small tariff-title mb-1">7+ единиц</div>
-        <div class="tariff-price mb-2">4 500 ₽ + 500 ₽/за каждую доп. ед.</div>
+        <div class="tariff-price mb-2">4 500 ₽ + 500 ₽ за каждую доп. ед.</div>
         <div class="dd-divider"></div>
         <div class="text-muted small">Забор → хранение → доставка</div>
-        <div class="mt-2">
-          <span class="dd-chip">1 сутки хранения бесплатно</span>
-        </div>
+        <div class="mt-2"><span class="dd-chip">1 сутки хранения бесплатно</span></div>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- КАЛЬКУЛЯТОР -->
+<!-- CALCULATOR -->
 <section class="mb-5 mt-4 mt-lg-5">
   <div class="card-dd p-4 dd-calc">
     <h2 class="h5 mb-3">Калькулятор стоимости доставки багажа</h2>
@@ -259,15 +251,15 @@
       </div>
 
       <div class="col-12 col-md-3 col-lg-2">
-        <label for="calcDays" class="form-label">Дней хранения (включая 1-е)</label>
+        <label for="calcDays" class="form-label">Дней хранения</label>
         <input id="calcDays" type="number" min="1" value="1" class="form-control" />
       </div>
 
       <div class="col-12 col-md-4 col-lg-4">
         <label for="calcZone" class="form-label">Зона</label>
         <select id="calcZone" class="form-select">
-          <option value="1.0" selected>Зона 1 — Москва, аэропорты (×1.0)</option>
-          <option value="1.5">Зона 1.5 — Московская область (×1.5)</option>
+          <option value="1.0" selected>Москва / аэропорты ×1.0</option>
+          <option value="1.5">Московская область ×1.5</option>
         </select>
       </div>
 
@@ -278,122 +270,117 @@
       </div>
     </form>
 
-    <div id="dd-calc-result" class="alert alert-light border mt-3" role="status">
+    <div id="dd-calc-result" class="alert alert-light border mt-3">
       <div class="dd-total">0 ₽</div>
       <div id="dd-calc-breakdown" class="text-secondary small mt-1"></div>
     </div>
   </div>
 </section>
 
-
-<!-- SEO-ТЕКСТ -->
+<!-- SEO TEXT -->
 <section id="about-service" class="card-dd p-4 p-md-5 mb-5">
   <h2 class="h5 fw-bold mb-3">Доставка и хранение багажа в Москве — удобно и вовремя</h2>
   <p class="text-secondary mb-2">
-    Сервис <b>Drop & Delivery</b> забирает багаж от двери, аккуратно упаковывает, пломбирует и доставляет ко времени —
-    в аэропорт, вокзал или по адресу. Это удобная альтернатива камерам хранения без очередей и поездок по городу.
+    Сервис <b>Drop & Delivery</b> забирает чемоданы у двери, пломбирует, хранит на складе
+    и доставляет ко времени — в аэропорт, на вокзал или по адресу.
   </p>
   <p class="text-secondary mb-2">
-    Мы фиксируем номера пломб и состояние багажа в акте, отслеживаем рейсы и корректируем время встречи.
-    Оплата — после проверки целостности и комплектности. Подходит для путешествий, пересадок, деловых поездок
-    и переездов.
+    Подходит путешественникам, семьям, гостям столицы и тем, кто переезжает. Мы фиксируем номера пломб,
+    состояние багажа, отслеживаем рейсы и корректируем время встречи.
   </p>
   <p class="text-secondary mb-0">
-    Работаем по Москве и области. Первые сутки хранения включены во все тарифы.
+    1 сутки хранения включены во все тарифы. Для крупных заказов — индивидуальные решения.
   </p>
 </section>
 
-
-<!-- ТИЗЕР FAQ -->
+<!-- FAQ TEASER -->
 <section class="card-dd p-4 p-md-5 mb-4 text-center">
   <h2 class="h5 fw-bold mb-2">Ответы на частые вопросы</h2>
-  <div class="text-muted mb-3">Подробные условия, безопасность и примеры расчётов — в разделе FAQ.</div>
-  <a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">Смотреть все вопросы</a>
+  <div class="text-muted mb-3">Частые сценарии, безопасность и условия.</div>
+  <a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">
+    Смотреть все вопросы
+  </a>
 </section>
 
-
-<!-- ПОПУЛЯРНЫЕ НАПРАВЛЕНИЯ -->
+<!-- POPULAR DIRECTIONS -->
 <section class="card-dd p-4 mt-4 mb-4">
   <h2 class="h5 fw-bold mb-2">Популярные направления</h2>
   <div class="d-flex flex-wrap gap-2">
-    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Доставка в Внуково</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'zia' %}">Доставка в Жуковский</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Шереметьево</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Домодедово</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Внуково</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'zia' %}">Жуковский</a>
   </div>
 </section>
 
-
-<!-- СМОТРИТЕ ТАКЖЕ -->
+<!-- SEE ALSO -->
 <section class="card-dd p-4 p-md-5 mb-5">
   <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
   <div class="d-flex flex-wrap gap-2">
-    <a class="btn btn-light border pill" href="{% url 'storage_moscow' %}">Хранение багажа в Москве</a>
-    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Почему мы — от двери до двери</a>
-    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ: ответы на частые вопросы</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка в Шереметьево</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка в Домодедово</a>
-    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Доставка в Внуково</a>
+    <a class="btn btn-light border pill" href="{% url 'storage_moscow' %}">Хранение багажа</a>
+    <a class="btn btn-light border pill" href="{% url 'benefits' %}">Почему мы</a>
+    <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Шереметьево</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Домодедово</a>
+    <a class="btn btn-light border pill" href="{% url 'aero' 'vko' %}">Внуково</a>
   </div>
 </section>
 
 {% endblock %}
 
 {% block extra_scripts %}
-  <script>
-    (function(){
-      const form = document.getElementById('dd-calc-form');
-      if (!form) return;
+<script>
+(function(){
+  const form = document.getElementById('dd-calc-form');
+  if (!form) return;
 
-      const unitsEl = document.getElementById('calcUnits');
-      const daysEl  = document.getElementById('calcDays');
-      const zoneEl  = document.getElementById('calcZone');
-      const btn     = document.getElementById('dd-calc-btn');
+  const unitsEl = document.getElementById('calcUnits');
+  const daysEl  = document.getElementById('calcDays');
+  const zoneEl  = document.getElementById('calcZone');
+  const totalEl = document.querySelector('#dd-calc-result .dd-total');
+  const breakdownEl = document.getElementById('dd-calc-breakdown');
 
-      const totalEl     = document.querySelector('#dd-calc-result .dd-total');
-      const breakdownEl = document.getElementById('dd-calc-breakdown');
+  const fmt = n => n.toLocaleString('ru-RU');
 
-      const fmt = n => n.toLocaleString('ru-RU');
+  function sanitizeInt(val, min) {
+    const n = parseInt(val, 10);
+    return (Number.isFinite(n) && n >= min) ? n : min;
+  }
 
-      function sanitizeInt(val, min) {
-        const n = parseInt(val, 10);
-        return (Number.isFinite(n) && n >= min) ? n : min;
-      }
+  function basePrice(units) {
+    if (units <= 3) return 3500;
+    if (units <= 6) return 4000;
+    return 4500 + 500 * Math.max(0, units - 7);
+  }
 
-      function basePrice(units) {
-        if (units <= 3) return 3500;
-        if (units <= 6) return 4000;
-        return 4500 + 500 * Math.max(0, units - 7);
-      }
+  function storageCost(days) {
+    const extra = Math.max(0, days - 1);
+    return 500 * extra;
+  }
 
-      function storageCost(days) {
-        const extra = Math.max(0, days - 1);
-        return 500 * extra;
-      }
+  function calculate() {
+    const u = sanitizeInt(unitsEl.value, 1);
+    const d = sanitizeInt(daysEl.value, 1);
+    const k = parseFloat(zoneEl.value) || 1.0;
 
-      function calculate() {
-        const u = sanitizeInt(unitsEl.value, 1);
-        const d = sanitizeInt(daysEl.value, 1);
-        const k = parseFloat(zoneEl.value) || 1.0;
+    unitsEl.value = u;
+    daysEl.value  = d;
 
-        unitsEl.value = u;
-        daysEl.value  = d;
+    const base = basePrice(u);
+    const move = Math.round(base * k);
+    const store = storageCost(d);
+    const total = move + store;
 
-        const base = basePrice(u);
-        const move = Math.round(base * k);
-        const store = storageCost(d);
-        const total = move + store;
+    totalEl.textContent = fmt(total) + ' ₽';
+    breakdownEl.textContent =
+      `Доставка: ${fmt(base)} ₽ × коэффициент ${k} = ${fmt(move)} ₽. ` +
+      `Хранение: ${fmt(store)} ₽ (${d > 1 ? (d-1) + ' доп. сут.' : '1-е сутки бесплатно'}).`;
+  }
 
-        totalEl.textContent = fmt(total) + ' ₽';
-        breakdownEl.textContent =
-          `Доставка: ${fmt(base)} ₽ × коэффициент ${k} = ${fmt(move)} ₽. ` +
-          `Хранение: ${fmt(store)} ₽ (${d > 1 ? (d-1) + ' доп. сут.' : '1-е сутки бесплатно'}).`;
-      }
+  calculate();
 
-      btn.addEventListener('click', calculate);
-      form.addEventListener('input', calculate);
-      form.addEventListener('change', calculate);
-      calculate();
-    })();
-  </script>
+  form.addEventListener('input', calculate);
+  form.addEventListener('change', calculate);
+})();
+</script>
 {% endblock %}
