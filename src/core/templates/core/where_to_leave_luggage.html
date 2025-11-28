@@ -5,13 +5,13 @@
 
 {% block extra_head %}
 
+  <link rel="canonical" href="https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/"/>
+
   <meta name="description" content="Где оставить багаж в Москве, если рано прилёт или поздний вылет? Вместо камер хранения — сервис Drop & Delivery: заберём чемоданы у двери, при необходимости сохраним на складе и доставим ко времени в аэропорт, на вокзал или по адресу.">
   <meta property="og:title" content="Где оставить багаж в Москве — удобная альтернатива камерам хранения">
   <meta property="og:description" content="Где оставить багаж в Москве без поездок в камеры хранения: сервис заберёт чемоданы у двери, опечатает, сохранит на складе и доставит ко времени в аэропорт или по адресу.">
-
-  {# OG URL и картинка — динамически от текущего URL #}
-  <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
-  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+  <meta property="og:url" content="{{ SITE_URL }}/gde-ostavit-bagazh-v-moskve/">
+  <meta property="og:image" content="{{ SITE_URL }}{% static 'core/img/logo-512.png' %}">
 
   <style>
     :root{
@@ -47,7 +47,36 @@
       font-size:clamp(32px,4.0vw,52px);
       color:var(--ink);
     }
+    .hero-ill{ max-width:520px; margin-left:auto; }
+    .hero-ill img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:16px;
+    }
   </style>
+
+  <!-- JSON-LD: Breadcrumbs -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {
+        "@type":"ListItem",
+        "position":1,
+        "name":"Главная",
+        "item":"{{ SITE_URL }}/"
+      },
+      {
+        "@type":"ListItem",
+        "position":2,
+        "name":"Где оставить багаж в Москве",
+        "item":"{{ SITE_URL }}/gde-ostavit-bagazh-v-moskve/"
+      }
+    ]
+  }
+  </script>
 
   <!-- JSON-LD: WebPage -->
   <script type="application/ld+json">
@@ -101,7 +130,7 @@
           <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4">
             <i class="bi bi-send me-1"></i>Оставить заявку
           </a>
-          <a href="/#tariffs" class="btn btn-lg btn-outline-primary px-4">
+          <a href="{% url 'index' %}#tariffs" class="btn btn-lg btn-outline-primary px-4">
             <i class="bi bi-tag me-1"></i>Тарифы и калькулятор
           </a>
         </div>
@@ -110,12 +139,15 @@
         </p>
       </div>
       <div class="col-lg-5">
-        <div class="surface p-4 text-center">
-          <img src="{% static 'core/img/dnd_storage.png' %}"
-               alt="Удобная альтернатива камерам хранения в Москве"
-               loading="lazy" decoding="async" class="img-fluid rounded-4">
+        <div class="hero-ill p-4 text-center surface">
+          <picture>
+            <source srcset="{% static 'core/img/dnd_storage.webp' %}" type="image/webp">
+            <img src="{% static 'core/img/dnd_storage.png' %}"
+                 alt="Удобная альтернатива камерам хранения в Москве"
+                 loading="lazy" decoding="async">
+          </picture>
           <div class="small text-muted mt-2">
-            Забор у двери, пломбы, акт и охраняемый склад — ваш багаж под контролем.
+            Забор у двери, пломбы, акт и охраняемый склад — ваш багаж под контролем по всей цепочке.
           </div>
         </div>
       </div>
@@ -229,7 +261,7 @@
     </h2>
     <p class="text-secondary mb-2">
       Классический сценарий — искать камеру хранения на вокзале или в аэропорту, стоять в очереди, а потом снова ехать
-      за чемоданами. В большом городе это забирает время и силы. Формат <b>“забор — хранение — доставка”</b> позволяет
+      за чемоданами. В большом городе это забирает время и силы. Формат <b>«забор — хранение — доставка»</b> позволяет
       решить задачу по-другому: багаж забирают у двери, хранят на складе и привозят туда, где вы будете в нужный момент.
     </p>
     <p class="text-secondary mb-2">
@@ -246,12 +278,12 @@
   <section class="surface p-4 p-md-5 mb-5">
     <h2 class="h5 fw-bold mb-3">Смотрите также</h2>
     <div class="d-flex flex-wrap gap-2">
-      <a class="btn btn-light border pill" href="/hranenie-bagazha-moskva/">Хранение багажа в Москве</a>
-      <a class="btn btn-light border pill" href="/dostavka-bagazha-moskva/">Доставка багажа по Москве и области</a>
-      <a class="btn btn-light border pill" href="/aero/svo/">Доставка багажа в Шереметьево</a>
-      <a class="btn btn-light border pill" href="/aero/dme/">Доставка багажа в Домодедово</a>
-      <a class="btn btn-light border pill" href="/benefits/">Преимущества сервиса</a>
-      <a class="btn btn-light border pill" href="/faq/">FAQ: частые вопросы</a>
+      <a class="btn btn-light border pill" href="{% url 'storage_moscow' %}">Хранение багажа в Москве</a>
+      <a class="btn btn-light border pill" href="{% url 'delivery_moscow' %}">Доставка багажа по Москве и области</a>
+      <a class="btn btn-light border pill" href="{% url 'aero' 'svo' %}">Доставка багажа в Шереметьево</a>
+      <a class="btn btn-light border pill" href="{% url 'aero' 'dme' %}">Доставка багажа в Домодедово</a>
+      <a class="btn btn-light border pill" href="{% url 'benefits' %}">Преимущества сервиса</a>
+      <a class="btn btn-light border pill" href="{% url 'faq' %}">FAQ: частые вопросы</a>
     </div>
   </section>
 
