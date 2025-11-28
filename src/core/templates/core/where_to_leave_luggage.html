@@ -14,6 +14,14 @@
   <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
 
   <style>
+    /* Lead-текст — как на главной */
+.lead {
+    font-size: clamp(17px, 1.28vw, 19px);
+    line-height: 1.55;
+    font-weight: 400;
+    color: var(--muted);
+    max-width: 600px;
+}
     :root{
       --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
                  Arial, "Noto Sans", sans-serif;
