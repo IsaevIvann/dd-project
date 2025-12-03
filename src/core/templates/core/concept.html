@@ -72,194 +72,286 @@
     ]
   }
   </script>
+
+  <style>
+    :root{
+      --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+                 Arial, "Noto Sans", sans-serif;
+      --dd-radius: 24px;
+      --dd-radius-lg: 32px;
+      --dd-shadow: 0 24px 48px rgba(13,110,253,.10);
+      --dd-shadow-sm: 0 12px 30px rgba(13,110,253,.08);
+      --ink:#0f172a;
+      --muted:#64748b;
+    }
+
+    .hero-clean{
+      background:#fff;
+      border-radius:var(--dd-radius-lg);
+      box-shadow:var(--dd-shadow);
+      padding:2rem;
+    }
+    @media (min-width:992px){
+      .hero-clean{ padding:2.5rem 2.75rem; }
+    }
+
+    .surface,
+    .card-dd{
+      background:#fff;
+      border-radius:var(--dd-radius);
+      box-shadow:var(--dd-shadow-sm);
+      border:0;
+    }
+
+    .pill{ border-radius:999px; }
+
+    /* Заголовок как на главной */
+    .hero-title{
+      font-family:var(--dd-font);
+      font-weight:800;
+      line-height:1.1;
+      font-size:clamp(32px,4.0vw,52px);
+      color:var(--ink);
+    }
+
+    /* Lead-текст как на главной */
+    .lead{
+      font-size:clamp(17px,1.28vw,19px);
+      line-height:1.55;
+      font-weight:400;
+      color:var(--muted);
+      max-width:650px;
+    }
+
+    .icon-badge{
+      width:56px;height:56px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#eef5ff;
+      box-shadow:0 8px 20px rgba(16,24,40,.06);
+      font-size:26px;
+    }
+
+    .timeline-dot{
+      width:12px;height:12px;
+      border-radius:999px;
+      background:#0d6efd;
+      box-shadow:0 0 0 4px rgba(13,110,253,.15);
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
 
-<style>
-  :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
-  .hero-clean{border-radius:32px;padding:3rem 2rem;background:#fff;box-shadow:0 20px 50px rgba(16,24,40,.06)}
-  .card-dd{border:0;border-radius:var(--r);box-shadow:0 12px 30px rgba(16,24,40,.08);background:#fff;}
-  .pill{border-radius:999px}
-  .icon-badge{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#eef5ff;box-shadow:0 8px 20px rgba(16,24,40,.06);font-size:26px}
-  .lead-muted{color:var(--muted)}
-  .timeline-dot{width:12px;height:12px;border-radius:999px;background:#0d6efd;box-shadow:0 0 0 4px rgba(13,110,253,.15)}
-</style>
+<div class="container my-4 my-md-5">
 
-<!-- HERO -->
-<section class="hero-clean mb-4">
-  <div class="row align-items-center gy-4">
-    <div class="col-lg-7">
-      <h1 class="fw-bold display-6" style="color:var(--ink)">
-        Как работает сервис <span class="text-primary">хранения и доставки багажа</span> Drop & Delivery
-      </h1>
-      <p class="lead lead-muted mb-3">
-        Забираем багаж у двери, аккуратно упаковываем и пломбируем, храним на охраняемом складе и доставляем точно ко времени — в аэропорт, на вокзал или по адресу. Страхование включено.
-      </p>
-      <div class="mt-3 d-flex gap-2 flex-wrap">
-        <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4"><i class="bi bi-bag-check"></i> Оставить заявку</a>
-        <a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">Частые вопросы</a>
-      </div>
-    </div>
-    <div class="col-lg-5">
-      <div class="card-dd p-4 text-center">
-        <img
-          src="{% static 'core/img/dnd-hero.png' %}"
-          sizes="100vw"
-          width="1280" height="800"
-          class="img-fluid rounded-4"
-          alt="Drop & Delivery — хранение и доставка багажа"
-          loading="eager" fetchpriority="high">
-        <div class="small text-muted mt-2">Ваш багаж — под защитой и уже в пути ✈️</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Сценарии использования -->
-<section class="mb-5">
-  <h2 class="h4 fw-bold mb-3">Сценарии, где помогает Drop & Delivery</h2>
-  <div class="row g-3">
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">🧳</div>
-        <h5 class="mb-1">Хранение на сутки</h5>
-        <div class="text-muted">Пересадка, ожидание поезда/вылета, день между заселением и выездом — заберём и вернём ко времени.</div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">🏨</div>
-        <h5 class="mb-1">До заселения в отель</h5>
-        <div class="text-muted">Сдали квартиру или ждёте check-in? Сохраним чемоданы и привезём к заселению.</div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">✈️</div>
-        <h5 class="mb-1">Аэропорты и вокзалы</h5>
-        <div class="text-muted">Доставим в Шереметьево, Внуково, Домодедово или Жуковский, а также на вокзалы Москвы.</div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">🚛</div>
-        <h5 class="mb-1">Переезд или ремонт</h5>
-        <div class="text-muted">Безопасное хранение вещей на несколько дней с фотофиксацией и пломбами.</div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">🤝</div>
-        <h5 class="mb-1">Передача багажа</h5>
-        <div class="text-muted">Упакуем, перевезём и передадим лично в руки получателю.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Как это работает -->
-<section class="mb-5">
-  <h2 class="h4 fw-bold mb-3">Пошагово: как это работает</h2>
-  <div class="card-dd p-4">
-    <div class="row g-4">
-      <div class="col-md-6 d-flex align-items-start gap-3">
-        <div class="timeline-dot mt-2"></div>
-        <div>
-          <h6 class="mb-1">1. Оставляете заявку</h6>
-          <div class="text-muted">Согласуем время, адреса и количество мест. Всё онлайн или по телефону.</div>
+  <!-- HERO -->
+  <section class="hero-clean mb-4">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-7">
+        <h1 class="hero-title">
+          Как работает сервис <span class="text-primary">хранения и доставки багажа</span> Drop & Delivery
+        </h1>
+        <p class="lead mt-3 mb-3">
+          Забираем багаж у двери, аккуратно упаковываем и пломбируем, храним на охраняемом складе и доставляем точно ко времени —
+          в аэропорт, на вокзал или по адресу. Страхование включено.
+        </p>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+          <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4">
+            <i class="bi bi-bag-check"></i> Оставить заявку
+          </a>
+          <a href="{% url 'faq' %}" class="btn btn-outline-primary pill px-4">
+            FAQ
+          </a>
         </div>
       </div>
-      <div class="col-md-6 d-flex align-items-start gap-3">
-        <div class="timeline-dot mt-2"></div>
-        <div>
-          <h6 class="mb-1">2. Приезжает представитель</h6>
-          <div class="text-muted">Привозит упаковку, оформляет акт, делает фотофиксацию и пломбирует багаж.</div>
-        </div>
-      </div>
-      <div class="col-md-6 d-flex align-items-start gap-3">
-        <div class="timeline-dot mt-2"></div>
-        <div>
-          <h6 class="mb-1">3. Хранение и безопасность</h6>
-          <div class="text-muted">Охраняемый склад, контроль доступа, страхование до 30 000 ₽ включено.</div>
-        </div>
-      </div>
-      <div class="col-md-6 d-flex align-items-start gap-3">
-        <div class="timeline-dot mt-2"></div>
-        <div>
-          <h6 class="mb-1">4. Доставка ко времени</h6>
-          <div class="text-muted">Домой, в отель, на вокзал или в аэропорт — в согласованный интервал.</div>
+      <div class="col-lg-5">
+        <div class="surface p-4 text-center">
+          <img
+            src="{% static 'core/img/dnd-hero.png' %}"
+            sizes="100vw"
+            width="1280" height="800"
+            class="img-fluid rounded-4"
+            alt="Drop & Delivery — хранение и доставка багажа"
+            loading="eager" fetchpriority="high">
+          <div class="small text-muted mt-2">
+            Ваш багаж — под защитой и уже в пути ✈️
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Кейсы -->
-<section class="mb-5">
-  <h2 class="h4 fw-bold mb-3">Короткие кейсы</h2>
-  <div class="row g-3">
-    <div class="col-md-6">
-      <div class="card-dd p-4 h-100">
-        <h6 class="mb-2">SVO, 4 чемодана, утренний рейс</h6>
-        <div class="text-muted">Забрали в 07:00, доставили в Шереметьево к 10:30, клиент спокойно прошёл регистрацию.</div>
+  <!-- Сценарии использования -->
+  <section class="mb-5">
+    <h2 class="h4 fw-bold mb-3">Сценарии, где помогает Drop & Delivery</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">🧳</div>
+          <h5 class="mb-1">Хранение на сутки</h5>
+          <div class="text-muted">
+            Пересадка, ожидание поезда/вылета, день между заселением и выездом — заберём и вернём ко времени.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">🏨</div>
+          <h5 class="mb-1">До заселения в отель</h5>
+          <div class="text-muted">
+            Сдали квартиру или ждёте check-in? Сохраним чемоданы и привезём к заселению.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">✈️</div>
+          <h5 class="mb-1">Аэропорты и вокзалы</h5>
+          <div class="text-muted">
+            Доставим в Шереметьево, Внуково, Домодедово или Жуковский, а также на вокзалы Москвы.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">🚛</div>
+          <h5 class="mb-1">Переезд или ремонт</h5>
+          <div class="text-muted">
+            Безопасное хранение вещей на несколько дней с фотофиксацией и пломбами.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">🤝</div>
+          <h5 class="mb-1">Передача багажа</h5>
+          <div class="text-muted">
+            Упакуем, перевезём и передадим лично в руки получателю.
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="card-dd p-4 h-100">
-        <h6 class="mb-2">Внуково, семья с детьми</h6>
-        <div class="text-muted">Сохранили багаж до заселения, привезли в отель к 15:00 — без поездок с чемоданами.</div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Перелинковка -->
-<section class="mb-5">
-  <h2 class="h4 fw-bold mb-3">Популярные направления</h2>
-  <ul class="list-unstyled d-flex flex-wrap gap-3">
-    <li><a class="btn btn-outline-secondary pill" href="/aero/sheremetyevo/">Доставка багажа в Шереметьево</a></li>
-    <li><a class="btn btn-outline-secondary pill" href="/aero/domodedovo/">Доставка багажа в Домодедово</a></li>
-    <li><a class="btn btn-outline-secondary pill" href="/aero/vnukovo/">Доставка багажа в Внуково</a></li>
-    <li><a class="btn btn-outline-secondary pill" href="/aero/zhukovsky/">Доставка багажа в Жуковский</a></li>
-  </ul>
-</section>
+  <!-- Как это работает -->
+  <section class="mb-5">
+    <h2 class="h4 fw-bold mb-3">Пошагово: как это работает</h2>
+    <div class="surface p-4">
+      <div class="row g-4">
+        <div class="col-md-6 d-flex align-items-start gap-3">
+          <div class="timeline-dot mt-2"></div>
+          <div>
+            <h6 class="mb-1">1. Оставляете заявку</h6>
+            <div class="text-muted">
+              Согласуем время, адреса и количество мест. Всё онлайн или по телефону.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-start gap-3">
+          <div class="timeline-dot mt-2"></div>
+          <div>
+            <h6 class="mb-1">2. Приезжает представитель</h6>
+            <div class="text-muted">
+              Привозит упаковку, оформляет акт, делает фотофиксацию и пломбирует багаж.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-start gap-3">
+          <div class="timeline-dot mt-2"></div>
+          <div>
+            <h6 class="mb-1">3. Хранение и безопасность</h6>
+            <div class="text-muted">
+              Охраняемый склад, контроль доступа, страхование до 30 000 ₽ включено.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-start gap-3">
+          <div class="timeline-dot mt-2"></div>
+          <div>
+            <h6 class="mb-1">4. Доставка ко времени</h6>
+            <div class="text-muted">
+              Домой, в отель, на вокзал или в аэропорт — в согласованный интервал.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- Преимущества -->
-<section class="mb-5">
-  <h2 class="h4 fw-bold mb-3">Почему выбирают нас</h2>
-  <div class="row g-3">
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">🛡️</div>
-        <h5 class="mb-1">Безопасность</h5>
-        <div class="text-muted">Пломбы, фотофиксация и документы. Страхование включено.</div>
+  <!-- Кейсы -->
+  <section class="mb-5">
+    <h2 class="h4 fw-bold mb-3">Короткие кейсы</h2>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="surface p-4 h-100">
+          <h6 class="mb-2">SVO, 4 чемодана, утренний рейс</h6>
+          <div class="text-muted">
+            Забрали в 07:00, доставили в Шереметьево к 10:30, клиент спокойно прошёл регистрацию.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="surface p-4 h-100">
+          <h6 class="mb-2">Внуково, семья с детьми</h6>
+          <div class="text-muted">
+            Сохранили багаж до заселения, привезли в отель к 15:00 — без поездок с чемоданами.
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">⚡</div>
-        <h5 class="mb-1">Скорость</h5>
-        <div class="text-muted">Экспресс-доставка 1–2 часа при необходимости.</div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-dd p-4 h-100">
-        <div class="icon-badge mb-3">💬</div>
-        <h5 class="mb-1">Поддержка</h5>
-        <div class="text-muted">Связь 7 дней в неделю, гибкость по времени и маршруту.</div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- CTA -->
-<section class="card-dd p-4 p-md-5 mb-4 text-center">
-  <h4 class="fw-bold mb-2">Путешествуйте налегке</h4>
-  <div class="text-muted mb-3">Заберём багаж сегодня — доставим точно ко времени.</div>
-  <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4">
-    <i class="bi bi-bag"></i> Оставить заявку
-  </a>
-</section>
+  <!-- Перелинковка -->
+  <section class="mb-5">
+    <h2 class="h4 fw-bold mb-3">Популярные направления</h2>
+    <ul class="list-unstyled d-flex flex-wrap gap-3">
+      <li><a class="btn btn-outline-secondary pill" href="/aero/svo/">Доставка багажа в Шереметьево</a></li>
+      <li><a class="btn btn-outline-secondary pill" href="/aero/dme/">Доставка багажа в Домодедово</a></li>
+      <li><a class="btn btn-outline-secondary pill" href="/aero/vko/">Доставка багажа в Внуково</a></li>
+      <li><a class="btn btn-outline-secondary pill" href="/aero/zia/">Доставка багажа в Жуковский</a></li>
+    </ul>
+  </section>
+
+  <!-- Преимущества -->
+  <section class="mb-5">
+    <h2 class="h4 fw-bold mb-3">Почему выбирают нас</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">🛡️</div>
+          <h5 class="mb-1">Безопасность</h5>
+          <div class="text-muted">Пломбы, фотофиксация и документы. Страхование включено.</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">⚡</div>
+          <h5 class="mb-1">Скорость</h5>
+          <div class="text-muted">Экспресс-доставка 1–2 часа при необходимости.</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="surface p-4 h-100">
+          <div class="icon-badge mb-3">💬</div>
+          <h5 class="mb-1">Поддержка</h5>
+          <div class="text-muted">Связь 7 дней в неделю, гибкость по времени и маршруту.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="surface p-4 p-md-5 mb-4 text-center">
+    <h4 class="fw-bold mb-2">Путешествуйте налегке</h4>
+    <div class="text-muted mb-3">Заберём багаж сегодня — доставим точно ко времени.</div>
+    <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary pill px-4">
+      <i class="bi bi-bag"></i> Оставить заявку
+    </a>
+  </section>
+
+</div>
 
 {% endblock %}
