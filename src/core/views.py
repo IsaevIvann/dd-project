@@ -53,21 +53,25 @@ AEROPORTS = {
     },
 }
 
-def aero(request, code):
+def aero(request, code: str):
     code = code.lower()
     data = AEROPORTS.get(code)
     if not data:
         raise Http404()
 
-    # SEO-переменные
-    h1 = f"Доставка багажа {data['name_prep']} и {data['name_gen']} — D&D"
-    title = f"Доставка багажа {data['name_prep']} / {data['name_gen']} — D&D"
+    # SEO
+    h1 = f"Доставка багажа {data['name_prep']} и {data['name_gen']} — Drop & Delivery"
+    title = f"Доставка багажа {data['name_prep']} / {data['name_gen']} — Drop & Delivery"
     desc = (
         f"Заберём у двери, упакуем и опечатаем, оформим акт и доставим {data['name_prep']} "
         f"или {data['name_gen']} — точно ко времени. Первые сутки хранения включены."
     )
-    # каноникал
-    canonical = request.build_absolute_uri()
+
+    canonical = request.build_absolute_uri(reverse("aero", args=[code]))
+
+    # Перелинковка: другие аэропорты + несколько вокзалов
+    nav_items = [(reverse("aero", args=[k]), f"Аэропорт: {v['title']}") for k, v in AEROPORTS.items() if k != code]
+    nav_items += [(reverse("station", args=[k]), f"Вокзал: {v['title']}") for k, v in list(STATIONS.items())[:6]]
 
     ctx = {
         "code": code,
@@ -76,10 +80,10 @@ def aero(request, code):
         "meta_title": title,
         "meta_desc": desc,
         "canonical": canonical,
-        # для внутренних ссылок на соседние аэропорты
-        "aeros_nav": [(k, v["title"]) for k, v in AEROPORTS.items() if k != code],
+        "nav_items": nav_items,
     }
-    return render(request, "core/aero.html", ctx)
+    return render(request, "core/hub.html", ctx)
+
 
 
 def _client_ip(request):
@@ -301,27 +305,32 @@ def concept(request):
 
 
 def station(request, code: str):
+    code = code.lower()
     data = STATIONS.get(code)
     if not data:
         raise Http404("Station not found")
 
     canonical = request.build_absolute_uri(reverse("station", args=[code]))
 
+    # SEO
     h1 = f"Доставка багажа {data['name_prep']} — Drop & Delivery"
-    meta_title = f"{h1} | Москва и область"
+    meta_title = f"Доставка багажа {data['name_prep']} / {data['name_gen']} — Drop & Delivery"
     meta_desc = (
         f"Заберём багаж у двери и доставим {data['name_prep']} или заберём {data['name_gen']} "
         f"и привезём по адресу. Пломба, фотофиксация, акт, 1 ночь хранения включена."
     )
 
-    stations_nav = [(k, v["title"]) for k, v in STATIONS.items() if k != code]
+    # Перелинковка: другие вокзалы + аэропорты
+    nav_items = [(reverse("station", args=[k]), f"Вокзал: {v['title']}") for k, v in STATIONS.items() if k != code]
+    nav_items += [(reverse("aero", args=[k]), f"Аэропорт: {v['title']}") for k, v in AEROPORTS.items()]
 
-    return render(request, "core/station.html", {
+    ctx = {
+        "code": code,
         "data": data,
         "h1": h1,
         "meta_title": meta_title,
         "meta_desc": meta_desc,
         "canonical": canonical,
-        "stations_nav": stations_nav,
-        "code": code,
-    })
+        "nav_items": nav_items,
+    }
+    return render(request, "core/hub.html", ctx)
