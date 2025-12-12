@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
@@ -15,6 +16,7 @@ from .models import Order
 from .notify import send_welcome
 from .serializers import LinkChatSerializer
 from .utils import build_telegram_deeplink
+from .stations import STATIONS
 
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
@@ -295,4 +297,31 @@ def concept(request):
         "steps": steps,
         "scenarios": scenarios,
         "advantages": advantages,
+    })
+
+
+def station(request, code: str):
+    data = STATIONS.get(code)
+    if not data:
+        raise Http404("Station not found")
+
+    canonical = request.build_absolute_uri(reverse("station", args=[code]))
+
+    h1 = f"Доставка багажа {data['name_prep']} — Drop & Delivery"
+    meta_title = f"{h1} | Москва и область"
+    meta_desc = (
+        f"Заберём багаж у двери и доставим {data['name_prep']} или заберём {data['name_gen']} "
+        f"и привезём по адресу. Пломба, фотофиксация, акт, 1 ночь хранения включена."
+    )
+
+    stations_nav = [(k, v["title"]) for k, v in STATIONS.items() if k != code]
+
+    return render(request, "core/station.html", {
+        "data": data,
+        "h1": h1,
+        "meta_title": meta_title,
+        "meta_desc": meta_desc,
+        "canonical": canonical,
+        "stations_nav": stations_nav,
+        "code": code,
     })
