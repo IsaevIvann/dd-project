@@ -2,224 +2,187 @@
 {% load static %}
 {% block title %}{{ meta_title }}{% endblock %}
 
+{% block extra_head %}
+  <meta name="description" content="{{ meta_desc }}">
+  <link rel="canonical" href="{{ canonical }}">
+
+  <style>
+    :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
+    .hero-clean{
+      border-radius:32px;
+      padding:2.25rem;
+      background:linear-gradient(120deg,#ffffff 0%,#f3f8ff 100%);
+      box-shadow:0 20px 50px rgba(16,24,40,.06);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-kicker{color:var(--muted); font-size:1.05rem;}
+    .hero-title{color:var(--ink);}
+    .hero-img{
+      max-width:100%;
+      height:auto;
+      border-radius:28px;
+      box-shadow:0 18px 40px rgba(16,24,40,.12);
+    }
+    .card-dd{
+      border:0;
+      border-radius:var(--r);
+      box-shadow:0 12px 30px rgba(16,24,40,.08);
+      background:#fff;
+    }
+    .pill{border-radius:999px}
+    .mini-badges span{
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      padding:.45rem .75rem;
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:999px;
+      background:rgba(255,255,255,.75);
+      color:var(--muted);
+      font-size:.92rem;
+    }
+    .dd-steps li{margin-bottom:.4rem;}
+    details summary{cursor:pointer;}
+  </style>
+{% endblock %}
+
 {% block content %}
-<link rel="canonical" href="{{ canonical }}"/>
 
-<style>
-  .hero-dd{
-    border-radius:32px;
-    padding:2.2rem;
-    background:#fff;
-    box-shadow:0 20px 50px rgba(16,24,40,.06);
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-dd:after{
-    content:"";
-    position:absolute; inset:-80px -120px auto auto;
-    width:260px; height:260px;
-    background:radial-gradient(circle, rgba(13,110,253,.18), rgba(13,110,253,0) 65%);
-    transform:rotate(18deg);
-  }
-  .card-dd{
-    border:0;
-    border-radius:24px;
-    box-shadow:0 12px 30px rgba(16,24,40,.08);
-    background:#fff;
-  }
-  .pill{border-radius:9999px}
-  .icon-badge{
-    width:44px;height:44px;border-radius:14px;
-    display:flex;align-items:center;justify-content:center;
-    background:rgba(13,110,253,.10);
-  }
-  details summary{cursor:pointer}
-  .muted{color:#64748b}
-</style>
+<!-- HERO как на главной + картинка -->
+<section class="hero-clean mb-4">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-7">
+      <div class="hero-kicker mb-2">Drop & Delivery · Москва и область</div>
 
-<!-- HERO -->
-<section class="hero-dd mb-4">
-  <div class="row align-items-center g-3">
-    <div class="col-lg-8">
-      <h1 class="fw-bold mb-2" style="color:#0f172a">{{ h1 }}</h1>
-      <p class="muted mb-3">{{ meta_desc }}</p>
+      <h1 class="fw-bold hero-title mb-3" style="font-size:2.1rem; line-height:1.15;">
+        {{ h1 }}
+      </h1>
 
-      <div class="d-flex flex-wrap gap-2">
-        <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4">
+      <p class="text-muted mb-4" style="font-size:1.08rem;">
+        Заберём у двери, упакуем и опечатаем (пломба + фото), оформим акт и доставим точно ко времени.
+        1 ночь хранения включена.
+      </p>
+
+      <div class="d-flex flex-wrap gap-2 mb-4">
+        <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4 py-2">
           <i class="bi bi-bag-check"></i> Оставить заявку
         </a>
-        <a href="/#tariffs" class="btn btn-outline-primary pill px-4">
+        <a href="/#tariffs" class="btn btn-outline-primary pill px-4 py-2">
           <i class="bi bi-calculator"></i> Рассчитать стоимость
         </a>
       </div>
 
-      <div class="mt-3 d-flex flex-wrap gap-2 muted" style="font-size:.95rem">
-        <span><i class="bi bi-shield-check"></i> Пломба + фото</span>
-        <span><i class="bi bi-file-earmark-text"></i> Акт приёма-передачи</span>
-        <span><i class="bi bi-clock"></i> Ко времени</span>
-        <span><i class="bi bi-award"></i> Страхование включено</span>
+      <div class="mini-badges d-flex flex-wrap gap-2">
+        <span>🔒 Пломба + фото</span>
+        <span>📄 Акт приёма-передачи</span>
+        <span>🕒 Ко времени</span>
+        <span>🛡 Страхование включено</span>
       </div>
     </div>
 
-    <div class="col-lg-4">
-      <div class="card-dd p-3">
-        <div class="fw-semibold mb-1">{{ data.title }}</div>
-
-        {% if data.address %}
-          <div class="muted" style="font-size:.95rem">{{ data.address }}</div>
-        {% endif %}
-
-        {% if data.metro %}
-          <div class="muted" style="font-size:.95rem">Метро: {{ data.metro|join:", " }}</div>
-        {% endif %}
-
-        {% if data.terminals %}
-          <div class="muted" style="font-size:.95rem">Терминалы: {{ data.terminals|join:", " }}</div>
-        {% endif %}
-
-        {% if data.note %}
-          <div class="muted mt-2" style="font-size:.95rem">{{ data.note }}</div>
-        {% endif %}
-      </div>
+    <div class="col-lg-5 text-center">
+      <img
+        src="{% static 'core/img/dnd-hero.png' %}"
+        alt="Drop & Delivery — доставка и хранение багажа"
+        class="hero-img"
+        loading="lazy"
+      >
     </div>
   </div>
 </section>
 
-<!-- 2 СЦЕНАРИЯ -->
+<!-- Инфо-блок: аэропорт или вокзал -->
+<section class="card-dd p-4 mb-4">
+  <div class="row g-3 align-items-center">
+    <div class="col-md-8">
+      <div class="fw-bold mb-1" style="font-size:1.1rem;">{{ data.title }}</div>
+
+      {% if data.terminals %}
+        <div class="text-muted">
+          Терминалы:
+          {% for t in data.terminals %}{{ t }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        </div>
+      {% else %}
+        <div class="text-muted">
+          Адрес: {{ data.address }}
+          {% if data.metro %} · Метро: {{ data.metro|join:", " }}{% endif %}
+        </div>
+      {% endif %}
+
+      {% if data.note %}
+        <div class="mt-2 text-muted">{{ data.note }}</div>
+      {% endif %}
+    </div>
+
+    <div class="col-md-4 text-md-end">
+      <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4">
+        <i class="bi bi-bag-check"></i> Оформить заказ
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 2 карточки (в/из) -->
 <section class="row g-3 mb-4">
   <div class="col-md-6">
     <div class="card-dd p-4 h-100">
       <h2 class="h5 fw-bold mb-2">Доставка багажа {{ data.name_prep }}</h2>
-      <ul class="muted mb-3 ps-3">
+      <ul class="text-muted dd-steps" style="padding-left:1.1rem">
         <li>Заберём у двери, упакуем и опечатаем (пломба с номером, фото).</li>
-        <li>Оформим акт (кол-во мест, состояние, номера пломб, адреса и время).</li>
-        <li>Доставим {{ data.name_prep }} точно ко времени.</li>
+        <li>Оформим акт приёма-передачи (места, состояние, пломбы).</li>
+        <li>Доставим точно ко времени.</li>
         <li>Оплата после проверки багажа.</li>
       </ul>
-      <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4">Оставить заявку</a>
+      <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4">
+        <i class="bi bi-bag-check"></i> Оставить заявку
+      </a>
     </div>
   </div>
 
   <div class="col-md-6">
     <div class="card-dd p-4 h-100">
       <h2 class="h5 fw-bold mb-2">Доставка багажа {{ data.name_gen }}</h2>
-      <ul class="muted mb-3 ps-3">
+      <ul class="text-muted dd-steps" style="padding-left:1.1rem">
         <li>Встречаем в согласованной точке.</li>
         <li>Проверяете целостность по акту — затем оплата.</li>
-        <li>Доставим по адресу в Москве (Зона 1) или МО (Зона 1.5).</li>
+        <li>Доставим по адресу в Москве или в МО.</li>
       </ul>
-      <a href="{% url 'order_create' %}" class="btn btn-outline-primary pill px-4">Оставить заявку</a>
+      <a href="{% url 'order_create' %}" class="btn btn-outline-primary pill px-4">
+        Оставить заявку
+      </a>
     </div>
   </div>
 </section>
 
-<!-- КАК ЭТО РАБОТАЕТ (3 шага, как на главной) -->
+<!-- Быстрый FAQ -->
 <section class="card-dd p-4 mb-4">
-  <h2 class="h5 fw-bold mb-3">Как это работает</h2>
-  <div class="row g-3">
-    <div class="col-md-4">
-      <div class="d-flex gap-3">
-        <div class="icon-badge"><i class="bi bi-geo-alt"></i></div>
-        <div>
-          <div class="fw-semibold">Забор у двери</div>
-          <div class="muted" style="font-size:.95rem">Приезжаем к вам, оформляем акт, упаковываем и пломбируем багаж.</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="d-flex gap-3">
-        <div class="icon-badge"><i class="bi bi-shield-check"></i></div>
-        <div>
-          <div class="fw-semibold">Безопасность</div>
-          <div class="muted" style="font-size:.95rem">Фотофиксация, пломба с номером, склад с ограниченным доступом.</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="d-flex gap-3">
-        <div class="icon-badge"><i class="bi bi-clock"></i></div>
-        <div>
-          <div class="fw-semibold">Доставка ко времени</div>
-          <div class="muted" style="font-size:.95rem">В {{ data.title }} или по адресу — ровно к согласованному времени.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ТАРИФЫ/КАЛЬКУЛЯТОР -->
-<section class="card-dd p-4 mb-4">
-  <h2 class="h5 fw-bold mb-2">Тарифы и расчёт</h2>
-  <div class="muted mb-2">1 ночь хранения включена. Стоимость зависит от расстояния, количества мест и срочности.</div>
-  <div class="d-flex flex-wrap gap-2">
-    <a href="/#tariffs" class="btn btn-secondary btn-sm pill">Открыть калькулятор</a>
-    <a href="{% url 'order_create' %}" class="btn btn-outline-secondary btn-sm pill">Оформить заказ</a>
-  </div>
-</section>
-
-<!-- ГАРАНТИИ -->
-<section class="row g-3 mb-4">
-  <div class="col-md-4">
-    <div class="card-dd p-4 h-100">
-      <div class="fw-semibold mb-1"><i class="bi bi-file-earmark-text"></i> Документы</div>
-      <div class="muted">Акт приёма-передачи, фиксация количества мест и состояния.</div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card-dd p-4 h-100">
-      <div class="fw-semibold mb-1"><i class="bi bi-lock"></i> Безопасность</div>
-      <div class="muted">Пломба с номером + фото. Хранение на складе с ограниченным доступом.</div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card-dd p-4 h-100">
-      <div class="fw-semibold mb-1"><i class="bi bi-award"></i> Страхование</div>
-      <div class="muted">Страхование включено (можно увеличить по запросу).</div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="card-dd p-4 mb-4">
-  <h2 class="h5 fw-bold mb-3">FAQ по {{ data.title }}</h2>
+  <h2 class="h5 fw-bold mb-3">FAQ</h2>
 
   <details class="mb-2">
-    <summary class="fw-semibold">Можно ли изменить время подачи?</summary>
-    <div class="muted mt-1">Да. Сообщите нам — сдвинем слот и подстроимся.</div>
+    <summary class="fw-semibold">Как проходит передача багажа?</summary>
+    <div class="text-muted mt-1">Представитель приезжает, упаковывает, пломбирует, делает фото и оформляет акт.</div>
   </details>
 
   <details class="mb-2">
-    <summary class="fw-semibold">Где происходит встреча?</summary>
-    <div class="muted mt-1">В согласованной точке — у входа/выхода/парковки (в зависимости от локации).</div>
+    <summary class="fw-semibold">Что если рейс/поезд задержится?</summary>
+    <div class="text-muted mt-1">Мы подстроимся по времени — просто сообщите заранее.</div>
   </details>
 
   <details>
-    <summary class="fw-semibold">Как происходит оплата?</summary>
-    <div class="muted mt-1">После проверки багажа: СБП/QR/платёжная ссылка или наличными.</div>
+    <summary class="fw-semibold">Страхование включено?</summary>
+    <div class="text-muted mt-1">Да, включено до 30 000 ₽ (можно увеличить по запросу).</div>
   </details>
 </section>
 
-<!-- ПЕРЕЛИНКОВКА -->
+<!-- Перелинковка -->
 <section class="card-dd p-4">
   <h2 class="h6 fw-bold mb-2">Другие направления</h2>
   <div class="d-flex flex-wrap gap-2">
-    {% for k, title in nav_items %}
-      <a class="btn btn-light border pill" href="{{ k }}">{{ title }}</a>
+    {% for url, label in nav_items %}
+      <a class="btn btn-light border pill" href="{{ url }}">{{ label }}</a>
     {% endfor %}
   </div>
 </section>
 
-<!-- JSON-LD FAQ -->
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"Доставка багажа {{ data.name_prep }}",
-     "acceptedAnswer":{"@type":"Answer","text":"Забираем у двери, упаковываем и пломбируем багаж, оформляем акт и доставляем ко времени. Оплата после проверки."}},
-    {"@type":"Question","name":"Доставка багажа {{ data.name_gen }}",
-     "acceptedAnswer":{"@type":"Answer","text":"Встречаем в согласованной точке, сверяем по акту и доставляем по адресу в Москве или области."}}
-  ]
-}
-</script>
 {% endblock %}
