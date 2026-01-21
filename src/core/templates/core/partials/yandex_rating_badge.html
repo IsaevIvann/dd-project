@@ -1,0 +1,35 @@
+{# core/templates/core/partials/yandex_rating_badge.html #}
+
+<section class="card-dd p-4 p-md-5 mb-5" id="reviews">
+  <div class="row g-3 align-items-center">
+    <div class="col-md-7">
+      <h2 class="h5 fw-bold mb-1">Нас рекомендуют в Яндексе</h2>
+      <div class="text-muted small">
+        Реальные отзывы клиентов — удобно для прилётов, вокзалов и бизнес-встреч.
+      </div>
+    </div>
+
+    <div class="col-md-5 text-md-end">
+      <div class="d-inline-flex align-items-center gap-2">
+        <div class="border rounded-4 p-2" style="background:#fff;">
+          <iframe
+            src="https://yandex.ru/sprav/widget/rating-badge/138558427780?type=rating"
+            width="150"
+            height="50"
+            frameborder="0"
+            style="display:block; border:0; overflow:hidden;"
+            title="Рейтинг Drop & Delivery в Яндексе"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        {# Необязательно, но сильно повышает конверсию: #}
+        <a class="btn btn-primary btn-sm pill"
+           href="{% url 'contacts' %}#reviews">
+          Все отзывы
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
