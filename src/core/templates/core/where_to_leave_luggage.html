@@ -5,8 +5,10 @@
 
 {% block extra_head %}
 
-  <meta name="description" content="Где оставить багаж в Москве, если рано прилёт или поздний вылет? Вместо камер хранения — сервис Drop & Delivery: заберём чемоданы у двери, при необходимости сохраним на складе и доставим ко времени в аэропорт, на вокзал или по адресу.">
-  <meta property="og:title" content="Где оставить багаж в Москве — удобная альтернатива камерам хранения">
+  <link rel="canonical" href="https://www.drop-delivery.ru/gde-ostavit-bagazh-v-moskve/"/>
+
+  <meta name="description" content="Где оставить багаж в Москве, если ранний прилёт или поздний вылет? Вместо камер хранения — сервис Drop & Delivery: заберём чемоданы у двери, при необходимости сохраним на складе и доставим ко времени в аэропорт, на вокзал или по адресу.">
+  <meta property="og:title" content="Где оставить багаж в Москве — без камер хранения | Drop & Delivery">
   <meta property="og:description" content="Где оставить багаж в Москве без поездок в камеры хранения: сервис заберёт чемоданы у двери, опечатает, сохранит на складе и доставит ко времени в аэропорт или по адресу.">
 
   {# OG URL и картинка — динамически от текущего URL #}
@@ -15,13 +17,14 @@
 
   <style>
     /* Lead-текст — как на главной */
-.lead {
-    font-size: clamp(17px, 1.28vw, 19px);
-    line-height: 1.55;
-    font-weight: 400;
-    color: var(--muted);
-    max-width: 600px;
-}
+    .lead {
+      font-size: clamp(17px, 1.28vw, 19px);
+      line-height: 1.55;
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 600px;
+    }
+
     :root{
       --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
                  Arial, "Noto Sans", sans-serif;
@@ -66,24 +69,24 @@
     "@type":"WebPage",
     "@id":"{{ SITE_URL }}/gde-ostavit-bagazh-v-moskve/#webpage",
     "url":"{{ SITE_URL }}/gde-ostavit-bagazh-v-moskve/",
-    "name":"Где оставить багаж в Москве — альтернатива камерам хранения",
+    "name":"Где оставить багаж в Москве — без камер хранения",
     "inLanguage":"ru",
     "isPartOf":{"@id":"{{ SITE_URL }}/#website"},
     "about":{"@id":"{{ SITE_URL }}/#organization"}
   }
   </script>
 
-  <!-- JSON-LD: Service кратко про услугу -->
+  <!-- JSON-LD: Service — решение запроса "где оставить багаж" -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"Service",
-    "name":"Хранение и доставка багажа по Москве — Drop & Delivery",
-    "serviceType":"Luggage storage and delivery",
+    "name":"Где оставить багаж в Москве — сервис забора, хранения и доставки",
+    "serviceType":"Luggage pickup, storage and delivery",
     "areaServed":["Москва","Московская область"],
     "url":"{{ SITE_URL }}/gde-ostavit-bagazh-v-moskve/",
     "provider":{"@id":"{{ SITE_URL }}/#organization"},
-    "description":"Забор багажа у двери с последующим хранением и доставкой в аэропорт, на вокзал или по адресу. Альтернатива камерам хранения в Москве."
+    "description":"Альтернатива камерам хранения: заберём багаж у двери, опечатаем, при необходимости сохраним на складе и доставим ко времени — в аэропорт, на вокзал или по адресу."
   }
   </script>
 
