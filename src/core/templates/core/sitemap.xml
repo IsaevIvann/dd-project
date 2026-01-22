@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Главная -->
   <url>
@@ -20,6 +19,12 @@
     <loc>https://www.drop-delivery.ru/hranenie-bagazha-moskva/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
@@ -78,7 +83,7 @@
     <priority>0.3</priority>
   </url>
 
-  <!-- Аэропорты (реальные работающие урлы) -->
+  <!-- Аэропорты -->
   <url>
     <loc>https://www.drop-delivery.ru/aero/svo/</loc>
     <changefreq>weekly</changefreq>
@@ -100,17 +105,41 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Дополнительные служебные -->
+  <!-- Вокзалы -->
   <url>
-    <loc>https://www.drop-delivery.ru/success/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
+    <loc>https://www.drop-delivery.ru/station/kazan/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
-
   <url>
-  <loc>https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/</loc>
-  <changefreq>weekly</changefreq>
-  <priority>0.8</priority>
-</url>
+    <loc>https://www.drop-delivery.ru/station/leningrad/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.drop-delivery.ru/station/yaroslavl/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.drop-delivery.ru/station/kursk/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.drop-delivery.ru/station/kiev/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.drop-delivery.ru/station/belorussky/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.drop-delivery.ru/station/paveletsky/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
 </urlset>

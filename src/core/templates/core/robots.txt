@@ -1,15 +1,12 @@
-# robots.txt for drop-delivery.ru
-
-# --- Main rules (all search engines) ---
 User-agent: *
 Disallow: /admin/
+Disallow: /success/
 
-# --- Yandex-specific ---
 User-agent: Yandex
 Disallow: /admin/
-Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&utm_referrer&yclid&gclid&fbclid /
+Disallow: /success/
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&utm_id&yclid&gclid&fbclid /
 
-# --- Optional: block selected AI/extended crawlers (doesn't affect SEO) ---
 User-agent: GPTBot
 Disallow: /
 
@@ -31,6 +28,5 @@ Disallow: /
 User-agent: meta-externalagent
 Disallow: /
 
-# --- Sitemap & canonical host for Yandex ---
 Sitemap: https://www.drop-delivery.ru/sitemap.xml
 Host: www.drop-delivery.ru
