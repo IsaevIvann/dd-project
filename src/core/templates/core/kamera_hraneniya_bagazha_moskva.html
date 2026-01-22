@@ -1,0 +1,225 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Камера хранения багажа в Москве — удобная альтернатива | Drop & Delivery{% endblock %}
+
+{% block extra_head %}
+  <meta name="description" content="Камера хранения багажа в Москве: как оставить чемоданы без очередей и поездок. Заберём багаж у двери, опечатаем, сохраним на складе и доставим ко времени — в аэропорт, на вокзал или по адресу.">
+
+  <link rel="canonical" href="https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/">
+
+  <meta property="og:title" content="Камера хранения багажа в Москве — альтернатива без очередей | Drop & Delivery">
+  <meta property="og:description" content="Оставить багаж в Москве без поездок в камеры хранения: забор у двери, пломбы, акт, охраняемый склад и доставка ко времени.">
+  <meta property="og:url" content="https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/">
+  <meta property="og:image" content="https://www.drop-delivery.ru/static/core/img/logo-512.png">
+
+  <style>
+    :root{
+      --dd-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      --dd-radius: 24px;
+      --dd-radius-lg: 32px;
+      --dd-shadow: 0 24px 48px rgba(13,110,253,.10);
+      --dd-shadow-sm: 0 12px 30px rgba(13,110,253,.08);
+      --ink:#0f172a;
+      --muted:#64748b;
+    }
+    .hero-clean{
+      background:#fff;
+      border-radius:var(--dd-radius-lg);
+      box-shadow:var(--dd-shadow);
+      padding:2rem;
+    }
+    @media (min-width:992px){
+      .hero-clean{ padding:2.5rem 2.75rem; }
+    }
+    .surface{
+      background:#fff;
+      border-radius:var(--dd-radius);
+      box-shadow:var(--dd-shadow-sm);
+      border:0;
+    }
+    .pill{ border-radius:999px; }
+    .hero-title{
+      font-family:var(--dd-font);
+      font-weight:800;
+      line-height:1.1;
+      font-size:clamp(30px, 3.6vw, 48px);
+      color:var(--ink);
+    }
+    .lead{
+      font-size:clamp(17px,1.28vw,19px);
+      line-height:1.55;
+      font-weight:400;
+      color:var(--muted);
+      max-width:650px;
+    }
+  </style>
+
+  <!-- JSON-LD: WebPage -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "@id":"https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/#webpage",
+    "url":"https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/",
+    "name":"Камера хранения багажа в Москве — удобная альтернатива",
+    "inLanguage":"ru",
+    "isPartOf":{"@id":"https://www.drop-delivery.ru/#website"},
+    "about":{"@id":"https://www.drop-delivery.ru/#organization"}
+  }
+  </script>
+
+  <!-- JSON-LD: Service -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Камера хранения багажа в Москве — альтернатива с доставкой | Drop & Delivery",
+    "serviceType":"Luggage storage and delivery",
+    "areaServed":["Москва","Московская область"],
+    "provider":{"@id":"https://www.drop-delivery.ru/#organization"},
+    "url":"https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/",
+    "description":"Альтернатива камерам хранения: забор багажа у двери, пломбы и акт, охраняемый склад и доставка ко времени в аэропорт, на вокзал или по адресу."
+  }
+  </script>
+
+  <!-- JSON-LD: Breadcrumbs -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Главная","item":"https://www.drop-delivery.ru/"},
+      {"@type":"ListItem","position":2,"name":"Камера хранения багажа в Москве","item":"https://www.drop-delivery.ru/kamera-hraneniya-bagazha-moskva/"}
+    ]
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4 my-md-5">
+
+  <!-- HERO -->
+  <section class="hero-clean mb-5">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-7">
+        <span class="badge text-primary bg-opacity-10 border border-primary-subtle rounded-pill px-3 py-2">
+          <i class="bi bi-bag me-1"></i> Камера хранения багажа · Москва
+        </span>
+
+        <h1 class="hero-title mt-3">
+          Камера хранения багажа в Москве — <span class="text-primary">без очередей и поездок</span>
+        </h1>
+
+        <p class="lead mt-3">
+          Если вы ищете камеру хранения для чемоданов на несколько часов или дней — есть удобная альтернатива:
+          мы заберём багаж у двери, опечатаем, сохраним на охраняемом складе и доставим ко времени — в аэропорт,
+          на вокзал или по адресу.
+        </p>
+
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="{% url 'order_create' %}" class="btn btn-lg btn-primary px-4">
+            <i class="bi bi-send me-1"></i>Оставить заявку
+          </a>
+          <a href="/#tariffs" class="btn btn-lg btn-outline-primary px-4">
+            <i class="bi bi-tag me-1"></i>Тарифы и калькулятор
+          </a>
+        </div>
+
+        <p class="text-secondary mt-3 mb-0">
+          Москва и ближайшее Подмосковье. Пломбы, акт, фотофиксация. Первые сутки хранения включены.
+        </p>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="surface p-4 text-center">
+          <img src="{% static 'core/img/dnd_storage.png' %}" alt="Камера хранения багажа в Москве — альтернатива" loading="lazy"
+               decoding="async" class="img-fluid rounded-4">
+          <div class="small text-muted mt-2">
+            Забор у двери → хранение на складе → доставка ко времени.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Когда нужен сценарий -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Когда обычно ищут камеру хранения багажа</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Ранний прилёт</h3>
+          <p class="text-secondary mb-0">До заселения ещё несколько часов — удобно оставить багаж и гулять налегке.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Поздний вылет</h3>
+          <p class="text-secondary mb-0">После выселения из отеля не хочется носить чемоданы по городу.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Пересадка</h3>
+          <p class="text-secondary mb-0">Если между рейсами/поездами есть время — багаж можно передать нам.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <h3 class="h6 mb-2">Деловая встреча</h3>
+          <p class="text-secondary mb-0">На встречу или мероприятие удобнее приехать без сумок и чемоданов.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Как мы заменяем камеру хранения -->
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Альтернатива камере хранения: как это работает</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <span class="badge text-bg-primary rounded-pill">1</span>
+          <h3 class="h6 mt-3 mb-1">Заявка</h3>
+          <p class="text-secondary mb-0">Согласуем адрес, время забора и куда потом доставить багаж.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <span class="badge text-bg-primary rounded-pill">2</span>
+          <h3 class="h6 mt-3 mb-1">Забор и пломбы</h3>
+          <p class="text-secondary mb-0">Упаковка при необходимости, пломбы с номерами, акт и фотофиксация.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <span class="badge text-bg-primary rounded-pill">3</span>
+          <h3 class="h6 mt-3 mb-1">Хранение</h3>
+          <p class="text-secondary mb-0">Охраняемый склад. Первые сутки хранения включены в базовый тариф.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="surface p-3 h-100">
+          <span class="badge text-bg-primary rounded-pill">4</span>
+          <h3 class="h6 mt-3 mb-1">Доставка ко времени</h3>
+          <p class="text-secondary mb-0">В аэропорт/на вокзал/по адресу — ровно к нужному времени.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Перелинковка -->
+  <section class="surface p-4 p-md-5 mb-5">
+    <h2 class="h5 fw-bold mb-3">Полезные страницы</h2>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-light border pill" href="/gde-ostavit-bagazh-v-moskve/">Где оставить багаж в Москве</a>
+      <a class="btn btn-light border pill" href="/hranenie-bagazha-moskva/">Хранение багажа в Москве</a>
+      <a class="btn btn-light border pill" href="/dostavka-bagazha-moskva/">Доставка багажа в Москве</a>
+      <a class="btn btn-light border pill" href="/#tariffs">Тарифы и калькулятор</a>
+      <a class="btn btn-light border pill" href="/faq/">FAQ</a>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

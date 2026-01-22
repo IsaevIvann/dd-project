@@ -3,39 +3,86 @@
 
 {% block title %}{{ meta_title }}{% endblock %}
 
+{% block extra_head %}
+  <meta name="description" content="{{ meta_desc }}">
+  <link rel="canonical" href="{{ canonical }}">
+
+  <meta property="og:title" content="{{ meta_title }}">
+  <meta property="og:description" content="{{ meta_desc }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+
+  <style>
+    .hero-clean{
+      border-radius:32px;
+      padding:2rem;
+      background:#fff;
+      box-shadow:0 20px 50px rgba(16,24,40,.06);
+    }
+    .card-dd{
+      border:0;
+      border-radius:24px;
+      box-shadow:0 12px 30px rgba(16,24,40,.08);
+      background:#fff;
+    }
+    .pill{ border-radius:9999px; }
+    details summary{ cursor:pointer; }
+  </style>
+
+  {# JSON-LD: Breadcrumbs #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Главная","item":"{{ SITE_URL }}/"},
+      {"@type":"ListItem","position":2,"name":"Вокзалы","item":"{{ SITE_URL }}/station/"},
+      {"@type":"ListItem","position":3,"name":"{{ data.title }}","item":"{{ canonical }}"}
+    ]
+  }
+  </script>
+
+  {# JSON-LD: WebPage #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "@id":"{{ canonical }}#webpage",
+    "url":"{{ canonical }}",
+    "name":"{{ meta_title|escapejs }}",
+    "description":"{{ meta_desc|escapejs }}",
+    "inLanguage":"ru",
+    "isPartOf":{"@id":"{{ SITE_URL }}/#website"},
+    "about":{"@id":"{{ SITE_URL }}/#organization"}
+  }
+  </script>
+
+  {# JSON-LD: Service #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Доставка багажа {{ data.name_prep }} — Drop & Delivery",
+    "serviceType":"Luggage delivery",
+    "areaServed":["Москва","Московская область"],
+    "provider":{"@id":"{{ SITE_URL }}/#organization"},
+    "url":"{{ canonical }}",
+    "description":"Забор багажа у двери, пломбирование и фотофиксация, акт приёма-передачи и доставка точно ко времени {{ data.name_prep }}."
+  }
+  </script>
+{% endblock %}
+
 {% block content %}
-<link rel="canonical" href="{{ canonical }}"/>
 
-<style>
-  .hero-clean{
-    border-radius:32px;
-    padding:2rem;
-    background:#fff;
-    box-shadow:0 20px 50px rgba(16,24,40,.06);
-  }
-  .card-dd{
-    border:0;
-    border-radius:24px;
-    box-shadow:0 12px 30px rgba(16,24,40,.08);
-    background:#fff;
-  }
-  .pill{ border-radius:9999px; }
-  details summary{ cursor:pointer; }
-</style>
-
-<!-- HERO -->
 <section class="hero-clean mb-4">
   <h1 class="fw-bold mb-2">{{ h1 }}</h1>
   <p class="text-muted mb-0">{{ meta_desc }}</p>
 </section>
 
-<!-- ОСНОВНЫЕ СЦЕНАРИИ -->
 <section class="row g-3 mb-4">
   <div class="col-md-6">
     <div class="card-dd p-4 h-100">
-      <h2 class="h5 fw-bold mb-2">
-        Доставка багажа {{ data.name_prep }}
-      </h2>
+      <h2 class="h5 fw-bold mb-2">Доставка багажа {{ data.name_prep }}</h2>
       <ul class="text-muted mb-3 ps-3">
         <li>Заберём багаж у двери, аккуратно упакуем и опечатаем.</li>
         <li>Оформим акт приёма-передачи с фотофиксацией.</li>
@@ -50,9 +97,7 @@
 
   <div class="col-md-6">
     <div class="card-dd p-4 h-100">
-      <h2 class="h5 fw-bold mb-2">
-        Доставка багажа {{ data.name_gen }}
-      </h2>
+      <h2 class="h5 fw-bold mb-2">Доставка багажа {{ data.name_gen }}</h2>
       <ul class="text-muted mb-3 ps-3">
         <li>Встречаем у вокзала в согласованной точке.</li>
         <li>Проверяете багаж по акту — затем оплата.</li>
@@ -65,95 +110,64 @@
   </div>
 </section>
 
-<!-- АДРЕС -->
+{# УНИКАЛЬНЫЙ МИКРО-БЛОК (важно против дублей) #}
 <section class="card-dd p-4 mb-4">
   <h2 class="h5 fw-bold mb-2">Адрес и ориентиры</h2>
   <div class="text-muted">
     <div><strong>{{ data.title }}</strong></div>
-    {% if data.address %}
-      <div>{{ data.address }}</div>
-    {% endif %}
-    {% if data.metro %}
-      <div>Метро: {{ data.metro|join:", " }}</div>
-    {% endif %}
-    {% if data.note %}
-      <div class="mt-2">{{ data.note }}</div>
-    {% endif %}
+    {% if data.address %}<div>{{ data.address }}</div>{% endif %}
+    {% if data.metro %}<div>Метро: {{ data.metro|join:", " }}</div>{% endif %}
+    {% if data.note %}<div class="mt-2">{{ data.note }}</div>{% endif %}
   </div>
 </section>
 
-<!-- ТАРИФЫ -->
 <section class="card-dd p-4 mb-4">
   <h2 class="h5 fw-bold mb-2">Тарифы и расчёт</h2>
-  <p class="text-muted mb-2">
-    1 сутки хранения включены. Москва (Зона 1) / Московская область (Зона 1.5).
-  </p>
-  <a href="/#tariffs" class="btn btn-secondary btn-sm pill">
-    Открыть калькулятор
-  </a>
+  <p class="text-muted mb-2">1 сутки хранения включены. Москва (Зона 1) / Московская область (Зона 1.5).</p>
+  <a href="/#tariffs" class="btn btn-secondary btn-sm pill">Открыть калькулятор</a>
 </section>
 
-<!-- FAQ -->
 <section class="card-dd p-4 mb-4">
   <h2 class="h5 fw-bold mb-3">Частые вопросы</h2>
 
   <details class="mb-2">
     <summary class="fw-semibold">Можно ли изменить время подачи?</summary>
-    <div class="text-muted mt-1">
-      Да, мы подстраиваемся под задержки поездов и изменения в расписании.
-    </div>
+    <div class="text-muted mt-1">Да, мы подстраиваемся под задержки поездов и изменения в расписании.</div>
   </details>
 
   <details class="mb-2">
     <summary class="fw-semibold">Где происходит встреча?</summary>
-    <div class="text-muted mt-1">
-      В холле вокзала или в другой удобной точке — согласуем заранее.
-    </div>
+    <div class="text-muted mt-1">В холле вокзала или в другой удобной точке — согласуем заранее.</div>
   </details>
 
   <details>
     <summary class="fw-semibold">Как происходит оплата?</summary>
-    <div class="text-muted mt-1">
-      После проверки багажа: СБП, QR или платёжная ссылка.
-    </div>
+    <div class="text-muted mt-1">После проверки багажа: СБП, QR или платёжная ссылка.</div>
   </details>
 </section>
 
-<!-- ДРУГИЕ ВОКЗАЛЫ -->
 <section class="card-dd p-4">
   <h2 class="h6 fw-bold mb-2">Другие вокзалы</h2>
   <div class="d-flex flex-wrap gap-2">
     {% for k, title in stations_nav %}
-      <a href="{% url 'station' k %}" class="btn btn-light border pill">
-        {{ title }}
-      </a>
+      <a href="{% url 'station' k %}" class="btn btn-light border pill">{{ title }}</a>
     {% endfor %}
   </div>
 </section>
 
-<!-- FAQ JSON-LD -->
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@type":"FAQPage",
   "mainEntity":[
-    {
-      "@type":"Question",
-      "name":"Доставка багажа {{ data.name_prep }}",
-      "acceptedAnswer":{
-        "@type":"Answer",
-        "text":"Забираем багаж у двери, упаковываем, оформляем акт и доставляем ко времени. Оплата после проверки."
-      }
-    },
-    {
-      "@type":"Question",
-      "name":"Доставка багажа {{ data.name_gen }}",
-      "acceptedAnswer":{
-        "@type":"Answer",
-        "text":"Встречаем у вокзала, сверяем багаж по акту и доставляем по адресу."
-      }
-    }
+    {"@type":"Question","name":"Можно ли изменить время подачи?",
+     "acceptedAnswer":{"@type":"Answer","text":"Да, мы подстраиваемся под задержки поездов и изменения в расписании."}},
+    {"@type":"Question","name":"Где происходит встреча?",
+     "acceptedAnswer":{"@type":"Answer","text":"В холле вокзала или в другой удобной точке — согласуем заранее."}},
+    {"@type":"Question","name":"Как происходит оплата?",
+     "acceptedAnswer":{"@type":"Answer","text":"После проверки багажа: СБП, QR или платёжная ссылка."}}
   ]
 }
 </script>
+
 {% endblock %}

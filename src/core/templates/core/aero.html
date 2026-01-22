@@ -5,6 +5,13 @@
 {% block extra_head %}
   <meta name="description" content="{{ meta_desc }}">
   <link rel="canonical" href="{{ canonical }}">
+
+  {# OG #}
+  <meta property="og:title" content="{{ meta_title }}">
+  <meta property="og:description" content="{{ meta_desc }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'core/img/logo-512.png' %}">
+
   <style>
     :root{--ink:#0f172a;--muted:#64748b;--r:24px;}
     .hero-clean{
@@ -43,18 +50,61 @@
     }
     .dd-steps li{margin-bottom:.4rem;}
   </style>
+
+  {# JSON-LD: Breadcrumbs #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Главная","item":"{{ SITE_URL }}/"},
+      {"@type":"ListItem","position":2,"name":"Аэропорты","item":"{{ SITE_URL }}/aero/"},
+      {"@type":"ListItem","position":3,"name":"{{ data.title }}","item":"{{ canonical }}"}
+    ]
+  }
+  </script>
+
+  {# JSON-LD: WebPage #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "@id":"{{ canonical }}#webpage",
+    "url":"{{ canonical }}",
+    "name":"{{ meta_title|escapejs }}",
+    "description":"{{ meta_desc|escapejs }}",
+    "inLanguage":"ru",
+    "isPartOf":{"@id":"{{ SITE_URL }}/#website"},
+    "about":{"@id":"{{ SITE_URL }}/#organization"}
+  }
+  </script>
+
+  {# JSON-LD: Service (геозависимый сигнал + услуга) #}
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Доставка багажа {{ data.name_prep }} — Drop & Delivery",
+    "serviceType":"Luggage delivery",
+    "areaServed":["Москва","Московская область"],
+    "provider":{"@id":"{{ SITE_URL }}/#organization"},
+    "url":"{{ canonical }}",
+    "description":"Забор багажа у двери, пломбирование и фотофиксация, акт приёма-передачи и доставка точно ко времени {{ data.name_prep }}."
+  }
+  </script>
 {% endblock %}
 
 {% block content %}
 
-<!-- HERO как на главной -->
 <section class="hero-clean mb-4">
   <div class="row align-items-center g-4">
     <div class="col-lg-7">
       <div class="hero-kicker mb-2">Drop & Delivery · Москва и область</div>
+
       <h1 class="fw-bold hero-title mb-3" style="font-size:2.1rem; line-height:1.15;">
         {{ h1 }}
       </h1>
+
       <p class="text-muted mb-4" style="font-size:1.08rem;">
         Заберём у двери, упакуем и опечатаем (пломба + фото), оформим акт и доставим точно ко времени.
         1 ночь хранения включена.
@@ -80,7 +130,7 @@
     <div class="col-lg-5 text-center">
       <img
         src="{% static 'core/img/dnd-hero.png' %}"
-        alt="Доставка багажа в аэропорт — Drop & Delivery"
+        alt="Доставка багажа {{ data.name_prep }} — Drop & Delivery"
         class="hero-img"
         loading="lazy"
       >
@@ -88,7 +138,6 @@
   </div>
 </section>
 
-<!-- 2 карточки как у тебя было, но в стиле главной -->
 <section class="row g-3 mb-4">
   <div class="col-md-6">
     <div class="card-dd p-4 h-100">
@@ -96,7 +145,9 @@
       <ul class="text-muted dd-steps" style="padding-left:1.1rem">
         <li>Заберём у двери, упакуем и опечатаем (пломба с номером, фотофиксация).</li>
         <li>Оформим акт (места, состояние, номера пломб, адреса и время).</li>
-        <li>Доставим к терминалу: {% for t in data.terminals %}{{ t }}{% if not forloop.last %}, {% endif %}{% endfor %}.</li>
+        <li>Доставим к терминалу:
+          {% for t in data.terminals %}{{ t }}{% if not forloop.last %}, {% endif %}{% endfor %}.
+        </li>
         <li>Оплата после проверки багажа.</li>
       </ul>
       <a href="{% url 'order_create' %}" class="btn btn-primary pill px-4">
@@ -120,7 +171,21 @@
   </div>
 </section>
 
-<!-- Тарифы / калькулятор (ссылка на главную) -->
+{# УНИКАЛЬНЫЙ МИКРО-БЛОК (важно против дублей) #}
+<section class="card-dd p-4 mb-4">
+  <h2 class="h5 fw-bold mb-2">Коротко про доставку багажа {{ data.name_prep }}</h2>
+  <div class="text-muted">
+    <p class="mb-2">
+      Мы работаем по Москве и области и подстраиваем доставку под ваш рейс и тайминг.
+      При оформлении достаточно указать терминал и удобную точку встречи.
+    </p>
+    <p class="mb-0">
+      Терминалы: {% for t in data.terminals %}{{ t }}{% if not forloop.last %}, {% endif %}{% endfor %}.
+      Если рейс задержан — сдвинем слот по согласованию.
+    </p>
+  </div>
+</section>
+
 <section class="card-dd p-4 mb-4">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
     <div>
@@ -131,7 +196,6 @@
   </div>
 </section>
 
-<!-- FAQ -->
 <section class="card-dd p-4 mb-4">
   <h2 class="h5 fw-bold mb-3">FAQ по аэропорту {{ data.title }}</h2>
 
@@ -151,7 +215,6 @@
   </details>
 </section>
 
-<!-- Перелинковка -->
 <section class="card-dd p-4">
   <h2 class="h6 fw-bold mb-2">Другие аэропорты</h2>
   <div class="d-flex flex-wrap gap-2">
@@ -161,16 +224,17 @@
   </div>
 </section>
 
-<!-- JSON-LD FAQ -->
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@type":"FAQPage",
   "mainEntity":[
-    {"@type":"Question","name":"Доставка багажа {{ data.name_prep }}",
-     "acceptedAnswer":{"@type":"Answer","text":"Забираем у двери, упаковываем и опечатываем багаж, оформляем акт и доставляем к нужному терминалу. Оплата после проверки."}},
-    {"@type":"Question","name":"Доставка багажа {{ data.name_gen }}",
-     "acceptedAnswer":{"@type":"Answer","text":"Встречаем у терминала, сверяем по акту и доставляем по адресу. Москва — Зона 1, МО — Зона 1.5."}}
+    {"@type":"Question","name":"Можно ли изменить время подачи из-за задержки рейса?",
+     "acceptedAnswer":{"@type":"Answer","text":"Да. Мы сдвигаем слот. Сообщите номер рейса при заказе."}},
+    {"@type":"Question","name":"Где происходит встреча при доставке?",
+     "acceptedAnswer":{"@type":"Answer","text":"Согласуем терминал и точку: выход, парковка или стойка выдачи."}},
+    {"@type":"Question","name":"Как происходит оплата?",
+     "acceptedAnswer":{"@type":"Answer","text":"Безналично после проверки багажа: СБП, QR или платёжная ссылка."}}
   ]
 }
 </script>

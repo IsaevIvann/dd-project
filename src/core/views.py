@@ -334,3 +334,7 @@ def station(request, code: str):
         "nav_items": nav_items,
     }
     return render(request, "core/hub.html", ctx)
+
+
+def kamera_hraneniya_bagazha_moskva(request):
+    return render(request, "core/kamera_hraneniya_bagazha_moskva.html")

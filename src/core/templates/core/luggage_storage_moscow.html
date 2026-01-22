@@ -7,15 +7,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="https://www.drop-delivery.ru/luggage-storage-moscow/">
 
-  <meta name="description" content="Luggage storage in Moscow with door-to-door service. We pick up your bags at the door, seal and store them on a secure warehouse and deliver on time — to the airport, train station or any address in Moscow.">
+  <meta name="robots" content="index,follow">
+
+  <meta name="description" content="Luggage storage in Moscow with door-to-door service. We pick up your bags at the door, seal and store them in a secure warehouse and deliver on time — to the airport, train station or any address in Moscow.">
+
   <meta property="og:title" content="Luggage Storage in Moscow — with Door-to-Door Delivery | Drop & Delivery">
-  <meta property="og:description" content="Luggage storage and delivery in Moscow: we collect your bags at the door, seal and store them and deliver on time to the airport, train station or address. Travel light, your luggage goes separately.">
+  <meta property="og:description" content="Door-to-door luggage storage and delivery in Moscow: we collect your bags at the door, seal and store them securely and deliver on time to the airport, train station or any address.">
   <meta property="og:url" content="https://www.drop-delivery.ru/luggage-storage-moscow/">
   <meta property="og:image" content="https://www.drop-delivery.ru/static/core/img/logo-512.png">
   <meta property="og:site_name" content="Drop & Delivery">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ru_RU">
+
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Luggage Storage in Moscow — Drop & Delivery">
+  <meta name="twitter:description" content="We pick up, seal and store your luggage, then deliver it on time to airports, train stations or any address in Moscow.">
 
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
@@ -85,10 +92,6 @@
       font-weight:400;
       letter-spacing:.01em;
     }
-    .navbar-nav .nav-link.btn{
-      color:#fff !important;
-      font-weight:600;
-    }
     .navbar-nav .nav-link:hover,
     .navbar-nav .nav-link:focus{
       color:#0d6efd !important;
@@ -130,6 +133,28 @@
   <link rel="alternate" hreflang="ru" href="https://www.drop-delivery.ru/hranenie-bagazha-moskva/">
   <link rel="alternate" hreflang="x-default" href="https://www.drop-delivery.ru/">
 
+  <!-- JSON-LD: Breadcrumbs -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {
+        "@type":"ListItem",
+        "position":1,
+        "name":"Home",
+        "item":"https://www.drop-delivery.ru/"
+      },
+      {
+        "@type":"ListItem",
+        "position":2,
+        "name":"Luggage Storage in Moscow",
+        "item":"https://www.drop-delivery.ru/luggage-storage-moscow/"
+      }
+    ]
+  }
+  </script>
+
   <!-- JSON-LD: WebPage (EN) -->
   <script type="application/ld+json">
   {
@@ -160,7 +185,7 @@
     "step":[
       {"@type":"HowToStep","name":"Request","text":"Send a request on the website or via messenger — we agree on the pick-up time and address."},
       {"@type":"HowToStep","name":"Pick-up","text":"Our representative comes to your address, packs if needed, seals the bags and issues a handover form with seal numbers."},
-      {"@type":"HowToStep","name":"Storage","text":"Your luggage is stored at a secure warehouse. The first 24 hours of storage are included in the service."},
+      {"@type":"HowToStep","name":"Storage","text":"Your luggage is stored in a secure warehouse. The first 24 hours of storage are included in the service."},
       {"@type":"HowToStep","name":"Delivery","text":"At the agreed time we deliver your luggage to the airport, train station or any address in Moscow region."}
     ]
   }
@@ -173,15 +198,26 @@
     "@type":"Service",
     "name":"Luggage storage with delivery in Moscow — Drop & Delivery",
     "serviceType":"Luggage storage with door-to-door delivery",
-    "areaServed":["Moscow","Moscow region"],
+    "areaServed":[
+      {"@type":"City","name":"Moscow","address":{"@type":"PostalAddress","addressCountry":"RU"}},
+      {"@type":"AdministrativeArea","name":"Moscow region","address":{"@type":"PostalAddress","addressCountry":"RU"}}
+    ],
     "url":"https://www.drop-delivery.ru/luggage-storage-moscow/",
     "provider":{"@id":"https://www.drop-delivery.ru/#organization"},
-    "description":"Luggage storage in Moscow with door-to-door pickup, seals and handover form, secure warehouse and on-time delivery to the airport, train station or address."
+    "description":"Luggage storage in Moscow with door-to-door pickup, numbered seals and a handover form, secure warehouse storage and on-time delivery to airports, train stations or any address.",
+    "offers":{
+      "@type":"Offer",
+      "price":"1200",
+      "priceCurrency":"RUB",
+      "url":"https://www.drop-delivery.ru/#tariffs",
+      "availability":"https://schema.org/InStock"
+    }
   }
   </script>
 
 </head>
 <body>
+
 <noscript>
   <div>
     <img src="https://mc.yandex.ru/watch/104157204" style="position:absolute;left:-9999px;" alt=""/>
@@ -196,14 +232,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item"><a class="nav-link" href="/concept/">Концепция</a></li>
-        <li class="nav-item"><a class="nav-link" href="/#tariffs">Тарифы</a></li>
+        <li class="nav-item"><a class="nav-link" href="/concept/">How it works</a></li>
+        <li class="nav-item"><a class="nav-link" href="/#tariffs">Tariffs</a></li>
         <li class="nav-item"><a class="nav-link" href="/faq/">FAQ</a></li>
-        <li class="nav-item"><a class="nav-link" href="/offer/">Оферта</a></li>
-        <li class="nav-item"><a class="nav-link" href="/benefits/">Преимущества</a></li>
-        <li class="nav-item"><a class="nav-link" href="/hranenie-bagazha-moskva/">Хранение багажа</a></li>
+        <li class="nav-item"><a class="nav-link" href="/offer/">Public offer (RU)</a></li>
+        <li class="nav-item"><a class="nav-link" href="/benefits/">Benefits</a></li>
+        <li class="nav-item"><a class="nav-link" href="/hranenie-bagazha-moskva/">RU: Luggage storage</a></li>
         <li class="nav-item"><a class="nav-link active" href="/luggage-storage-moscow/">Luggage Storage</a></li>
-        <li class="nav-item"><a class="nav-link" href="/contacts/">Контакты</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contacts/">Contacts</a></li>
       </ul>
     </div>
   </div>
@@ -219,11 +255,11 @@
           <i class="bi bi-bag me-1"></i> Luggage storage with delivery
         </span>
         <h1 class="display-4 fw-bold mt-3">
-          Luggage storage in Moscow — <span class="text-primary">without lockers and extra trips</span>
+          Luggage storage in Moscow — <span class="text-primary">no lockers, no extra trips</span>
         </h1>
         <p class="lead text-secondary mt-3">
-          We pick up your luggage at the door, seal and safely store it at a secure warehouse.
-          At the agreed time we deliver the bags to the airport, train station or address in Moscow —
+          We pick up your luggage at the door, seal it and store it safely in a secure warehouse.
+          At the agreed time we deliver the bags to the airport, train station or any address in Moscow —
           so you can spend the day hands-free.
         </p>
         <div class="d-flex gap-3 mt-3">
@@ -249,7 +285,7 @@
                  decoding="async">
           </picture>
           <div class="small text-muted mt-2">
-            Seals, photos and a handover form — your luggage is controlled at every step.
+            Numbered seals, photos and a handover form — your luggage is controlled at every step.
           </div>
         </div>
       </div>
@@ -258,16 +294,16 @@
 
   <!-- Why it’s convenient -->
   <section class="mb-5">
-    <h2 class="h3 mb-3">Why this luggage storage format is more convenient</h2>
+    <h2 class="h3 mb-3">Why this format is more convenient</h2>
     <div class="row g-3">
       <div class="col-md-6 col-lg-3">
         <div class="surface p-3 h-100">
           <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
             <i class="bi bi-truck fs-4"></i>
           </div>
-          <h3 class="h5 mt-3 mb-2">No need to carry bags</h3>
+          <h3 class="h5 mt-3 mb-2">No carrying bags</h3>
           <p class="text-secondary mb-0">
-            We pick up your luggage at the door — instead of going to a locker and back across the city.
+            We pick up at your door — instead of travelling to a luggage locker and back across the city.
           </p>
         </div>
       </div>
@@ -276,9 +312,9 @@
           <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
             <i class="bi bi-clock-history fs-4"></i>
           </div>
-          <h3 class="h5 mt-3 mb-2">Save your time</h3>
+          <h3 class="h5 mt-3 mb-2">Save time</h3>
           <p class="text-secondary mb-0">
-            Flexible pick-up and delivery slots, no queues or waiting at storage desks.
+            Flexible pick-up and delivery slots — no queues or waiting at storage desks.
           </p>
         </div>
       </div>
@@ -287,7 +323,7 @@
           <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
             <i class="bi bi-shield-check fs-4"></i>
           </div>
-          <h3 class="h5 mt-3 mb-2">Luggage protection</h3>
+          <h3 class="h5 mt-3 mb-2">Extra protection</h3>
           <p class="text-secondary mb-0">
             Packing if needed, numbered seals, photo documentation and a detailed handover form.
           </p>
@@ -298,9 +334,9 @@
           <div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-light p-3">
             <i class="bi bi-calendar2-week fs-4"></i>
           </div>
-          <h3 class="h5 mt-3 mb-2">Flexible storage period</h3>
+          <h3 class="h5 mt-3 mb-2">Flexible storage</h3>
           <p class="text-secondary mb-0">
-            From several hours to long-term storage. The first 24 hours are included.
+            From a few hours to long-term storage. The first 24 hours are included.
           </p>
         </div>
       </div>
@@ -319,7 +355,7 @@
           </div>
           <h3 class="h6 mt-3 mb-1">Request</h3>
           <p class="text-secondary mb-0">
-            You send us a request on the website or via messenger. We confirm the address, date and time.
+            Send a request on the website or via messenger. We confirm address, date and time.
           </p>
         </div>
       </div>
@@ -331,8 +367,7 @@
           </div>
           <h3 class="h6 mt-3 mb-1">Pick-up</h3>
           <p class="text-secondary mb-0">
-            Our representative comes to your address, helps with packing if needed,
-            seals the bags and fills in the handover form with seal numbers.
+            Our representative comes, helps with packing if needed, seals the bags and fills in the handover form.
           </p>
         </div>
       </div>
@@ -344,8 +379,7 @@
           </div>
           <h3 class="h6 mt-3 mb-1">Storage</h3>
           <p class="text-secondary mb-0">
-            Your luggage is stored at a secure warehouse until the agreed delivery date.
-            The first day of storage is included in the service price.
+            Luggage is stored securely until the agreed delivery date. The first day is included.
           </p>
         </div>
       </div>
@@ -357,8 +391,7 @@
           </div>
           <h3 class="h6 mt-3 mb-1">Delivery</h3>
           <p class="text-secondary mb-0">
-            At the agreed time we deliver your bags to the airport, train station or address.
-            You check the seals and receive the luggage by the handover form.
+            We deliver on time to the airport, train station or any address. You check seals and receive your luggage.
           </p>
         </div>
       </div>
@@ -368,21 +401,21 @@
   <!-- SEO text -->
   <section class="surface p-4 p-md-5 mb-5">
     <h2 class="h4 fw-bold mb-3">
-      Where to store your luggage in Moscow: a simple alternative to lockers
+      Where to store luggage in Moscow: a simple alternative to lockers
     </h2>
     <p class="text-secondary mb-2">
       If you arrive early, leave late, have a long layover or change apartments in the city,
-      you often face the same question: where to store your luggage in Moscow for a few hours.
-      With <b>Drop &amp; Delivery</b> you don’t have to look for lockers or carry your suitcases across town.
+      you often face the same question: where to store luggage in Moscow for a few hours.
+      With <b>Drop &amp; Delivery</b> you don’t have to search for lockers or carry suitcases across town.
     </p>
     <p class="text-secondary mb-2">
-      We pick up your bags at the door, seal them, take photos, store them at a secure warehouse and then
+      We pick up your bags at the door, seal them, take photos, store them in a secure warehouse and then
       deliver on time — to the airport, hotel or any address. It’s convenient for tourists,
       families with children, business travellers and anyone moving within the city.
     </p>
     <p class="text-secondary mb-0">
-      You spend the day in Moscow hands-free, while your luggage travels separately and meets you
-      exactly where and when you need it. Payment is made after you check the seals and the condition of your bags.
+      Spend the day hands-free while your luggage travels separately and meets you exactly where you need it.
+      Payment is made after you check the seals and the condition of your bags.
     </p>
   </section>
 
@@ -391,11 +424,11 @@
     <h2 class="h5 fw-bold mb-3">See also</h2>
     <div class="d-flex flex-wrap gap-2">
       <a class="btn btn-light border pill" href="/#tariffs">Tariffs & calculator</a>
-      <a class="btn btn-light border pill" href="/benefits/">Service advantages</a>
-      <a class="btn btn-light border pill" href="/concept/">How Drop &amp; Delivery works</a>
-      <a class="btn btn-light border pill" href="/dostavka-bagazha-moskva/">Luggage delivery in Moscow</a>
-      <a class="btn btn-light border pill" href="/aero/svo/">Luggage delivery to Sheremetyevo</a>
-      <a class="btn btn-light border pill" href="/aero/dme/">Luggage delivery to Domodedovo</a>
+      <a class="btn btn-light border pill" href="/benefits/">Benefits</a>
+      <a class="btn btn-light border pill" href="/concept/">How it works</a>
+      <a class="btn btn-light border pill" href="/dostavka-bagazha-moskva/">RU: Luggage delivery</a>
+      <a class="btn btn-light border pill" href="/aero/svo/">Sheremetyevo delivery</a>
+      <a class="btn btn-light border pill" href="/aero/dme/">Domodedovo delivery</a>
     </div>
   </section>
 
@@ -405,7 +438,7 @@
       <div>
         <h2 class="h4 mb-1">Need luggage storage in Moscow?</h2>
         <p class="text-secondary mb-0">
-          We can agree on pick-up and delivery in just a few messages in messenger.
+          We can agree on pick-up and delivery in a few messages.
         </p>
       </div>
       <a href="/order/" class="btn btn-lg btn-primary px-4 mt-3 mt-lg-0">
@@ -426,7 +459,7 @@
         </h2>
         <div id="e1" class="accordion-collapse collapse" data-bs-parent="#faqStorageEn">
           <div class="accordion-body text-secondary">
-            From several hours to long-term storage. The exact period is agreed with you when you make a request.
+            From a few hours to long-term storage. The exact period is confirmed when you make a request.
           </div>
         </div>
       </div>
@@ -434,13 +467,12 @@
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e2">
-            Do you work outside Moscow city?
+            Do you operate outside Moscow city?
           </button>
         </h2>
         <div id="e2" class="accordion-collapse collapse" data-bs-parent="#faqStorageEn">
           <div class="accordion-body text-secondary">
-            Yes, we operate in Moscow and nearby Moscow region, including all main airports
-            and some locations outside the city.
+            Yes. We operate in Moscow and nearby Moscow region, including all main airports and major train stations.
           </div>
         </div>
       </div>
@@ -448,13 +480,13 @@
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#e3">
-            Can you store my luggage between check-out and a late flight?
+            Can you store luggage between check-out and a late flight?
           </button>
         </h2>
         <div id="e3" class="accordion-collapse collapse" data-bs-parent="#faqStorageEn">
           <div class="accordion-body text-secondary">
-            This is one of the most popular scenarios: we pick up your bags after check-out,
-            store them during the day and deliver to the airport or another address before your departure.
+            Yes — this is a common scenario. We pick up after check-out, store during the day and deliver to the airport
+            or another address before departure.
           </div>
         </div>
       </div>
@@ -487,23 +519,23 @@
         "name":"How long can I store my luggage in Moscow?",
         "acceptedAnswer":{
           "@type":"Answer",
-          "text":"You can store your luggage from several hours to long-term storage. The exact period is agreed when you make a request."
+          "text":"You can store your luggage from a few hours to long-term storage. The exact period is confirmed when you make a request."
         }
       },
       {
         "@type":"Question",
-        "name":"Do you work outside Moscow city?",
+        "name":"Do you operate outside Moscow city?",
         "acceptedAnswer":{
           "@type":"Answer",
-          "text":"Yes, we operate in Moscow and nearby Moscow region, including all main airports and some locations outside the city."
+          "text":"Yes. We operate in Moscow and nearby Moscow region, including all main airports and major train stations."
         }
       },
       {
         "@type":"Question",
-        "name":"Can you store my luggage between check-out and a late flight?",
+        "name":"Can you store luggage between check-out and a late flight?",
         "acceptedAnswer":{
           "@type":"Answer",
-          "text":"Yes, we can pick up your bags after check-out, store them during the day and deliver to the airport or another address before departure."
+          "text":"Yes. We can pick up after check-out, store during the day and deliver to the airport or another address before departure."
         }
       },
       {
